@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Character Breakdown – TUNING IN</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --border: #252525;
+    --pink: #FF0066;
+    --white: #FFFFFF;
+    --gray: #777777;
+    --light: #CCCCCC;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.5;
+  }
+
+  /* ── HEADER ── */
+  header {
+    padding: 56px 60px 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 16px;
+  }
+  .title-block {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(72px, 10vw, 130px);
+    font-weight: 900;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  .title-block .w { color: var(--white); }
+  .title-block .p { color: var(--pink); }
+  .header-desc {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--light);
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 40px;
+  }
+  .header-meta {
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+  .meta-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 4px;
+  }
+  .meta-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .meta-value.pink { color: var(--pink); }
+  a.screenplay-link {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--pink);
+    border-bottom: 1px solid rgba(255,0,102,0.4);
+    transition: border-color 0.15s, opacity 0.15s;
+  }
+  a.screenplay-link:hover { opacity: 0.75; border-color: var(--pink); }
+
+  /* ── EXPORT BUTTON ── */
+  .export-btn {
+    margin-left: auto;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    background: var(--pink);
+    color: var(--white);
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    align-self: flex-end;
+  }
+  .export-btn:hover { opacity: 0.85; }
+  .export-btn:active { opacity: 0.7; }
+
+  /* ── MAIN ── */
+  main {
+    padding: 56px 60px;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  /* ── SECTION HEADER ── */
+  .sec-head {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── AGES TABLE ── */
+  .ages-table { width: 100%; border-collapse: collapse; }
+  .ages-table tr { border-bottom: 1px solid var(--border); }
+  .ages-table tr:last-child { border-bottom: none; }
+  .ages-table td { padding: 14px 0; vertical-align: middle; }
+  .age-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--white);
+    width: 140px;
+    padding-right: 24px;
+    white-space: nowrap;
+  }
+  .age-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid var(--border);
+    color: var(--gray);
+    background: var(--surface);
+  }
+  .tag.now { border-color: var(--pink); color: var(--pink); background: rgba(255,0,102,0.06); }
+  .tag.dim { color: #444; border-color: #1e1e1e; font-style: italic; }
+
+  /* ── CHARACTER CARD ── */
+  .char-card {
+    padding: 36px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .char-card:last-child { border-bottom: none; }
+  .char-top {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .char-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 1;
+    color: var(--white);
+  }
+  .char-name.pink { color: var(--pink); }
+  .role-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--pink);
+    border: 1px solid var(--pink);
+    padding: 3px 10px;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .char-logline {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+  .char-logline strong { color: var(--light); font-weight: 600; }
+
+  .fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 48px;
+  }
+  .fields.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 900px) { .fields.three { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .fields, .fields.three { grid-template-columns: 1fr; } }
+  .field-full { grid-column: 1 / -1; }
+
+  /* ── WARDROBE LIST ── */
+  .wardrobe-block {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .mc .wardrobe-block {
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+  .wardrobe-block .fl { margin-bottom: 10px; }
+  .wardrobe-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .wardrobe-list li {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--light);
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+  }
+  .wardrobe-list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--pink);
+    font-weight: 700;
+  }
+  .wardrobe-list li em { color: var(--white); font-style: normal; font-weight: 500; }
+
+  .fl {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 8px;
+  }
+  .ft {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--light);
+    line-height: 1.7;
+  }
+  .ft em { color: var(--white); font-style: normal; font-weight: 500; }
+
+  .quote-line {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--gray);
+  }
+  .quote-line::before {
+    content: '"';
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--pink);
+    line-height: 0;
+    vertical-align: -7px;
+    margin-right: 5px;
+  }
+
+  /* ── IMAGE ZONE ── */
+  .image-section {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .image-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .image-section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--pink);
+  }
+  .img-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+
+  /* Drop zone */
+  .dropzone {
+    border: 1px dashed #333;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .dropzone:hover, .dropzone.drag-over {
+    border-color: var(--pink);
+    background: rgba(255,0,102,0.04);
+  }
+  .dropzone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .dropzone-inner {
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+  }
+  .drop-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+  .drop-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  .drop-text span { color: var(--pink); }
+
+  /* Thumbnail grid */
+  .thumb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .thumb-wrap {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--surface);
+    group: true;
+  }
+  .thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.15s;
+  }
+  .thumb-wrap:hover img { opacity: 0.6; }
+  .thumb-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(0,0,0,0.8);
+    border: 1px solid #444;
+    color: var(--white);
+    font-size: 10px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+    line-height: 1;
+  }
+  .thumb-wrap:hover .thumb-delete { opacity: 1; }
+  .thumb-delete:hover { background: var(--pink); border-color: var(--pink); }
+  .thumb-name {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.75);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #aaa;
+    padding: 3px 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .thumb-wrap:hover .thumb-name { opacity: 1; }
+
+  /* ── MINOR GRID ── */
+  .minor-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+  }
+  .minor-grid .mc:last-child {
+    grid-column: unset;
+    max-width: unset;
+  }
+  .mc {
+    background: var(--bg);
+    padding: 24px 26px;
+  }
+  .mn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .mn.pink { color: var(--pink); }
+  .mr {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 12px;
+  }
+  .md {
+    font-size: 13px;
+    font-weight: 300;
+    color: #888;
+    line-height: 1.65;
+  }
+  .md em { color: var(--light); font-style: normal; font-weight: 500; }
+
+  /* Minor image zone (compact) */
+  .mc .image-section {
+    margin-top: 18px;
+    padding-top: 16px;
+  }
+  .mc .dropzone { padding: 12px; }
+  .mc .drop-text { font-size: 10px; }
+  .mc .thumb-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--pink);
+    padding: 14px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--light);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 22px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  footer span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+  }
+  footer span.pink { color: var(--pink); }
+
+  /* ── DRIVE GALLERY ── */
+  .drive-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 6px;
+    margin-top: 12px;
+    min-height: 40px;
+  }
+  .drive-thumb {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--surface);
+    cursor: pointer;
+  }
+  .drive-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.15s;
+  }
+  .drive-thumb:hover img { opacity: 0.75; }
+  .drive-thumb .drive-open {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.15s;
+    background: rgba(255,0,102,0.15);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .drive-thumb:hover .drive-open { opacity: 1; }
+  .drive-empty {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #444;
+    padding: 12px 0;
+  }
+
+  /* ── PASSWORD SCREEN ── */
+  #pw-screen {
+    position: fixed;
+    inset: 0;
+    background: #0e0e0e;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  #pw-screen .pw-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 20px;
+  }
+  #pw-screen .pw-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(56px, 8vw, 100px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 0.9;
+    margin-bottom: 48px;
+    text-align: center;
+  }
+  #pw-screen .pw-title .w { color: #fff; }
+  #pw-screen .pw-title .p { color: var(--pink); }
+  #pw-screen .pw-row {
+    display: flex;
+    gap: 0;
+    width: 340px;
+    max-width: 90vw;
+  }
+  #pw-screen input[type="password"] {
+    flex: 1;
+    background: #161616;
+    border: 1px solid #333;
+    border-right: none;
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    padding: 14px 18px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  #pw-screen input[type="password"]:focus { border-color: var(--pink); }
+  #pw-screen input[type="password"].shake {
+    animation: shake 0.3s ease;
+    border-color: var(--pink);
+  }
+  #pw-screen .pw-btn {
+    background: var(--pink);
+    border: none;
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  #pw-screen .pw-btn:hover { opacity: 0.85; }
+  #pw-screen .pw-hint {
+    margin-top: 16px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #444;
+    height: 16px;
+    transition: color 0.2s;
+  }
+  #pw-screen .pw-hint.error { color: var(--pink); }
+
+
+  /* ── PRIORITY & KIT METADATA ── */
+  .char-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .priority-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    padding: 3px 10px;
+    text-transform: uppercase;
+  }
+  .p1-badge { background: var(--pink); color: #fff; }
+  .p2-badge { background: #2a1a3e; color: #a78bfa; border: 1px solid #a78bfa; }
+  .p3-badge { background: #0d2a1a; color: #34d399; border: 1px solid #34d399; }
+  .kit-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+  }
+  .meta-stats {
+    margin-left: auto;
+    display: flex;
+    gap: 16px;
+  }
+  .meta-stat {
+    text-align: right;
+  }
+  .meta-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #444;
+    display: block;
+  }
+  .meta-stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--pink);
+  }
+  /* Minor card meta */
+  .mc .char-meta-row { margin-bottom: 10px; margin-top: 4px; }
+  .mc .meta-stats { margin-left: 0; margin-top: 4px; width: 100%; justify-content: flex-start; }
+  .mc .meta-stat { text-align: left; }
+
+  /* ── OUT OF SCOPE SECTION ── */
+  .out-of-scope-banner {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid #2a2a2a;
+    border-left: 3px solid #333;
+    padding: 14px 20px;
+    margin-bottom: 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #444;
+  }
+  .out-of-scope-banner span { color: #555; }
+
+
+  /* ── 3DAR LOGO ── */
+  .logo-3dar {
+    position: absolute;
+    top: 56px;
+    right: 60px;
+    opacity: 0.85;
+    transition: opacity 0.15s;
+  }
+  .logo-3dar:hover { opacity: 1; }
+  .logo-3dar img { height: 36px; width: auto; display: block; }
+
+  /* ── FILTER BAR ── */
+  #filter-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #0a0a0a;
+    border-bottom: 1px solid var(--border);
+    padding: 12px 60px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--gray);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: #444; color: var(--light); }
+  .filter-btn.active { background: var(--pink); border-color: var(--pink); color: #fff; }
+
+  #app { display: none; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+</style>
+</head>
+<body>
+
+<!-- PASSWORD SCREEN -->
+<div id="pw-screen">
+  <div class="pw-eyebrow">Character Breakdown — 2026</div>
+  <div class="pw-title"><span class="w">TUNING</span><span class="p"> IN</span></div>
+  <div class="pw-row">
+    <input type="password" id="pw-input" placeholder="PASSWORD" onkeydown="if(event.key==='Enter')checkPw()">
+    <button class="pw-btn" onclick="checkPw()">ENTER</button>
+  </div>
+  <div class="pw-hint" id="pw-hint">&nbsp;</div>
+</div>
+
+<!-- MAIN APP (hidden until unlocked) -->
+<div id="app">
+<div class="toast" id="toast"></div>
+
+<header style="position:relative;">
+
+  <div class="logo-3dar"><img src="data:image/jpeg;base64,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" alt="3DAR"></div>
+  <div class="eyebrow">Character Breakdown — 2026</div>
+  <div class="title-block">
+    <span class="w">TUNING</span><span class="p"> IN</span>
+  </div>
+  <div class="header-meta">
+    <div>
+      <div class="meta-label">Screenplay</div>
+      <a class="meta-value screenplay-link" href="https://drive.google.com/file/d/19F3PZ2XHNCh-Tq--JmZtL8t3ITCwvn4H/view?usp=sharing" target="_blank">READ SCRIPT ↗</a>
+    </div>
+    <div>
+      <div class="meta-label">Characters</div>
+      <div class="meta-value">14</div>
+    </div>
+    <div>
+      <div class="meta-label">Classification</div>
+      <div class="meta-value pink">Production</div>
+    </div>
+    <button class="export-btn" onclick="exportZip()">⬇ Export ZIP</button>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div id="filter-bar">
+  <button class="filter-btn active" onclick="filterBy('all')">All</button>
+  <button class="filter-btn" onclick="filterBy('p1')">P1 — Lead</button>
+  <button class="filter-btn" onclick="filterBy('p2')">P2 — Core Cast</button>
+  <button class="filter-btn" onclick="filterBy('p3')">P3 — Spirits</button>
+  <button class="filter-btn" onclick="filterBy('out')">Out of Scope</button>
+</div>
+
+<main>
+
+  <!-- AGES -->
+  <div data-section="ages">
+    <div class="sec-head">Ages by Script Appearance</div>
+    <table class="ages-table">
+      <tr>
+        <td class="age-name">Zoe</td>
+        <td><div class="age-tags">
+          <span class="tag">Newborn</span><span class="tag">Baby</span><span class="tag">Age 3</span><span class="tag">Age 5</span><span class="tag">Age 7</span><span class="tag">Age 8</span><span class="tag">Age 10</span><span class="tag">Age 11</span><span class="tag">Age 12</span><span class="tag">Age 13</span>
+          <span class="tag now">14 — present</span>
+        </div></td>
+      </tr>
+      <tr>
+        <td class="age-name">Miles</td>
+        <td><div class="age-tags">
+          <span class="tag">20s — Zoe's birth</span><span class="tag">20s–30s (flashbacks)</span><span class="tag">Ill (age n/s)</span>
+          <span class="tag dim">Deceased — recordings only</span>
+        </div></td>
+      </tr>
+      <tr>
+        <td class="age-name">Kay</td>
+        <td><div class="age-tags">
+          <span class="tag">20s — pregnant</span><span class="tag now">Adult — present</span>
+        </div></td>
+      </tr>
+      <tr>
+        <td class="age-name">Evie</td>
+        <td><div class="age-tags">
+          <span class="tag">Age 11</span><span class="tag now">14 — present</span>
+        </div></td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- LEAD CHARACTERS -->
+  <div data-section="p1">
+    <div class="sec-head">P1 — Lead Characters</div>
+
+    <!-- ZOE -->
+    <div class="char-card">
+      <div class="char-top">
+        <div class="char-name pink">Zoe</div>
+        <div class="role-tag">Lead</div>
+      </div>
+      <div class="char-logline"><strong>14 years old</strong> — Daughter of Miles and Kay. Emerging artist and composer. Alias: Zowie Stardust.</div>
+      <div class="char-meta-row">
+        <span class="priority-badge p1-badge">P1</span>
+        <span class="kit-tag">Full Kit + Variant</span>
+        <div class="meta-stats">
+          <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">34</span></div>
+          <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3–5</span></div>
+        </div>
+      </div>
+      <div class="fields three">
+        <div>
+          <div class="fl">Physical Description</div>
+          <div class="ft">Contemporary <em>cool</em> style. Multicolored hair. <em>Neo-pop-punk bedazzled</em> look that screams future rock star. As a little kid: wild clothes and wild hair. Her own headphones — <em>neon pink, chunky, and covered in gems</em> — 100% Zoe.</div>
+        </div>
+        <div>
+          <div class="fl">Personality</div>
+          <div class="ft">Creative, passionate about music since birth. Grief over her father makes her <em>defensive, irritable, and shut down</em>. Strong temper — she breaks Jade's nose with one punch. Enormous emotional depth. Her arc: from emotional silence to finding her own voice.</div>
+        </div>
+        <div>
+          <div class="fl">Skills</div>
+          <div class="ft">Guitar, sampler, MIDI controller, production laptop, drums. Creates electronic music blended across genres. Combines sounds from every genre into a <em>style that is entirely her own.</em></div>
+        </div>
+      </div>
+      <div class="wardrobe-block">
+        <div class="fl">Wardrobe Variations</div>
+        <ul class="wardrobe-list">
+          <li><em>Neo-pop-punk bedazzled</em> — multicolored hair, present-day vlog look</li>
+          <li><em>Hoodie + blanket</em> — night in the living room, doomscrolling</li>
+          <li><em>Backpack slung low</em> — school scenes</li>
+          <li><em>Dad's vintage can headphones</em> — attic sessions, World of Music</li>
+          <li><em>Neon pink bedazzled headphones</em> — finale, her own identity</li>
+        </ul>
+      </div>
+      <div class="image-section">
+        <div class="image-section-head">
+          <div class="image-section-label">CONCEPT IMAGES</div>
+          <div class="img-count" id="count-zoe">0 images</div>
+        </div>
+        <div class="dropzone" id="drop-zoe" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'zoe')">
+          <input type="file" accept="image/*" multiple onchange="onFileInput(event,'zoe')">
+          <div class="dropzone-inner">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="drop-text">Drop images or <span>click to browse</span></div>
+          </div>
+        </div>
+        <div class="thumb-grid" id="thumbs-zoe"></div>
+      </div>
+    </div>
+
+
+    <!-- FUSE -->
+    <div class="char-card">
+      <div class="char-top">
+        <div class="char-name">Fuse</div>
+        <div class="role-tag">Metal Spirit · P1 Lead</div>
+      </div>
+      <div class="char-logline"><em>The Screamin' Demon</em> — Metal music spirit of Metal Mountain. Zoe's guitar duel opponent.</div>
+      <div class="char-meta-row">
+        <span class="priority-badge p1-badge">P1</span>
+        <span class="kit-tag">Full Kit + Variant</span>
+        <div class="meta-stats">
+          <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">34</span></div>
+          <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3–5</span></div>
+        </div>
+      </div>
+      <div class="fields">
+        <div>
+          <div class="fl">Physical Description</div>
+          <div class="ft"><em>Little gremlin</em> music spirit with wild electric-blue hair, studded black leather vest, lightning bolt shades, and giant platform boots (he clearly needs them). His voice has built-in reverb. Makes a full pyrotechnics entrance — levitating from stalagmites.</div>
+        </div>
+        <div>
+          <div class="fl">Personality</div>
+          <div class="ft">All theatrics on the outside — genuine on the inside. Knew Miles from his garage band phase. Can shred like Eddie Van Halen. Loses a guitar duel to Zoe and is stunned. Reluctantly gives her his respect — and his Lead Zeppelin.</div>
+        </div>
+      </div>
+      <div class="image-section">
+        <div class="image-section-head">
+          <div class="image-section-label">CONCEPT IMAGES</div>
+          <div class="img-count" id="count-fuse">0 images</div>
+        </div>
+        <div class="dropzone" id="drop-fuse" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'fuse')">
+          <input type="file" accept="image/*" multiple onchange="onFileInput(event,'fuse')">
+          <div class="dropzone-inner">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="drop-text">Drop images or <span>click to browse</span></div>
+          </div>
+        </div>
+        <div class="thumb-grid" id="thumbs-fuse"></div>
+      </div>
+    </div>
+</div>
+
+  <!-- SUPPORTING -->
+  <div data-section="p2">
+    <div class="sec-head">P2 — Core Cast</div>
+
+    <!-- MILES -->
+    <div class="char-card">
+      <div class="char-top">
+        <div class="char-name">Miles</div>
+        <div class="role-tag">Father / Emotional Engine</div>
+      </div>
+      <div class="char-logline"><strong>20s</strong> at the start — Zoe's father, Kay's husband. Passes away before the story's present.</div>
+      <div class="char-meta-row">
+        <span class="priority-badge p2-badge">P2</span>
+        <span class="kit-tag">Full Kit + 4 Variants</span>
+        <div class="meta-stats">
+          <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">55</span></div>
+          <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
+        </div>
+      </div>
+      <div class="fields">
+        <div>
+          <div class="fl">Physical Description</div>
+          <div class="ft">Man in his twenties, <em>scruffy cool</em> look. Always surrounded by instruments and scattered sheet music. Wears classic can headphones. When ill: thinner, eyes closed, shallow breathing.</div>
+        </div>
+        <div>
+          <div class="fl">Personality</div>
+          <div class="ft">Present, tender, and playful father. Middle school music teacher with genuine calling. Patient, inspiring, full of humor. <em>Never famous in the real world</em> — enormously beloved in the World of Music.</div>
+        </div>
+        <div class="field-full">
+          <div class="fl">Legacy</div>
+          <div class="ft">Guitarist, pianist, and songwriter. Met Kay in a garage band. Spent years working on <em>"A Song for Zoe"</em> — deliberately left unfinished as a gift for his daughter. Has his own neighborhood in the World of Music: <em>"Miles' Place."</em></div>
+        </div>
+      </div>
+      <div class="wardrobe-block">
+        <div class="fl">Wardrobe Variations</div>
+        <ul class="wardrobe-list">
+          <li><em>Casual scruffy musician</em> — flannel, worn jeans, vintage tees — attic studio</li>
+          <li><em>Hospital scrubs</em> — nursery scene when Zoe is born</li>
+          <li><em>Sick / bedridden</em> — pale, thin, minimal clothing — illness scenes</li>
+          <li><em>Garage band era</em> — late 90s grunge, flannel — flashback with Kay</li>
+        </ul>
+      </div>
+      <div class="image-section">
+        <div class="image-section-head">
+          <div class="image-section-label">CONCEPT IMAGES</div>
+          <div class="img-count" id="count-miles">0 images</div>
+        </div>
+        <div class="dropzone" id="drop-miles" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'miles')">
+          <input type="file" accept="image/*" multiple onchange="onFileInput(event,'miles')">
+          <div class="dropzone-inner">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="drop-text">Drop images or <span>click to browse</span></div>
+          </div>
+        </div>
+        <div class="thumb-grid" id="thumbs-miles"></div>
+      </div>
+    </div>
+
+    <!-- KAY -->
+    <div class="char-card">
+      <div class="char-top">
+        <div class="char-name">Kay</div>
+        <div class="role-tag">Mother</div>
+      </div>
+      <div class="char-logline"><strong>20s</strong> at the start, adult in the present — Zoe's mother, Miles's widow.</div>
+      <div class="char-meta-row">
+        <span class="priority-badge p2-badge">P2</span>
+        <span class="kit-tag">Full Kit + 4 Variants</span>
+        <div class="meta-stats">
+          <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">55</span></div>
+          <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
+        </div>
+      </div>
+      <div class="fields">
+        <div>
+          <div class="fl">Physical Description</div>
+          <div class="ft">Young woman at the start, always in <em>hospital scrubs</em>. Pregnant in the opening scene. In the present, she's an adult woman holding the family together on her own.</div>
+        </div>
+        <div>
+          <div class="fl">Personality</div>
+          <div class="ft">Practical, hardworking, structured. Seems to "keep going like nothing happened" after Miles dies — which deeply frustrates Zoe. In reality devastated: seen crying in private. Has a <em>beautiful, clear, and gentle voice.</em> Finds music as the way back to her daughter.</div>
+        </div>
+      </div>
+      <div class="wardrobe-block">
+        <div class="fl">Wardrobe Variations</div>
+        <ul class="wardrobe-list">
+          <li><em>Hospital scrubs</em> — present-day, work scenes, morning routines</li>
+          <li><em>Casual maternity wear</em> — pregnancy scenes at the start</li>
+          <li><em>Informal home clothes</em> — domestic scenes, late nights</li>
+          <li><em>Garage band era</em> — late 90s casual — flashback with Miles</li>
+        </ul>
+      </div>
+      <div class="image-section">
+        <div class="image-section-head">
+          <div class="image-section-label">CONCEPT IMAGES</div>
+          <div class="img-count" id="count-kay">0 images</div>
+        </div>
+        <div class="dropzone" id="drop-kay" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'kay')">
+          <input type="file" accept="image/*" multiple onchange="onFileInput(event,'kay')">
+          <div class="dropzone-inner">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="drop-text">Drop images or <span>click to browse</span></div>
+          </div>
+        </div>
+        <div class="thumb-grid" id="thumbs-kay"></div>
+      </div>
+    </div>
+
+    <!-- EVIE -->
+    <div class="char-card">
+      <div class="char-top">
+        <div class="char-name pink">Evie</div>
+        <div class="role-tag">Best Friend</div>
+      </div>
+      <div class="char-logline"><strong>14 years old</strong> — Zoe's best friend since childhood. Drummer. Alias: Evie-E.</div>
+      <div class="char-meta-row">
+        <span class="priority-badge p2-badge">P2</span>
+        <span class="kit-tag">Full Kit + 2 Variants</span>
+        <div class="meta-stats">
+          <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">41</span></div>
+          <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
+        </div>
+      </div>
+      <div class="fields">
+        <div>
+          <div class="fl">Physical Description</div>
+          <div class="ft">Teen with <em>braces</em> — her bracket-filled grin is a recurring and endearing trait. Energy and presence that fill the frame. Appears from age 11 onward.</div>
+        </div>
+        <div>
+          <div class="fl">Personality</div>
+          <div class="ft">Exuberant, optimistic, and completely loyal. <em>Charmingly cringe</em> sense of humor. Invents something new every day to cheer Zoe up. The channel's camerawoman and the duo's emotional engine. Livestreams the final set without asking.</div>
+        </div>
+      </div>
+      
+      <div class="image-section">
+        <div class="image-section-head">
+          <div class="image-section-label">CONCEPT IMAGES</div>
+          <div class="img-count" id="count-evie">0 images</div>
+        </div>
+        <div class="dropzone" id="drop-evie" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'evie')">
+          <input type="file" accept="image/*" multiple onchange="onFileInput(event,'evie')">
+          <div class="dropzone-inner">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="drop-text">Drop images or <span>click to browse</span></div>
+          </div>
+        </div>
+        <div class="thumb-grid" id="thumbs-evie"></div>
+      </div>
+    </div>
+
+    <!-- PIP-POP -->
+    <div class="char-card">
+      <div class="char-top">
+        <div class="char-name">Pip-Pop</div>
+        <div class="role-tag">Music Spirit / Guide</div>
+      </div>
+      <div class="char-logline"><em>Sir Pipalonious-Pop-Bop-Boomzarella the Third, Prince of Pop</em> — Music spirit and Miles's old friend.</div>
+      <div class="char-meta-row">
+        <span class="priority-badge p2-badge">P2</span>
+        <span class="kit-tag">Full Kit</span>
+        <div class="meta-stats">
+          <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">27</span></div>
+          <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
+        </div>
+      </div>
+      <div class="fields">
+        <div>
+          <div class="fl">Physical Description</div>
+          <div class="ft"><em>Pint-sized</em> music spirit with candy-colored hair. Energy of a confetti cannon. Tiny but with a surprisingly big voice. His ears droop when he's sad. Bursts out of a vinyl record crate like a jack-in-the-box.</div>
+        </div>
+        <div>
+          <div class="fl">Personality</div>
+          <div class="ft">Full-on DJ Sparkle fanboy, to the point of embarrassment. Impulsive, anxious, dramatic. <em>Subversive</em> in Poppopolis — constantly breaks rules out of love. Genuinely heartbroken by Miles's death. Protects Zoe like a sacred mission.</div>
+        </div>
+      </div>
+      
+      <div class="image-section">
+        <div class="image-section-head">
+          <div class="image-section-label">CONCEPT IMAGES</div>
+          <div class="img-count" id="count-pip-pop">0 images</div>
+        </div>
+        <div class="dropzone" id="drop-pip-pop" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'pip-pop')">
+          <input type="file" accept="image/*" multiple onchange="onFileInput(event,'pip-pop')">
+          <div class="dropzone-inner">
+            <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <div class="drop-text">Drop images or <span>click to browse</span></div>
+          </div>
+        </div>
+        <div class="thumb-grid" id="thumbs-pip-pop"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MUSIC SPIRITS -->
+  <div data-section="p3">
+    <div class="sec-head">P3 — Music Spirits (Light Kit)</div>
+    <div class="minor-grid">
+
+      <div class="mc">
+        <div class="mn pink">Harmony</div>
+        <div class="mr">Elder of Music · Keeper of the Chords</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md"><em>Plump, glowing, grandma-esque</em> with giant round glasses and a shawl of shimmering musical notes. Wise, warm, gives fierce hugs. Knows Zoe's destiny before she does. Delivers the key truth: <em>The Heart lives inside Zoe.</em></div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-harmony">0 images</div></div>
+          <div class="dropzone" id="drop-harmony" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'harmony')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'harmony')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-harmony"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Swing</div>
+        <div class="mr">Jazz Spirit · The B-Side</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md"><em>Tall, slender, smooth</em> with a golden saxophone, wide-brimmed hat, and long coat. Veteran jazzman cadence. Knew Miles "a long time." Leads his own backing band.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-swing">0 images</div></div>
+          <div class="dropzone" id="drop-swing" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'swing')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'swing')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-swing"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn pink">DJ Sparkle</div>
+        <div class="mr">Queen of Dance · Glitter Ball Arena</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md">Glittering bodysuit, <em>platform heels, headphones kicked off one ear,</em> oversized glitter shades. Megawatt smile. Commands dual glowing turntables. Pip's absolute idol.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-dj-sparkle">0 images</div></div>
+          <div class="dropzone" id="drop-dj-sparkle" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'dj-sparkle')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'dj-sparkle')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-dj-sparkle"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">MC Flow</div>
+        <div class="mr">Hip-Hop Spirit · The Void</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md">Baggy clothes, <em>gold chain,</em> pure hype energy. Hosts the rap battle between Zoe and Shadow Zoe inside the Void of Silence.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-mc-flow">0 images</div></div>
+          <div class="dropzone" id="drop-mc-flow" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'mc-flow')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'mc-flow')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-mc-flow"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Twang</div>
+        <div class="mr">Country Spirit · The Broken String</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md"><em>Lanky, slow-moving,</em> tobacco-spitting. Strums steel guitar idly. Keeps jars of unfinished song lyrics alongside Teller.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-twang">0 images</div></div>
+          <div class="dropzone" id="drop-twang" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'twang')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'twang')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-twang"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Teller</div>
+        <div class="mr">Folk Spirit · The Broken String</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md"><em>Overalls,</em> slow-blinking and slow-drawling. Plays banjo. Thick Southern drawl. Keeps thousands of mason jars packed with unfinished lyrics.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-teller">0 images</div></div>
+          <div class="dropzone" id="drop-teller" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'teller')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'teller')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-teller"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Fonk</div>
+        <div class="mr">Funk Spirit · The Funk Den</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md"><em>À la Bootsy Collins</em> with mustache and psychedelic shades. Shameless grooves. Appears during the genre montage.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-fonk">0 images</div></div>
+          <div class="dropzone" id="drop-fonk" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'fonk')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'fonk')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-fonk"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Mama Hallelujah</div>
+        <div class="mr">Soul / Gospel Spirit</div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="md">Gospel spirit who <em>literally lifts the roof with her voice.</em> At the finale she belts so hard she blows out the stained glass. Enormous, maternal, powerful presence.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-mama-hallelujah">0 images</div></div>
+          <div class="dropzone" id="drop-mama-hallelujah" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'mama-hallelujah')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'mama-hallelujah')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-mama-hallelujah"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- OUT OF SCOPE -->
+  <div data-section="out">
+    <div class="out-of-scope-banner">⚠ The following characters are <span>not included in Phase 2 scope</span>. Listed here for reference only.</div>
+    <div class="sec-head">Out of Scope</div>
+    <div class="minor-grid">
+
+      <div class="mc">
+        <div class="mn pink">Shadow Zoe</div>
+        <div class="mr">Manifestation of Silence / Inner Doubt</div>
+        <div class="md">Zoe's dark copy: <em>black hoodie, pale skin, joyless black eyes, dark circles.</em> Attacks with rhymes like switchblades. Embodies fear and devastating self-criticism.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-shadow-zoe">0 images</div></div>
+          <div class="dropzone" id="drop-shadow-zoe" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'shadow-zoe')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'shadow-zoe')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-shadow-zoe"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn pink">Jade</div>
+        <div class="mr">Lead Vocals · Ringleader</div>
+        <div class="md">The quintessential mean girl. <em>All venom and femme fatale.</em> Rules the social space with calculated cruelty. Ends up with a broken nose courtesy of Zoe. Falls apart when she loses The Beat Down.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-jade">0 images</div></div>
+          <div class="dropzone" id="drop-jade" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'jade')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'jade')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-jade"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Lexi</div>
+        <div class="mr">Drums · The Muscle</div>
+        <div class="md"><em>Big, built like a linebacker.</em> The Sirens' brute force. Delivers the cruelest line about Zoe's dead father.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-lexi">0 images</div></div>
+          <div class="dropzone" id="drop-lexi" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'lexi')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'lexi')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-lexi"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Todd</div>
+        <div class="mr">Keys / Synth · The Try-Hard</div>
+        <div class="md">Guy in <em>black eyeliner,</em> insecure and desperate to look cool. When The Sirens lose, asks with genuine confusion: "Wait. Who's Zoe?"</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-todd">0 images</div></div>
+          <div class="dropzone" id="drop-todd" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'todd')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'todd')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-todd"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Lead Notable</div>
+        <div class="mr">Conservatory Enforcers</div>
+        <div class="md"><em>Pompous as a peacock,</em> oversized hat with a Treble Clef. Notables speak in sung doo-wop and unroll sheet music scrolls to read charges against Pip.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-lead-notable">0 images</div></div>
+          <div class="dropzone" id="drop-lead-notable" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'lead-notable')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'lead-notable')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-lead-notable"></div>
+        </div>
+      </div>
+
+      <div class="mc">
+        <div class="mn">Mr. Keyes</div>
+        <div class="mr">Poppopolis Neighbor</div>
+        <div class="md">Proud owner of a <em>singing flower shop</em> on Poppopolis Main Street, where the bouquets hum in perfect harmony.</div>
+        <div class="image-section">
+          <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-mr-keyes">0 images</div></div>
+          <div class="dropzone" id="drop-mr-keyes" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event,'mr-keyes')">
+            <input type="file" accept="image/*" multiple onchange="onFileInput(event,'mr-keyes')">
+            <div class="dropzone-inner"><svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><div class="drop-text">Drop or <span>browse</span></div></div>
+          </div>
+          <div class="thumb-grid" id="thumbs-mr-keyes"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>Tuning In · Robert Rugan</span>
+  <span class="pink">Character Breakdown · Production Use</span>
+</footer>
+
+<script>
+  // ── FILTER ──
+  function filterBy(priority) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    document.querySelectorAll('main > div[data-section]').forEach(section => {
+      const sec = section.dataset.section;
+      if (priority === 'all') {
+        section.style.display = '';
+      } else if (['p1','p2','p3'].includes(priority)) {
+        section.style.display = (sec === priority || sec === 'ages') ? '' : 'none';
+      } else if (priority === 'out') {
+        section.style.display = (sec === 'out' || sec === 'ages') ? '' : 'none';
+      }
+    });
+  }
+
+  // ── CONFIG ──
+  const CLOUD_NAME    = 'duvgxho7s';
+  const UPLOAD_PRESET = 'tuning-in';
+  const JSONBIN_ID    = '69c46a48b7ec241ddca30e64';
+  const JSONBIN_KEY   = '$2a$10$G/S5QC8pq2vpHyiOEdxjp.rmJOR4deLMjyDvs1.Zq7W9dMQt9uqQq';
+  const JSONBIN_URL   = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+
+  const CHARACTERS = [
+    'zoe','miles','kay','evie','pip-pop',
+    'jade','lexi','todd',
+    'harmony','swing','fuse','dj-sparkle','mc-flow','shadow-zoe',
+    'twang','teller','fonk','mama-hallelujah','lead-notable','mr-keyes'
+  ];
+
+  // In-memory state
+  let db = {};
+
+  // ── PASSWORD ──
+  function checkPw() {
+    const input = document.getElementById('pw-input');
+    const hint  = document.getElementById('pw-hint');
+    if (input.value === 'Headphones') {
+      document.getElementById('pw-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadDB().then(() => {
+        renderAll();
+        startAutoRefresh();
+      });
+    } else {
+      hint.textContent = 'INCORRECT PASSWORD';
+      hint.classList.add('error');
+      input.classList.add('shake');
+      input.value = '';
+      setTimeout(() => {
+        input.classList.remove('shake');
+        hint.classList.remove('error');
+        hint.innerHTML = '&nbsp;';
+      }, 1800);
+    }
+  }
+
+  // ── READ from JSONBin ──
+  const JSONBIN_ACCESS_KEY = '$2a$10$rW470jtbWeEDDqadPmoNs.qFCdRH9T06//RPaqHGVec.TmeazWlIi';
+
+  async function loadDB() {
+    try {
+      const res = await fetch(JSONBIN_URL + '/latest', {
+        method: 'GET',
+        headers: {
+          'X-Access-Key': JSONBIN_ACCESS_KEY,
+          'X-Bin-Meta': 'false'
+        }
+      });
+      if (!res.ok) throw new Error('fetch failed: ' + res.status);
+      const data = await res.json();
+      db = data.images || data.record?.images || {};
+    } catch(e) {
+      console.error('loadDB error:', e);
+      db = {};
+    }
+  }
+
+  // ── WRITE to JSONBin ──
+  async function saveDB() {
+    try {
+      await fetch(JSONBIN_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY
+        },
+        body: JSON.stringify({ images: db })
+      });
+    } catch(e) {}
+  }
+
+  // ── RENDER all galleries ──
+  function renderAll() {
+    CHARACTERS.forEach(id => renderGallery(id));
+  }
+
+  async function renderGallery(charId) {
+    const grid  = document.getElementById('thumbs-' + charId);
+    const count = document.getElementById('count-' + charId);
+    if (!grid) return;
+
+    const images = db[charId] || [];
+
+    // Verify each image still exists in Cloudinary
+    const validImages = [];
+    for (const publicId of images) {
+      const checkUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_10/${publicId}`;
+      try {
+        const res = await fetch(checkUrl, { method: 'HEAD' });
+        if (res.ok) {
+          validImages.push(publicId);
+        }
+      } catch(e) {
+        // skip
+      }
+    }
+
+    // If some images were deleted, update JSONBin
+    if (validImages.length !== images.length) {
+      db[charId] = validImages;
+      await saveDB();
+    }
+
+    count.textContent = validImages.length === 1 ? '1 image' : validImages.length + ' images';
+    grid.innerHTML = '';
+
+    if (validImages.length === 0) {
+      grid.innerHTML = '<div class="drive-empty">No images yet</div>';
+      return;
+    }
+
+    validImages.forEach((publicId, idx) => {
+      const thumbUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_200,h_200,c_fill/${publicId}`;
+      const fullUrl  = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${publicId}`;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'drive-thumb';
+      wrap.onclick = () => window.open(fullUrl, '_blank');
+
+      const img = document.createElement('img');
+      img.src = thumbUrl;
+      img.alt = publicId;
+
+      const overlay = document.createElement('div');
+      overlay.className = 'drive-open';
+      overlay.textContent = 'Open';
+
+      // Delete button
+      const del = document.createElement('div');
+      del.style.cssText = 'position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.8);border:1px solid #444;color:#fff;font-size:10px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity 0.15s;';
+      del.textContent = '✕';
+      del.onclick = async (e) => {
+        e.stopPropagation();
+        db[charId].splice(idx, 1);
+        await saveDB();
+        renderGallery(charId);
+      };
+      wrap.addEventListener('mouseenter', () => del.style.opacity = '1');
+      wrap.addEventListener('mouseleave', () => del.style.opacity = '0');
+
+      wrap.appendChild(img);
+      wrap.appendChild(overlay);
+      wrap.appendChild(del);
+      grid.appendChild(wrap);
+    });
+  }
+
+  // ── UPLOAD to Cloudinary + save ID to JSONBin ──
+  async function uploadToCloudinary(charId, files) {
+    const grid = document.getElementById('thumbs-' + charId);
+    const empty = grid.querySelector('.drive-empty');
+    if (empty) empty.remove();
+
+    for (const file of Array.from(files)) {
+      if (!file.type.startsWith('image/')) continue;
+
+      // Placeholder
+      const placeholder = document.createElement('div');
+      placeholder.className = 'drive-thumb';
+      placeholder.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-family:\'Barlow Condensed\',sans-serif;font-size:10px;letter-spacing:2px;color:#555;text-transform:uppercase;">Uploading…</div>';
+      grid.insertBefore(placeholder, grid.firstChild);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append('folder', charId);
+
+        const res  = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+
+        if (data.public_id) {
+          // Save to DB
+          if (!db[charId]) db[charId] = [];
+          db[charId].push(data.public_id);
+          await saveDB();
+
+          // Replace placeholder
+          placeholder.remove();
+          renderGallery(charId);
+          showToast('Image uploaded to ' + charId.toUpperCase());
+        } else {
+          placeholder.remove();
+          showToast('Upload failed: ' + (data.error?.message || 'unknown'));
+        }
+      } catch(e) {
+        placeholder.remove();
+        showToast('Upload error for ' + file.name);
+      }
+    }
+  }
+
+  // ── AUTO-REFRESH every 30 seconds ──
+  let refreshInterval = null;
+  function startAutoRefresh() {
+    if (refreshInterval) return;
+    refreshInterval = setInterval(async () => {
+      await loadDB();
+      renderAll();
+    }, 30000);
+  }
+
+  // ── DRAG & DROP ──
+  function onDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+  }
+  function onDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+  function onDrop(e, charId) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    uploadToCloudinary(charId, e.dataTransfer.files);
+  }
+  function onFileInput(e, charId) {
+    uploadToCloudinary(charId, e.target.files);
+    e.target.value = '';
+  }
+
+  // ── TOAST ──
+  let toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  // ── EXPORT ZIP ──
+  async function exportZip() {
+    showToast('Building ZIP…');
+    const zip = new JSZip();
+    let total = 0;
+
+    for (const charId of CHARACTERS) {
+      const images = db[charId] || [];
+      if (!images.length) continue;
+      const folder = zip.folder(charId.replace(/-/g, '_'));
+      for (const publicId of images) {
+        try {
+          const imgUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${publicId}`;
+          const imgRes = await fetch(imgUrl);
+          const blob   = await imgRes.blob();
+          const arr    = await blob.arrayBuffer();
+          const fname  = publicId.split('/').pop() + '.jpg';
+          folder.file(fname, arr);
+          total++;
+        } catch(e) {}
+      }
+    }
+
+    if (total === 0) { showToast('No images to export yet.'); return; }
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'TUNING_IN_character_references.zip';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    showToast(total + ' image' + (total === 1 ? '' : 's') + ' exported.');
+  }
+</script>
+</div><!-- /app -->
+</body>
+</html>
