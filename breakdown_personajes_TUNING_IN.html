@@ -764,6 +764,211 @@
   .filter-btn:hover { border-color: #444; color: var(--light); }
   .filter-btn.active { background: var(--pink); border-color: var(--pink); color: #fff; }
 
+  /* ── GANTT ── */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt-header, .gantt-weeks-row, .gantt-row, .gantt-phases-row, .gantt-group-header {
+    display: grid;
+    grid-template-columns: 0px 120px 1fr;
+    align-items: center;
+    min-width: 700px;
+  }
+  .gantt-group-header {
+    padding: 20px 0 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  .gantt-months, .gantt-weeks, .gantt-bars, .gantt-phases {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+  }
+  .gantt-month {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-align: center;
+    padding: 8px 0 4px;
+    border-left: 1px solid var(--border);
+  }
+  .gantt-week {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #444;
+    text-align: center;
+    padding: 4px 0 8px;
+    border-left: 1px solid #1a1a1a;
+  }
+  .gantt-task-col {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray);
+    padding: 4px 12px 4px 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .gantt-label-col {}
+  .gantt-row { border-bottom: 1px solid #111; }
+  .gantt-row-last { border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+  .gantt-bar {
+    height: 20px;
+    border-radius: 2px;
+    margin: 5px 2px;
+    opacity: 0.85;
+  }
+  .p1-bar { background: var(--pink); }
+  .p2-bar { background: #7c3aed; }
+  .p3-bar { background: #10b981; }
+  .gantt-phase {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 10px 0;
+    border-top: 2px solid var(--border);
+    color: var(--gray);
+  }
+  .ph1 { grid-column: 1 / 4; border-color: #333; }
+  .ph2 { grid-column: 4 / 7; border-color: #444; }
+  .ph3 { grid-column: 7 / 9; border-color: #555; }
+  .gantt-phases-row { margin-top: 16px; }
+  .gantt-date {
+    display: block;
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: #444;
+    text-transform: none;
+    margin-top: 1px;
+  }
+  /* Dotted vertical week separators */
+  .gantt-bars {
+    position: relative;
+  }
+  .gantt-bars::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent,
+      transparent calc(12.5% - 1px),
+      rgba(255,255,255,0.06) calc(12.5% - 1px),
+      rgba(255,255,255,0.06) 12.5%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+  .gantt-bar { position: relative; z-index: 1; }
+
+  /* ── THIS WEEK BANNER ── */
+  #this-week-banner {
+    padding: 20px 60px;
+    border-bottom: 1px solid var(--border);
+    display: none;
+  }
+  .week-banner-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .week-banner-left {
+    min-width: 180px;
+  }
+  .week-banner-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 4px;
+  }
+  .week-banner-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    color: var(--white);
+    line-height: 1;
+  }
+  .week-banner-dates {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gray);
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+  .week-banner-tasks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    flex: 1;
+  }
+  .week-task-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .week-task-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .week-task-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--light);
+  }
+  .week-task-sub {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--gray);
+    display: block;
+    margin-top: 1px;
+  }
+  .week-banner-pre {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gray);
+    font-style: italic;
+  }
+
   #app { display: none; }
 
   @keyframes shake {
@@ -823,7 +1028,11 @@
   <button class="filter-btn" onclick="filterBy('p2')">P2 — Core Cast</button>
   <button class="filter-btn" onclick="filterBy('p3')">P3 — Spirits</button>
   <button class="filter-btn" onclick="filterBy('out')">Out of Scope</button>
+  <button class="filter-btn" onclick="filterBy('schedule')" style="margin-left:auto; border-color: var(--pink); color: var(--pink);">Schedule</button>
 </div>
+
+<!-- THIS WEEK BANNER -->
+<div id="this-week-banner"></div>
 
 <main>
 
@@ -1376,6 +1585,127 @@
     </div>
   </div>
 
+  <!-- SCHEDULE -->
+  <div data-section="schedule" style="display:none;">
+    <div class="sec-head">Production Schedule — 8 Weeks</div>
+
+    <div id="gantt-container">
+      <!-- Month headers -->
+      <div class="gantt-wrap">
+
+        <!-- Header row -->
+        <div class="gantt-header">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col"></div>
+          <div class="gantt-months">
+            <div class="gantt-month" style="grid-column: span 4;">MONTH 01</div>
+            <div class="gantt-month" style="grid-column: span 4;">MONTH 02</div>
+          </div>
+        </div>
+
+        <!-- Week numbers -->
+        <div class="gantt-weeks-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col"></div>
+          <div class="gantt-weeks">
+            <div class="gantt-week">APR 6</div>
+            <div class="gantt-week">APR 13</div>
+            <div class="gantt-week">APR 21</div>
+            <div class="gantt-week">APR 27</div>
+            <div class="gantt-week">MAY 4</div>
+            <div class="gantt-week">MAY 11</div>
+            <div class="gantt-week">MAY 18</div>
+            <div class="gantt-week">MAY 25</div>
+          </div>
+        </div>
+
+        <!-- P1 -->
+        <div class="gantt-group-header"><span class="priority-badge p1-badge" style="font-size:10px;">P1</span> Lead Characters — Zoe &amp; Fuse</div>
+        <div class="gantt-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">Design <span class="gantt-date">Apr 6 → Apr 24</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p1-bar" style="grid-column: 1 / 4;"></div>
+          </div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">LoRA Files <span class="gantt-date">Apr 27 → May 9</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p1-bar" style="grid-column: 4 / 6;"></div>
+          </div>
+        </div>
+        <div class="gantt-row gantt-row-last">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">Clips <span class="gantt-date">Apr 27 → May 9</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p1-bar" style="grid-column: 4 / 6;"></div>
+          </div>
+        </div>
+
+        <!-- P2 -->
+        <div class="gantt-group-header"><span class="priority-badge p2-badge" style="font-size:10px;">P2</span> Core Cast — Miles, Kay, Evie &amp; Pip-Pop</div>
+        <div class="gantt-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">Design <span class="gantt-date">Apr 6 → Apr 24</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p2-bar" style="grid-column: 1 / 4;"></div>
+          </div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">LoRA Files <span class="gantt-date">May 18 → May 22</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p2-bar" style="grid-column: 7 / 9;"></div>
+          </div>
+        </div>
+        <div class="gantt-row gantt-row-last">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">Clips <span class="gantt-date">May 18 → May 22</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p2-bar" style="grid-column: 7 / 9;"></div>
+          </div>
+        </div>
+
+        <!-- P3 -->
+        <div class="gantt-group-header"><span class="priority-badge p3-badge" style="font-size:10px;">P3</span> Music Spirits — 8 Characters (Light Kit)</div>
+        <div class="gantt-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">Design <span class="gantt-date">Apr 27 → May 15</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p3-bar" style="grid-column: 4 / 7;"></div>
+          </div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">LoRA Files <span class="gantt-date">May 18 → May 22</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p3-bar" style="grid-column: 7 / 9;"></div>
+          </div>
+        </div>
+        <div class="gantt-row gantt-row-last">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col">Clips <span class="gantt-date">May 18 → May 22</span></div>
+          <div class="gantt-bars">
+            <div class="gantt-bar p3-bar" style="grid-column: 7 / 9;"></div>
+          </div>
+        </div>
+
+        <!-- Phase labels -->
+        <div class="gantt-phases-row">
+          <div class="gantt-label-col"></div>
+          <div class="gantt-task-col" style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gray);text-transform:uppercase;">Production</div>
+          <div class="gantt-phases">
+            <div class="gantt-phase ph1">Phase 1</div>
+            <div class="gantt-phase ph2">Phase 2</div>
+            <div class="gantt-phase ph3">Phase 3</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <footer>
@@ -1384,14 +1714,105 @@
 </footer>
 
 <script>
+  // ── THIS WEEK BANNER ──
+  function renderThisWeekBanner() {
+    const banner = document.getElementById('this-week-banner');
+    if (!banner) return;
+
+    // Schedule definition — week start dates (Monday)
+    const weeks = [
+      { n: 1, start: new Date(2025, 3,  6), end: new Date(2025, 3, 11) }, // Apr 6-11 -- Note: using 2025 as placeholder, fix below
+    ];
+
+    // Build weeks dynamically from Apr 6 2026
+    const weekDates = [];
+    const base = new Date(2026, 3, 6); // Apr 6 2026
+    for (let i = 0; i < 8; i++) {
+      const s = new Date(base);
+      s.setDate(base.getDate() + i * 7);
+      const e = new Date(s);
+      e.setDate(s.getDate() + 4); // Friday
+      weekDates.push({ n: i + 1, start: s, end: e });
+    }
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    // Find current week
+    let currentWeek = null;
+    for (const w of weekDates) {
+      if (today >= w.start && today <= w.end) { currentWeek = w; break; }
+    }
+
+    const fmt = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+    // Tasks per week
+    const schedule = {
+      1: [{ label: 'P1 Design', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 Design', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }],
+      2: [{ label: 'P1 Design', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 Design', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }],
+      3: [{ label: 'P1 Design', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 Design', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P1 LoRA Files', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P1 Clips', sub: 'Zoe & Fuse', color: '#FF0066' }],
+      4: [{ label: 'P1 LoRA Files', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P1 Clips', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 LoRA Files', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P3 Design', sub: '8 Music Spirits', color: '#10b981' }],
+      5: [{ label: 'P1 LoRA Files', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P1 Clips', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P3 Design', sub: '8 Music Spirits', color: '#10b981' }],
+      6: [{ label: 'P3 Design', sub: '8 Music Spirits', color: '#10b981' }],
+      7: [{ label: 'P2 LoRA Files', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P2 Clips', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P3 LoRA Files', sub: '8 Music Spirits', color: '#10b981' }, { label: 'P3 Clips', sub: '8 Music Spirits', color: '#10b981' }],
+      8: [{ label: 'P2 LoRA Files', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P2 Clips', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P3 LoRA Files', sub: '8 Music Spirits', color: '#10b981' }, { label: 'P3 Clips', sub: '8 Music Spirits', color: '#10b981' }],
+    };
+
+    banner.style.display = 'block';
+
+    if (today < weekDates[0].start) {
+      // Before production starts
+      banner.innerHTML = `<div class="week-banner-inner">
+        <div class="week-banner-left">
+          <div class="week-banner-eyebrow">Coming Up</div>
+          <div class="week-banner-title">Production Starts</div>
+          <div class="week-banner-dates">April 6, 2026</div>
+        </div>
+        <div class="week-banner-tasks"><span class="week-banner-pre">Get your references ready — kickoff in ${Math.ceil((weekDates[0].start - today) / 86400000)} days</span></div>
+      </div>`;
+    } else if (today > weekDates[7].end) {
+      // After production ends
+      banner.innerHTML = `<div class="week-banner-inner">
+        <div class="week-banner-left">
+          <div class="week-banner-eyebrow">Production</div>
+          <div class="week-banner-title">Completed</div>
+          <div class="week-banner-dates">8 weeks delivered</div>
+        </div>
+      </div>`;
+    } else if (currentWeek) {
+      const tasks = schedule[currentWeek.n] || [];
+      const pills = tasks.map(t => `
+        <div class="week-task-pill">
+          <div class="week-task-dot" style="background:${t.color};"></div>
+          <div>
+            <div class="week-task-text">${t.label}</div>
+            <span class="week-task-sub">${t.sub}</span>
+          </div>
+        </div>`).join('');
+      banner.innerHTML = `<div class="week-banner-inner">
+        <div class="week-banner-left">
+          <div class="week-banner-eyebrow">This Week</div>
+          <div class="week-banner-title">Week ${currentWeek.n}</div>
+          <div class="week-banner-dates">${fmt(currentWeek.start)} → ${fmt(currentWeek.end)}</div>
+        </div>
+        <div class="week-banner-tasks">${pills}</div>
+      </div>`;
+    } else {
+      // Between weeks (weekend)
+      banner.style.display = 'none';
+    }
+  }
+
   // ── FILTER ──
   function filterBy(priority) {
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
     event.target.classList.add('active');
     document.querySelectorAll('main > div[data-section]').forEach(section => {
       const sec = section.dataset.section;
-      if (priority === 'all') {
-        section.style.display = '';
+      if (priority === 'schedule') {
+        section.style.display = sec === 'schedule' ? '' : 'none';
+      } else if (priority === 'all') {
+        section.style.display = sec === 'schedule' ? 'none' : '';
       } else if (['p1','p2','p3'].includes(priority)) {
         section.style.display = (sec === priority || sec === 'ages') ? '' : 'none';
       } else if (priority === 'out') {
@@ -1427,6 +1848,7 @@
       loadDB().then(() => {
         renderAll();
         startAutoRefresh();
+        renderThisWeekBanner();
       });
     } else {
       hint.textContent = 'INCORRECT PASSWORD';
