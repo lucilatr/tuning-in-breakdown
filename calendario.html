@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuning In — Production Calendar</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #FF0066;
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --border: rgba(255,255,255,0.07);
+  --border-strong: rgba(255,255,255,0.15);
+  --text: #f0f0f0;
+  --text-dim: #888;
+  --text-dimmer: #444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 14px; min-height: 100vh; }
+
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px 14px; border-bottom: 1px solid var(--border);
+  gap: 16px; flex-wrap: wrap;
+}
+.header-left h1 {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--text);
+}
+.header-left h1 span { color: var(--pink); }
+.header-left p { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.btn {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 4px; border: 1px solid var(--border-strong);
+  background: var(--surface2); color: var(--text); cursor: pointer; transition: all .15s;
+}
+.btn:hover { border-color: var(--pink); color: var(--pink); }
+.btn.primary { background: var(--pink); border-color: var(--pink); color: #fff; }
+.btn.primary:hover { background: #cc0052; border-color: #cc0052; color: #fff; }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+
+.sync-status { font-size: 11px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dimmer); flex-shrink: 0; transition: background .3s; }
+.sync-dot.syncing { background: #BA7517; }
+.sync-dot.ok { background: #1D9E75; }
+.sync-dot.error { background: #D85A30; }
+
+.controls { display: flex; align-items: center; gap: 16px; padding: 10px 24px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.filter-label { font-size: 11px; font-family: 'Barlow Condensed', sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--text-dimmer); }
+.pill {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase; padding: 3px 12px; border-radius: 20px;
+  border: 1px solid var(--border-strong); background: transparent; color: var(--text-dim); cursor: pointer; transition: all .15s;
+}
+.pill.ap1 { background: rgba(127,119,221,.2); border-color: #7F77DD; color: #a9a3f0; }
+.pill.ap2 { background: rgba(29,158,117,.2);  border-color: #1D9E75; color: #5ecba4; }
+.pill.ap3 { background: rgba(216,90,48,.2);   border-color: #D85A30; color: #e8845e; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 5px 14px; padding: 8px 24px; border-bottom: 1px solid var(--border); }
+.leg { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text-dim); font-family: 'Barlow Condensed', sans-serif; }
+.leg-sq { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+.gantt-wrap { overflow-x: auto; padding-bottom: 32px; }
+table.gantt { border-collapse: collapse; width: 100%; min-width: 1020px; }
+.gantt th, .gantt td { border: 1px solid var(--border); }
+
+.gantt thead th {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--text-dimmer);
+  text-align: center; padding: 5px 3px; background: var(--surface); white-space: nowrap;
+}
+.gantt thead th.wk { color: var(--text-dim); }
+.gantt thead th.day { font-size: 10px; color: #555; }
+.gantt thead th.day.we { color: #2a2a2a; }
+.gantt thead th.name-h { text-align: left; padding: 5px 10px; width: 132px; min-width: 132px; }
+
+.pri-sep td {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px;
+}
+.stage-sep td {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px;
+}
+.char-row td { height: 32px; vertical-align: middle; }
+
+.name-cell {
+  padding: 0 10px; white-space: nowrap; min-width: 132px; width: 132px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text); background: var(--surface);
+}
+.day-cell { width: 26px; min-width: 26px; padding: 0; position: relative; vertical-align: middle; height: 32px; }
+.day-cell.we { background: rgba(255,255,255,.015); }
+.day-cell.drop-target { outline: 2px dashed var(--pink); outline-offset: -2px; }
+
+.bar-wrap {
+  position: absolute; top: 3px; height: 26px; z-index: 2;
+  cursor: grab; user-select: none;
+}
+.bar-wrap:active { cursor: grabbing; }
+.bar-wrap.dragging { opacity: .35; }
+.bar-inner {
+  width: 100%; height: 100%; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: .04em; pointer-events: none; white-space: nowrap;
+}
+.bar-delete {
+  position: absolute; top: -4px; right: -4px; width: 14px; height: 14px;
+  border-radius: 50%; background: #ff3366; border: 1.5px solid #0a0a0a;
+  color: #fff; font-size: 9px; font-weight: 700; line-height: 11px; text-align: center;
+  cursor: pointer; z-index: 10; pointer-events: all;
+  opacity: 0; transition: opacity .15s;
+}
+.bar-wrap:hover .bar-delete { opacity: 1; }
+.leg {
+  cursor: grab;
+}
+.leg:active { cursor: grabbing; opacity: .7; }
+.leg.leg-dragging { opacity: .4; }
+.resize-handle {
+  position: absolute; right: 0; top: 0; width: 7px; height: 100%;
+  cursor: col-resize; z-index: 3; pointer-events: all; border-radius: 0 3px 3px 0;
+}
+.resize-handle:hover { background: rgba(255,255,255,.2); }
+.resize-handle-left {
+  position: absolute; left: 0; top: 0; width: 7px; height: 100%;
+  cursor: col-resize; z-index: 3; pointer-events: all; border-radius: 3px 0 0 3px;
+}
+.resize-handle-left:hover { background: rgba(255,255,255,.2); }
+
+.stage-data-row td { height: 26px; vertical-align: middle; }
+.stage-data-cell { width: 26px; min-width: 26px; padding: 0; position: relative; height: 26px; border: 1px solid var(--border); }
+.stage-data-cell.we { background: rgba(255,255,255,.015); }
+
+.toast {
+  position: fixed; bottom: 20px; right: 20px;
+  background: var(--surface2); border: 1px solid var(--border-strong); color: var(--text);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; letter-spacing: .04em;
+  padding: 9px 16px; border-radius: 5px;
+  opacity: 0; transform: translateY(6px); transition: all .22s;
+  pointer-events: none; z-index: 9999;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.err { border-color: #D85A30; color: #e8845e; }
+.hidden-row { display: none; }
+
+@media print {
+  header, .controls, .legend, .toast { display: none !important; }
+  body { background: #fff !important; color: #000 !important; }
+  .gantt-wrap { overflow: visible; }
+  table.gantt { min-width: unset; }
+  .name-cell { background: #f4f4f4 !important; color: #000 !important; }
+  .gantt thead th { background: #eee !important; color: #333 !important; border-color: #ccc !important; }
+  .gantt td { border-color: #ccc !important; }
+  .bar-inner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .resize-handle { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<header>
+  <div class="header-left">
+    <h1>Tuning In <span>—</span> Production Calendar</h1>
+    <p>8 weeks · 14 characters · Drag bars to move · Resize edges to adjust · Drag from legend to create · Hover bar for delete</p>
+  </div>
+  <div class="header-right">
+    <div class="sync-status">
+      <div class="sync-dot" id="syncDot"></div>
+      <span id="syncLabel">Loading...</span>
+    </div>
+    <button class="btn" onclick="loadFromGitHub()">↺ Sync</button>
+    <button class="btn primary" id="saveBtn" onclick="saveToGitHub()">↑ Save</button>
+    <button class="btn" onclick="window.print()">⬇ Export PDF</button>
+  </div>
+</header>
+
+
+
+<div class="legend" id="legend">
+  <div class="leg" draggable="true" data-proc="pencil"><div class="leg-sq" style="background:#FF66AA"></div>Pencil</div>
+  <div class="leg" draggable="true" data-proc="color1"><div class="leg-sq" style="background:#F0458A"></div>Color pass 1</div>
+  <div class="leg" draggable="true" data-proc="color2"><div class="leg-sq" style="background:#E0206E"></div>Color pass 2</div>
+  <div class="leg" draggable="true" data-proc="brush"><div class="leg-sq" style="background:#CC0055"></div>Style brush</div>
+  <div class="leg" draggable="true" data-proc="expr"><div class="leg-sq" style="background:#A8004A"></div>Expression sheet</div>
+  <div class="leg" draggable="true" data-proc="varedad"><div class="leg-sq" style="background:#85003A"></div>Age variations</div>
+  <div class="leg" draggable="true" data-proc="vestuario"><div class="leg-sq" style="background:#62002A"></div>Wardrobe</div>
+  <div class="leg" draggable="true" data-proc="lora"><div class="leg-sq" style="background:#7B5EA7"></div>LoRA files</div>
+  <div class="leg" draggable="true" data-proc="clips"><div class="leg-sq" style="background:#3DAA6E"></div>Anim. clips</div>
+</div>
+
+<div class="gantt-wrap">
+  <table class="gantt" id="ganttTable">
+    <thead id="ganttHead"></thead>
+    <tbody id="ganttBody"></tbody>
+  </table>
+</div>
+
+<script>
+const GITHUB_TOKEN = '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';
+const GITHUB_REPO  = 'lucilatr/tuning-in-breakdown';
+const DATA_FILE    = 'calendario-data.json';
+const BRANCH       = 'main';
+const WEEKS        = 8;
+const START        = new Date(2026, 3, 6);
+const DAY_LABELS   = ['M','T','W','T','F','S','S'];
+const CELL_W       = 26;
+
+const PROC = {
+  pencil:    { label:'Pencil',           color:'#FF66AA', text:'#FFE0EF', stage:'design' },
+  color1:    { label:'Color pass 1',     color:'#F0458A', text:'#FFD6EC', stage:'design' },
+  color2:    { label:'Color pass 2',     color:'#E0206E', text:'#FFCCE0', stage:'design' },
+  brush:     { label:'Style brush',      color:'#CC0055', text:'#FFB3D1', stage:'design' },
+  expr:      { label:'Expression sheet', color:'#A8004A', text:'#FF99C4', stage:'design' },
+  varedad:   { label:'Age variations',   color:'#85003A', text:'#FF8ABD', stage:'design' },
+  vestuario: { label:'Wardrobe',         color:'#62002A', text:'#FF7AB3', stage:'design' },
+  lora:      { label:'LoRA files',       color:'#7B5EA7', text:'#E8DEFF', stage:'lora'  },
+  clips:     { label:'Anim. clips',      color:'#3DAA6E', text:'#D4F7E5', stage:'anim'  },
+};
+
+const STAGES = {
+  design: { label:'Design', bg:'#8C0040', text:'#FFB3D1', border:'#CC0055' },
+  lora:   { label:'LoRA',   bg:'#3D2260', text:'#C9AEFF', border:'#7B5EA7' },
+  anim:   { label:'Clips',  bg:'#1A5C3A', text:'#A8F0CC', border:'#3DAA6E' },
+};
+
+const PCOLORS = {
+  P1:{ bg:'#3A3A3A', border:'#555555', text:'#C8C8C8', label:'Priority 1' },
+  P2:{ bg:'#252525', border:'#404040', text:'#909090', label:'Priority 2' },
+  P3:{ bg:'#181818', border:'#303030', text:'#606060', label:'Priority 3' },
+};
+
+const DEFAULT_CHARS = [
+  { name:'Zoe',             p:'P1', tasks:[
+    {proc:'pencil',w:1,d0:0,d1:4},{proc:'color1',w:2,d0:0,d1:4},{proc:'color2',w:3,d0:0,d1:4},
+    {proc:'brush',w:4,d0:0,d1:4},{proc:'expr',w:5,d0:0,d1:4},{proc:'vestuario',w:6,d0:0,d1:4},
+    {proc:'lora',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Fuse',            p:'P1', tasks:[
+    {proc:'pencil',w:1,d0:0,d1:4},{proc:'color1',w:2,d0:0,d1:4},{proc:'color2',w:3,d0:0,d1:4},
+    {proc:'brush',w:4,d0:0,d1:4},{proc:'expr',w:5,d0:0,d1:4},{proc:'vestuario',w:6,d0:0,d1:4},
+    {proc:'lora',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Kay',             p:'P2', tasks:[
+    {proc:'pencil',w:2,d0:0,d1:4},{proc:'color1',w:3,d0:0,d1:4},{proc:'color2',w:4,d0:0,d1:4},
+    {proc:'brush',w:5,d0:0,d1:4},{proc:'expr',w:6,d0:0,d1:4},{proc:'varedad',w:7,d0:0,d1:4},
+    {proc:'lora',w:8,d0:0,d1:4}]},
+  { name:'Evie',            p:'P2', tasks:[
+    {proc:'pencil',w:3,d0:0,d1:4},{proc:'color1',w:4,d0:0,d1:4},{proc:'color2',w:5,d0:0,d1:4},
+    {proc:'brush',w:6,d0:0,d1:4},{proc:'expr',w:7,d0:0,d1:4},{proc:'vestuario',w:8,d0:0,d1:4}]},
+  { name:'Pip-Pop',         p:'P2', tasks:[
+    {proc:'pencil',w:3,d0:0,d1:4},{proc:'color1',w:4,d0:0,d1:4},{proc:'color2',w:5,d0:0,d1:4},
+    {proc:'brush',w:6,d0:0,d1:4},{proc:'expr',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Miles',           p:'P2', tasks:[
+    {proc:'pencil',w:3,d0:0,d1:4},{proc:'color1',w:4,d0:0,d1:4},{proc:'color2',w:5,d0:0,d1:4},
+    {proc:'brush',w:6,d0:0,d1:4},{proc:'lora',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Harmony',         p:'P3', tasks:[
+    {proc:'pencil',w:4,d0:0,d1:4},{proc:'color1',w:5,d0:0,d1:4},{proc:'color2',w:6,d0:0,d1:4},
+    {proc:'brush',w:7,d0:0,d1:4},{proc:'expr',w:8,d0:0,d1:4}]},
+  { name:'Swing',           p:'P3', tasks:[
+    {proc:'pencil',w:4,d0:0,d1:4},{proc:'color1',w:5,d0:0,d1:4},{proc:'color2',w:6,d0:0,d1:4},
+    {proc:'brush',w:7,d0:0,d1:4},{proc:'lora',w:8,d0:0,d1:4}]},
+  { name:'Dj Sparkle',      p:'P3', tasks:[
+    {proc:'pencil',w:5,d0:0,d1:4},{proc:'color1',w:6,d0:0,d1:4},
+    {proc:'color2',w:7,d0:0,d1:4},{proc:'brush',w:8,d0:0,d1:4}]},
+  { name:'Mc Flow',         p:'P3', tasks:[
+    {proc:'pencil',w:5,d0:0,d1:4},{proc:'color1',w:6,d0:0,d1:4},
+    {proc:'color2',w:7,d0:0,d1:4},{proc:'brush',w:8,d0:0,d1:4}]},
+  { name:'Twang',           p:'P3', tasks:[
+    {proc:'pencil',w:6,d0:0,d1:4},{proc:'color1',w:7,d0:0,d1:4},{proc:'color2',w:8,d0:0,d1:4}]},
+  { name:'Teller',          p:'P3', tasks:[
+    {proc:'pencil',w:6,d0:0,d1:4},{proc:'color1',w:7,d0:0,d1:4},{proc:'color2',w:8,d0:0,d1:4}]},
+  { name:'Fonk',            p:'P3', tasks:[
+    {proc:'pencil',w:7,d0:0,d1:4},{proc:'color1',w:8,d0:0,d1:4}]},
+  { name:'Mama Hallelujah', p:'P3', tasks:[
+    {proc:'pencil',w:7,d0:0,d1:4},{proc:'color1',w:8,d0:0,d1:4}]},
+];
+
+let chars = JSON.parse(JSON.stringify(DEFAULT_CHARS));
+let fileSha = null;
+let activeFilters = new Set(['P1','P2','P3']);
+
+
+
+function getDate(weekIdx, dayIdx) {
+  const d = new Date(START);
+  d.setDate(d.getDate() + weekIdx * 7 + dayIdx);
+  return d;
+}
+function isWE(d) { return d.getDay() === 0 || d.getDay() === 6; }
+function wdToAbs(w, d) { return (w - 1) * 7 + d; }
+function absToWD(abs) { return { w: Math.floor(abs / 7) + 1, d: abs % 7 }; }
+
+// Stage spans auto-calculated from task data
+function buildStageSpans() {
+  const spans = {};
+  ['design','lora','anim'].forEach(stageKey => {
+    spans[stageKey] = {};
+    // Find absolute earliest and latest day across ALL weeks for this stage
+    let minAbs = Infinity, maxAbs = -Infinity;
+    chars.forEach(c => c.tasks.forEach(t => {
+      if (PROC[t.proc] && PROC[t.proc].stage === stageKey) {
+        const absStart = wdToAbs(t.w, t.d0);
+        const absEnd   = wdToAbs(t.w, t.d1);
+        if (absStart < minAbs) minAbs = absStart;
+        if (absEnd   > maxAbs) maxAbs = absEnd;
+      }
+    }));
+    if (minAbs === Infinity) return;
+    // Store as a single continuous span across all weeks
+    spans[stageKey] = { absStart: minAbs, absEnd: maxAbs };
+  });
+  return spans;
+}
+let stageSpans = buildStageSpans();
+
+function setSyncStatus(state, label) {
+  document.getElementById('syncDot').className = 'sync-dot ' + state;
+  document.getElementById('syncLabel').textContent = label;
+}
+function showToast(msg, isErr) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isErr ? ' err' : '');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.className = 'toast', 3000);
+}
+
+async function loadFromGitHub() {
+  setSyncStatus('syncing', 'Syncing...');
+  try {
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`, {
+      headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.status === 404) { setSyncStatus('ok', 'No remote data'); renderGantt(); return; }
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    fileSha = json.sha;
+    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
+    if (decoded.chars) chars = decoded.chars;
+    setSyncStatus('ok', 'Synced · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+    showToast('Data loaded from GitHub');
+    renderGantt();
+  } catch(e) {
+    setSyncStatus('error', 'Load error');
+    showToast('Error: ' + e.message, true);
+    renderGantt();
+  }
+}
+
+async function saveToGitHub() {
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  setSyncStatus('syncing', 'Saving...');
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify({chars, savedAt: new Date().toISOString()}, null, 2))));
+    const body = { message:`calendar: ${new Date().toLocaleString('en-US')}`, content, branch: BRANCH };
+    if (fileSha) body.sha = fileSha;
+    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`, {
+      method: 'PUT',
+      headers: { Authorization:`token ${GITHUB_TOKEN}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
+    const result = await res.json();
+    fileSha = result.content.sha;
+    setSyncStatus('ok', 'Saved · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+    showToast('Saved to GitHub');
+  } catch(e) {
+    setSyncStatus('error', 'Save error');
+    showToast('Error: ' + e.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = '↑ Save';
+  }
+}
+
+function toggleFilter(p, btn) {
+  if (activeFilters.has(p)) {
+    if (activeFilters.size === 1) return;
+    activeFilters.delete(p);
+    btn.className = 'pill';
+  } else {
+    activeFilters.add(p);
+    btn.className = 'pill a' + p.toLowerCase();
+  }
+  document.querySelectorAll('[data-prow]').forEach(el =>
+    el.classList.toggle('hidden-row', !activeFilters.has(el.dataset.prow))
+  );
+}
+
+function renderGantt() {
+  const head = document.getElementById('ganttHead');
+  const body = document.getElementById('ganttBody');
+  head.innerHTML = ''; body.innerHTML = '';
+
+  // Week header row
+  const r1 = head.insertRow();
+  const nTh = document.createElement('th');
+  nTh.rowSpan = 2; nTh.className = 'name-h'; nTh.textContent = 'Character';
+  r1.appendChild(nTh);
+  for (let w = 0; w < WEEKS; w++) {
+    const wS = new Date(START); wS.setDate(wS.getDate() + w*7);
+    const wE = new Date(wS); wE.setDate(wE.getDate() + 4);
+    const fmt = d => (d.getMonth()+1) + '/' + d.getDate();
+    const th = document.createElement('th');
+    th.colSpan = 7; th.className = 'wk';
+    th.textContent = `W${w+1}  ${fmt(wS)}–${fmt(wE)}`;
+    r1.appendChild(th);
+  }
+
+  // Day labels row
+  const r2 = head.insertRow();
+  for (let w = 0; w < WEEKS; w++) {
+    for (let d = 0; d < 7; d++) {
+      const th = document.createElement('th');
+      th.className = 'day' + (d >= 5 ? ' we' : '');
+      th.textContent = DAY_LABELS[d];
+      r2.appendChild(th);
+    }
+  }
+
+  // Character rows with priority separators
+  let lastP = null;
+  chars.forEach((char, ci) => {
+    if (char.p !== lastP) {
+      lastP = char.p;
+      const pc = PCOLORS[char.p];
+      const sr = body.insertRow(); sr.className = 'pri-sep'; sr.dataset.prow = char.p;
+      if (!activeFilters.has(char.p)) sr.classList.add('hidden-row');
+      const td = sr.insertCell(); td.colSpan = 1 + WEEKS*7;
+      td.style.cssText = `background:${pc.bg};border-color:${pc.border};color:${pc.text}`;
+      td.textContent = pc.label;
+    }
+
+    const tr = body.insertRow(); tr.className = 'char-row'; tr.dataset.prow = char.p; tr.dataset.ci = ci;
+    if (!activeFilters.has(char.p)) tr.classList.add('hidden-row');
+
+    const nc = tr.insertCell(); nc.className = 'name-cell'; nc.textContent = char.name;
+
+    for (let abs = 0; abs < WEEKS*7; abs++) {
+      const td = tr.insertCell();
+      const {w, d} = absToWD(abs);
+      const date = getDate(w-1, d);
+      td.className = 'day-cell' + (isWE(date) ? ' we' : '');
+      td.dataset.abs = abs;
+      td.addEventListener('dragover', e => { e.preventDefault(); td.classList.add('drop-target'); });
+      td.addEventListener('dragleave', () => td.classList.remove('drop-target'));
+      td.addEventListener('drop', e => handleDrop(e, ci, abs));
+    }
+
+    char.tasks.forEach((task, ti) => placeBar(tr, ci, ti, task));
+  });
+
+  // Stage footer rows — auto-calculated, read-only
+  stageSpans = buildStageSpans();
+  ['design','lora','anim'].forEach(stageKey => {
+    const st = STAGES[stageKey];
+    const span = stageSpans[stageKey];
+
+    const sepRow = body.insertRow(); sepRow.className = 'stage-sep';
+    const sepTd = sepRow.insertCell(); sepTd.colSpan = 1 + WEEKS*7;
+    sepTd.style.cssText = `background:${st.bg};color:${st.text};border-color:${st.border}`;
+    sepTd.textContent = st.label;
+
+    const dataRow = body.insertRow(); dataRow.className = 'stage-data-row';
+    const lTd = dataRow.insertCell(); lTd.className = 'name-cell';
+    lTd.style.cssText = 'font-size:10px;color:#333;font-family:"Barlow Condensed",sans-serif';
+
+    for (let abs = 0; abs < WEEKS*7; abs++) {
+      const {w, d} = absToWD(abs);
+      const date = getDate(w-1, d);
+      const td = dataRow.insertCell();
+      td.className = 'stage-data-cell' + (isWE(date) ? ' we' : '');
+
+      if (span && abs === span.absStart) {
+        td.style.position = 'relative';
+        const barW = (span.absEnd - span.absStart + 1) * CELL_W - 2;
+        const bar = document.createElement('div');
+        bar.style.cssText = `background:${st.bg};border:1px solid ${st.border};border-radius:3px;height:18px;width:${barW}px;position:absolute;top:4px;left:1px;z-index:2;display:flex;align-items:center;padding:0 8px`;
+        bar.innerHTML = `<span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;color:${st.text};pointer-events:none;white-space:nowrap">${st.label}</span>`;
+        td.appendChild(bar);
+      }
+    }
+  });
+}
+
+function placeBar(tr, ci, ti, task) {
+  const startAbs = wdToAbs(task.w, task.d0);
+  const spanDays = task.d1 - task.d0 + 1;
+  const anchorCell = tr.cells[startAbs + 1];
+  if (!anchorCell) return;
+
+  const p = PROC[task.proc];
+  const wrap = document.createElement('div');
+  wrap.className = 'bar-wrap';
+  wrap.draggable = true;
+  wrap.style.cssText = `left:1px;width:${spanDays * CELL_W - 2}px`;
+
+  const inner = document.createElement('div');
+  inner.className = 'bar-inner';
+  inner.style.background = p.color;
+  inner.style.color = p.text;
+  inner.textContent = p.label;
+  wrap.appendChild(inner);
+
+  const handle = document.createElement('div');
+  handle.className = 'resize-handle';
+  wrap.appendChild(handle);
+
+  const handleL = document.createElement('div');
+  handleL.className = 'resize-handle-left';
+  wrap.appendChild(handleL);
+
+  // Drag to move
+  wrap.addEventListener('dragstart', e => {
+    if (e.target === handle || e.target === handleL) { e.preventDefault(); return; }
+    e.dataTransfer.setData('text/plain', JSON.stringify({ci, ti}));
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => wrap.classList.add('dragging'), 0);
+  });
+  wrap.addEventListener('dragend', () => {
+    wrap.classList.remove('dragging');
+    document.querySelectorAll('.drop-target').forEach(el => el.classList.remove('drop-target'));
+  });
+
+  // Right resize — Mon–Fri only, max day 4
+  handle.addEventListener('mousedown', e => {
+    e.preventDefault(); e.stopPropagation();
+    const startX = e.clientX;
+    const origD1 = task.d1;
+    function onMove(ev) {
+      const delta = Math.round((ev.clientX - startX) / CELL_W);
+      const newD1 = Math.max(task.d0, Math.min(4, origD1 + delta));
+      if (newD1 !== task.d1) {
+        task.d1 = newD1;
+        wrap.style.width = ((newD1 - task.d0 + 1) * CELL_W - 2) + 'px';
+      }
+    }
+    function onUp() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      renderGantt();
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  // Left resize — moves start day, min day 0, max = d1
+  handleL.addEventListener('mousedown', e => {
+    e.preventDefault(); e.stopPropagation();
+    const startX = e.clientX;
+    const origD0 = task.d0;
+    function onMove(ev) {
+      const delta = Math.round((ev.clientX - startX) / CELL_W);
+      const newD0 = Math.max(0, Math.min(task.d1, origD0 + delta));
+      if (newD0 !== task.d0) {
+        task.d0 = newD0;
+        // Reposition and resize the wrap visually
+        wrap.style.left = (newD0 - origD0) * CELL_W + 'px';
+        wrap.style.width = ((task.d1 - task.d0 + 1) * CELL_W - 2) + 'px';
+      }
+    }
+    function onUp() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      renderGantt();
+    }
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+
+  // Delete button
+  const del = document.createElement('div');
+  del.className = 'bar-delete';
+  del.textContent = '×';
+  del.addEventListener('click', e => {
+    e.stopPropagation();
+    chars[ci].tasks.splice(ti, 1);
+    showToast(`${chars[ci].name}: ${p.label} removed`);
+    renderGantt();
+  });
+  wrap.appendChild(del);
+
+  anchorCell.style.position = 'relative';
+  anchorCell.appendChild(wrap);
+}
+
+function handleDrop(e, ci, targetAbs) {
+  e.preventDefault();
+  document.querySelectorAll('.drop-target').forEach(el => el.classList.remove('drop-target'));
+  let data;
+  try { data = JSON.parse(e.dataTransfer.getData('text/plain')); } catch { return; }
+
+  const {w: tgtW, d: tgtD} = absToWD(targetAbs);
+  if (isWE(getDate(tgtW-1, tgtD))) { showToast('Cannot drop on weekend', true); return; }
+
+  // Drop from legend — create new task
+  if (data.fromLegend) {
+    const proc = data.proc;
+    // Remove existing task of same proc+week if any (overwrite)
+    chars[ci].tasks = chars[ci].tasks.filter(t => !(t.w === tgtW && t.proc === proc));
+    chars[ci].tasks.push({ proc, w: tgtW, d0: 0, d1: 4 });
+    showToast(`${chars[ci].name}: ${PROC[proc].label} added to W${tgtW}`);
+    renderGantt();
+    return;
+  }
+
+  // Drop from existing bar — move
+  const { ci: srcCi, ti } = data;
+  if (srcCi !== ci) { showToast('Tasks can only be moved within the same character', true); return; }
+  const task = chars[ci].tasks[ti];
+  const span = task.d1 - task.d0;
+  task.w = tgtW; task.d0 = tgtD; task.d1 = Math.min(tgtD + span, 4);
+  showToast(`${chars[ci].name}: ${PROC[task.proc].label} moved`);
+  renderGantt();
+}
+
+function initLegendDrag() {
+  document.querySelectorAll('#legend .leg').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ fromLegend: true, proc: el.dataset.proc }));
+      e.dataTransfer.effectAllowed = 'copy';
+      el.classList.add('leg-dragging');
+    });
+    el.addEventListener('dragend', () => el.classList.remove('leg-dragging'));
+  });
+}
+
+loadFromGitHub();
+initLegendDrag();
+</script>
+</body>
+</html>
