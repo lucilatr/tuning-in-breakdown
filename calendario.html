@@ -206,10 +206,8 @@ table.gantt { border-collapse: collapse; width: 100%; min-width: 1020px; }
 </div>
 
 <script>
-const GITHUB_TOKEN = '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';
-const GITHUB_REPO  = 'lucilatr/tuning-in-breakdown';
-const DATA_FILE    = 'calendario-data.json';
-const BRANCH       = 'main';
+const JSONBIN_KEY = '$2a$10$G/S5QC8pq2vpHyiOEdxjp.rmJOR4deLMjyDvs1.Zq7W9dMQt9uqQq';
+const JSONBIN_BIN  = '69cd69c3856a682189ee708c';
 const WEEKS        = 8;
 const START        = new Date(2026, 3, 6);
 const DAY_LABELS   = ['M','T','W','T','F','S','S'];
@@ -285,7 +283,6 @@ const DEFAULT_CHARS = [
 ];
 
 let chars = JSON.parse(JSON.stringify(DEFAULT_CHARS));
-let fileSha = null;
 let activeFilters = new Set(['P1','P2','P3']);
 
 
@@ -337,17 +334,15 @@ function showToast(msg, isErr) {
 async function loadFromGitHub() {
   setSyncStatus('syncing', 'Syncing...');
   try {
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`, {
-      headers: { Authorization: `token ${GITHUB_TOKEN}`, Accept: 'application/vnd.github.v3+json' }
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
     });
-    if (res.status === 404) { setSyncStatus('ok', 'No remote data'); renderGantt(); return; }
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
-    fileSha = json.sha;
-    const decoded = JSON.parse(atob(json.content.replace(/\n/g,'')));
-    if (decoded.chars) chars = decoded.chars;
+    const decoded = json.record;
+    if (decoded.chars && decoded.chars.length > 0) chars = decoded.chars;
     setSyncStatus('ok', 'Synced · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
-    showToast('Data loaded from GitHub');
+    showToast('Data loaded');
     renderGantt();
   } catch(e) {
     setSyncStatus('error', 'Load error');
@@ -361,19 +356,14 @@ async function saveToGitHub() {
   btn.disabled = true; btn.textContent = 'Saving...';
   setSyncStatus('syncing', 'Saving...');
   try {
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify({chars, savedAt: new Date().toISOString()}, null, 2))));
-    const body = { message:`calendar: ${new Date().toLocaleString('en-US')}`, content, branch: BRANCH };
-    if (fileSha) body.sha = fileSha;
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`, {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`, {
       method: 'PUT',
-      headers: { Authorization:`token ${GITHUB_TOKEN}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json' },
-      body: JSON.stringify(body)
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify({ chars, savedAt: new Date().toISOString() })
     });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.message); }
-    const result = await res.json();
-    fileSha = result.content.sha;
+    if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'HTTP ' + res.status); }
     setSyncStatus('ok', 'Saved · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
-    showToast('Saved to GitHub');
+    showToast('Saved');
   } catch(e) {
     setSyncStatus('error', 'Save error');
     showToast('Error: ' + e.message, true);
