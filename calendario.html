@@ -340,7 +340,11 @@ async function loadFromGitHub() {
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     const decoded = json.record;
-    if (decoded.chars && decoded.chars.length > 0) chars = decoded.chars;
+    if (decoded.chars && decoded.chars.length > 0) {
+      chars = decoded.chars;
+    } else {
+      chars = JSON.parse(JSON.stringify(DEFAULT_CHARS));
+    }
     setSyncStatus('ok', 'Synced · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
     showToast('Data loaded');
     renderGantt();
