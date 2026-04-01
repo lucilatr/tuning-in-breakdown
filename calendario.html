@@ -186,14 +186,14 @@ table.gantt { border-collapse: collapse; width: 100%; min-width: 1020px; }
 
 
 <div class="legend" id="legend">
-  <div class="leg" draggable="true" data-proc="pencil"><div class="leg-sq" style="background:#FF66AA"></div>Pencil</div>
-  <div class="leg" draggable="true" data-proc="color1"><div class="leg-sq" style="background:#F0458A"></div>Color pass 1</div>
-  <div class="leg" draggable="true" data-proc="color2"><div class="leg-sq" style="background:#E0206E"></div>Color pass 2</div>
-  <div class="leg" draggable="true" data-proc="brush"><div class="leg-sq" style="background:#CC0055"></div>Style brush</div>
-  <div class="leg" draggable="true" data-proc="expr"><div class="leg-sq" style="background:#A8004A"></div>Expression sheet</div>
-  <div class="leg" draggable="true" data-proc="varedad"><div class="leg-sq" style="background:#85003A"></div>Age variations</div>
-  <div class="leg" draggable="true" data-proc="vestuario"><div class="leg-sq" style="background:#62002A"></div>Wardrobe</div>
-  <div class="leg" draggable="true" data-proc="lora"><div class="leg-sq" style="background:#7B5EA7"></div>LoRA files</div>
+  <div class="leg" draggable="true" data-proc="pencil"><div class="leg-sq" style="background:#C4B8F0"></div>Pencil</div>
+  <div class="leg" draggable="true" data-proc="color1"><div class="leg-sq" style="background:#AFA9EC"></div>Color pass 1</div>
+  <div class="leg" draggable="true" data-proc="color2"><div class="leg-sq" style="background:#9B8FE8"></div>Color pass 2</div>
+  <div class="leg" draggable="true" data-proc="brush"><div class="leg-sq" style="background:#7B5EA7"></div>Style brush</div>
+  <div class="leg" draggable="true" data-proc="expr"><div class="leg-sq" style="background:#634D9A"></div>Expression sheet</div>
+  <div class="leg" draggable="true" data-proc="varedad"><div class="leg-sq" style="background:#4A3480"></div>Age variations</div>
+  <div class="leg" draggable="true" data-proc="vestuario"><div class="leg-sq" style="background:#321B66"></div>Wardrobe</div>
+  <div class="leg" draggable="true" data-proc="lora"><div class="leg-sq" style="background:#FF0066"></div>LoRA files</div>
   <div class="leg" draggable="true" data-proc="clips"><div class="leg-sq" style="background:#3DAA6E"></div>Anim. clips</div>
 </div>
 
@@ -215,20 +215,20 @@ const DAY_LABELS   = ['M','T','W','T','F','S','S'];
 const CELL_W       = 26;
 
 const PROC = {
-  pencil:    { label:'Pencil',           color:'#FF66AA', text:'#FFE0EF', stage:'design' },
-  color1:    { label:'Color pass 1',     color:'#F0458A', text:'#FFD6EC', stage:'design' },
-  color2:    { label:'Color pass 2',     color:'#E0206E', text:'#FFCCE0', stage:'design' },
-  brush:     { label:'Style brush',      color:'#CC0055', text:'#FFB3D1', stage:'design' },
-  expr:      { label:'Expression sheet', color:'#A8004A', text:'#FF99C4', stage:'design' },
-  varedad:   { label:'Age variations',   color:'#85003A', text:'#FF8ABD', stage:'design' },
-  vestuario: { label:'Wardrobe',         color:'#62002A', text:'#FF7AB3', stage:'design' },
-  lora:      { label:'LoRA files',       color:'#7B5EA7', text:'#E8DEFF', stage:'lora'  },
+  pencil:    { label:'Pencil',           color:'#C4B8F0', text:'#1E0F5C', stage:'design' },
+  color1:    { label:'Color pass 1',     color:'#AFA9EC', text:'#1E0F5C', stage:'design' },
+  color2:    { label:'Color pass 2',     color:'#9B8FE8', text:'#EEEDFE', stage:'design' },
+  brush:     { label:'Style brush',      color:'#7B5EA7', text:'#E8DEFF', stage:'design' },
+  expr:      { label:'Expression sheet', color:'#634D9A', text:'#E8DEFF', stage:'design' },
+  varedad:   { label:'Age variations',   color:'#4A3480', text:'#D4C8FF', stage:'design' },
+  vestuario: { label:'Wardrobe',         color:'#321B66', text:'#C4B8F0', stage:'design' },
+  lora:      { label:'LoRA files',       color:'#FF0066', text:'#FFE0EF', stage:'lora'  },
   clips:     { label:'Anim. clips',      color:'#3DAA6E', text:'#D4F7E5', stage:'anim'  },
 };
 
 const STAGES = {
-  design: { label:'Design', bg:'#8C0040', text:'#FFB3D1', border:'#CC0055' },
-  lora:   { label:'LoRA',   bg:'#3D2260', text:'#C9AEFF', border:'#7B5EA7' },
+  design: { label:'Design', bg:'#3D2260', text:'#C9AEFF', border:'#7B5EA7' },
+  lora:   { label:'LoRA',   bg:'#8C0040', text:'#FFB3D1', border:'#FF0066' },
   anim:   { label:'Clips',  bg:'#1A5C3A', text:'#A8F0CC', border:'#3DAA6E' },
 };
 
