@@ -186,6 +186,7 @@ table.gantt { border-collapse: collapse; width: 100%; min-width: 1020px; }
 
 
 <div class="legend" id="legend">
+  <div class="leg" draggable="true" data-proc="design_g"><div class="leg-sq" style="background:#7B5EA7"></div>Design</div>
   <div class="leg" draggable="true" data-proc="pencil"><div class="leg-sq" style="background:#C4B8F0"></div>Pencil</div>
   <div class="leg" draggable="true" data-proc="color1"><div class="leg-sq" style="background:#AFA9EC"></div>Color pass 1</div>
   <div class="leg" draggable="true" data-proc="color2"><div class="leg-sq" style="background:#9B8FE8"></div>Color pass 2</div>
@@ -205,7 +206,7 @@ table.gantt { border-collapse: collapse; width: 100%; min-width: 1020px; }
 </div>
 
 <script>
-const GITHUB_TOKEN = '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';
+const GITHUB_TOKEN = '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';
 const GITHUB_REPO  = 'lucilatr/tuning-in-breakdown';
 const DATA_FILE    = 'calendario-data.json';
 const BRANCH       = 'main';
@@ -215,6 +216,7 @@ const DAY_LABELS   = ['M','T','W','T','F','S','S'];
 const CELL_W       = 26;
 
 const PROC = {
+  design_g:  { label:'Design',           color:'#7B5EA7', text:'#E8DEFF', stage:'design' },
   pencil:    { label:'Pencil',           color:'#C4B8F0', text:'#1E0F5C', stage:'design' },
   color1:    { label:'Color pass 1',     color:'#AFA9EC', text:'#1E0F5C', stage:'design' },
   color2:    { label:'Color pass 2',     color:'#9B8FE8', text:'#EEEDFE', stage:'design' },
@@ -318,7 +320,7 @@ function buildStageSpans() {
   });
   return spans;
 }
-let stageSpans = buildStageSpans();
+let stageSpans = {};
 
 function setSyncStatus(state, label) {
   document.getElementById('syncDot').className = 'sync-dot ' + state;
