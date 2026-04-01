@@ -151,16 +151,51 @@ table.gantt { border-collapse: collapse; width: 100%; min-width: 1020px; }
 .hidden-row { display: none; }
 
 @media print {
+  @page { size: A3 landscape; margin: 8mm; }
   header, .controls, .legend, .toast { display: none !important; }
   body { background: #fff !important; color: #000 !important; }
-  .gantt-wrap { overflow: visible; }
-  table.gantt { min-width: unset; }
+  .gantt-wrap { overflow: visible; transform-origin: top left; }
+  table.gantt { min-width: unset; width: 100%; }
   .name-cell { background: #f4f4f4 !important; color: #000 !important; }
   .gantt thead th { background: #eee !important; color: #333 !important; border-color: #ccc !important; }
   .gantt td { border-color: #ccc !important; }
   .bar-inner { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .resize-handle { display: none !important; }
+  .bar-inner, .delivery-bar { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .resize-handle, .resize-handle-left, .bar-delete, .del-btn { display: none !important; }
+  .delivery-add-btn { display: none !important; }
 }
+
+.delivery-sep td {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px;
+  background: #1a1a2e; color: #9999ff; border-color: #333366;
+}
+.delivery-row td { height: 32px; vertical-align: middle; border: 1px solid var(--border); }
+.delivery-cell { width: 26px; min-width: 26px; padding: 0; position: relative; height: 32px; }
+.delivery-cell.we { background: rgba(255,255,255,.015); }
+.delivery-cell.drop-target { outline: 2px dashed #9999ff; outline-offset: -2px; }
+.delivery-bar {
+  position: absolute; top: 3px; height: 26px; left: 1px;
+  border-radius: 3px; display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: .05em; z-index: 2; cursor: grab; user-select: none;
+  background: #4444aa; color: #ccccff; border: 1px solid #6666cc;
+}
+.delivery-bar:active { cursor: grabbing; }
+.delivery-bar .del-btn {
+  position: absolute; top: -4px; right: -4px; width: 14px; height: 14px;
+  border-radius: 50%; background: #ff3366; border: 1.5px solid #0a0a0a;
+  color: #fff; font-size: 9px; font-weight: 700; line-height: 11px; text-align: center;
+  cursor: pointer; z-index: 10; opacity: 0; transition: opacity .15s; pointer-events: all;
+}
+.delivery-bar:hover .del-btn { opacity: 1; }
+.delivery-add-btn {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .07em; text-transform: uppercase;
+  padding: 3px 12px; border-radius: 4px; border: 1px solid #444488;
+  background: transparent; color: #7777cc; cursor: pointer; transition: all .15s; margin-left: 8px;
+}
+.delivery-add-btn:hover { background: rgba(100,100,200,.15); border-color: #9999ff; color: #9999ff; }
 </style>
 </head>
 <body>
@@ -318,6 +353,7 @@ function buildStageSpans() {
   return spans;
 }
 let stageSpans = {};
+let deliveries = []; // [{week, label}]
 
 function setSyncStatus(state, label) {
   document.getElementById('syncDot').className = 'sync-dot ' + state;
@@ -345,6 +381,7 @@ async function loadFromGitHub() {
     } else {
       chars = JSON.parse(JSON.stringify(DEFAULT_CHARS));
     }
+    if (decoded.deliveries) deliveries = decoded.deliveries;
     setSyncStatus('ok', 'Synced · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
     showToast('Data loaded');
     renderGantt();
@@ -363,7 +400,7 @@ async function saveToGitHub() {
     const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-      body: JSON.stringify({ chars, savedAt: new Date().toISOString() })
+      body: JSON.stringify({ chars, deliveries, savedAt: new Date().toISOString() })
     });
     if (!res.ok) { const e = await res.json(); throw new Error(e.message || 'HTTP ' + res.status); }
     setSyncStatus('ok', 'Saved · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
@@ -453,37 +490,63 @@ function renderGantt() {
     char.tasks.forEach((task, ti) => placeBar(tr, ci, ti, task));
   });
 
-  // Stage footer rows — auto-calculated, read-only
-  stageSpans = buildStageSpans();
-  ['design','lora','anim'].forEach(stageKey => {
-    const st = STAGES[stageKey];
-    const span = stageSpans[stageKey];
+  // Deliveries section
+  const delSepRow = body.insertRow(); delSepRow.className = 'delivery-sep';
+  const delSepTd = delSepRow.insertCell(); delSepTd.colSpan = 1 + WEEKS*7;
+  const addBtn = document.createElement('button');
+  addBtn.className = 'delivery-add-btn';
+  addBtn.textContent = '+ Add delivery';
+  addBtn.onclick = () => {
+    const n = deliveries.length + 1;
+    deliveries.push({ week: 1, label: 'Round ' + n });
+    renderGantt();
+  };
+  delSepTd.appendChild(document.createTextNode('Deliveries  '));
+  delSepTd.appendChild(addBtn);
 
-    const sepRow = body.insertRow(); sepRow.className = 'stage-sep';
-    const sepTd = sepRow.insertCell(); sepTd.colSpan = 1 + WEEKS*7;
-    sepTd.style.cssText = `background:${st.bg};color:${st.text};border-color:${st.border}`;
-    sepTd.textContent = st.label;
+  const delDataRow = body.insertRow(); delDataRow.className = 'delivery-row';
+  const delNameTd = delDataRow.insertCell(); delNameTd.className = 'name-cell';
+  delNameTd.style.cssText = 'font-size:10px;color:#555;font-family:"Barlow Condensed",sans-serif';
 
-    const dataRow = body.insertRow(); dataRow.className = 'stage-data-row';
-    const lTd = dataRow.insertCell(); lTd.className = 'name-cell';
-    lTd.style.cssText = 'font-size:10px;color:#333;font-family:"Barlow Condensed",sans-serif';
+  for (let abs = 0; abs < WEEKS*7; abs++) {
+    const {w, d} = absToWD(abs);
+    const date = getDate(w-1, d);
+    const td = delDataRow.insertCell();
+    td.className = 'delivery-cell' + (isWE(date) ? ' we' : '');
+    td.addEventListener('dragover', e => { e.preventDefault(); td.classList.add('drop-target'); });
+    td.addEventListener('dragleave', () => td.classList.remove('drop-target'));
+    td.addEventListener('drop', e => {
+      e.preventDefault();
+      td.classList.remove('drop-target');
+      let data; try { data = JSON.parse(e.dataTransfer.getData('text/plain')); } catch { return; }
+      if (data.deliveryIdx === undefined) return;
+      const {w: tgtW} = absToWD(abs);
+      deliveries[data.deliveryIdx].week = tgtW;
+      renderGantt();
+    });
 
-    for (let abs = 0; abs < WEEKS*7; abs++) {
-      const {w, d} = absToWD(abs);
-      const date = getDate(w-1, d);
-      const td = dataRow.insertCell();
-      td.className = 'stage-data-cell' + (isWE(date) ? ' we' : '');
-
-      if (span && abs === span.absStart) {
-        td.style.position = 'relative';
-        const barW = (span.absEnd - span.absStart + 1) * CELL_W - 2;
+    // Place delivery bar at Monday of its week
+    deliveries.forEach((del, di) => {
+      if (del.week === w && d === 0) {
         const bar = document.createElement('div');
-        bar.style.cssText = `background:${st.bg};border:1px solid ${st.border};border-radius:3px;height:18px;width:${barW}px;position:absolute;top:4px;left:1px;z-index:2;display:flex;align-items:center;padding:0 8px`;
-        bar.innerHTML = `<span style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:.06em;color:${st.text};pointer-events:none;white-space:nowrap">${st.label}</span>`;
+        bar.className = 'delivery-bar';
+        bar.style.width = (5 * CELL_W - 2) + 'px';
+        bar.draggable = true;
+        bar.textContent = del.label;
+        bar.addEventListener('dragstart', e => {
+          e.dataTransfer.setData('text/plain', JSON.stringify({ deliveryIdx: di }));
+          e.dataTransfer.effectAllowed = 'move';
+        });
+        const delBtn = document.createElement('div');
+        delBtn.className = 'del-btn';
+        delBtn.textContent = '×';
+        delBtn.onclick = e => { e.stopPropagation(); deliveries.splice(di, 1); renderGantt(); };
+        bar.appendChild(delBtn);
+        td.style.position = 'relative';
         td.appendChild(bar);
       }
-    }
-  });
+    });
+  }
 }
 
 function placeBar(tr, ci, ti, task) {
