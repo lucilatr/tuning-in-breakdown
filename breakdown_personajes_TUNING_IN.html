@@ -567,410 +567,50 @@
 
   /* ── PASSWORD SCREEN ── */
   #pw-screen {
-    position: fixed;
-    inset: 0;
-    background: #0e0e0e;
-    z-index: 99999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999;
   }
   #pw-screen .pw-eyebrow {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 5px;
-    text-transform: uppercase;
-    color: var(--pink);
-    margin-bottom: 20px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 5px; text-transform: uppercase;
+    color: var(--gray); margin-bottom: 24px;
   }
   #pw-screen .pw-title {
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(56px, 8vw, 100px);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-    line-height: 0.9;
+    font-size: clamp(60px, 10vw, 120px);
+    font-weight: 900; text-transform: uppercase;
+    letter-spacing: -2px; line-height: 0.9;
     margin-bottom: 48px;
-    text-align: center;
   }
-  #pw-screen .pw-title .w { color: #fff; }
+  #pw-screen .pw-title .w { color: var(--white); }
   #pw-screen .pw-title .p { color: var(--pink); }
-  #pw-screen .pw-row {
-    display: flex;
-    gap: 0;
-    width: 340px;
-    max-width: 90vw;
-  }
-  #pw-screen input[type="password"] {
-    flex: 1;
-    background: #161616;
-    border: 1px solid #333;
-    border-right: none;
-    color: #fff;
+  #pw-screen .pw-row { display: flex; gap: 0; }
+  #pw-screen input {
+    background: var(--surface); border: 1px solid #333;
+    border-right: none; color: var(--white);
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    padding: 14px 18px;
-    outline: none;
-    transition: border-color 0.15s;
+    font-size: 14px; letter-spacing: 4px;
+    padding: 14px 20px; width: 240px; outline: none;
+    text-transform: uppercase;
   }
-  #pw-screen input[type="password"]:focus { border-color: var(--pink); }
-  #pw-screen input[type="password"].shake {
-    animation: shake 0.3s ease;
-    border-color: var(--pink);
-  }
+  #pw-screen input:focus { border-color: var(--pink); }
   #pw-screen .pw-btn {
-    background: var(--pink);
-    border: none;
-    color: #fff;
+    background: var(--pink); border: none; color: white;
     font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    padding: 14px 22px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    white-space: nowrap;
+    font-size: 12px; font-weight: 700; letter-spacing: 4px;
+    padding: 14px 24px; cursor: pointer; text-transform: uppercase;
   }
-  #pw-screen .pw-btn:hover { opacity: 0.85; }
   #pw-screen .pw-hint {
-    margin-top: 16px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #444;
-    height: 16px;
-    transition: color 0.2s;
+    margin-top: 16px; font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: #444; height: 16px; transition: color 0.2s;
   }
   #pw-screen .pw-hint.error { color: var(--pink); }
-
-
-  /* ── PRIORITY & KIT METADATA ── */
-  .char-meta-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-    flex-wrap: wrap;
-  }
-  .priority-badge {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    padding: 3px 10px;
-    text-transform: uppercase;
-  }
-  .p1-badge { background: var(--pink); color: #fff; }
-  .p2-badge { background: #2a1a3e; color: #a78bfa; border: 1px solid #a78bfa; }
-  .p3-badge { background: #0d2a1a; color: #34d399; border: 1px solid #34d399; }
-  .kit-tag {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-    border: 1px solid var(--border);
-    padding: 3px 10px;
-  }
-  .meta-stats {
-    margin-left: auto;
-    display: flex;
-    gap: 16px;
-  }
-  .meta-stat {
-    text-align: right;
-  }
-  .meta-stat-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #444;
-    display: block;
-  }
-  .meta-stat-value {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--pink);
-  }
-  /* Minor card meta */
-  .mc .char-meta-row { margin-bottom: 10px; margin-top: 4px; }
-  .mc .meta-stats { margin-left: 0; margin-top: 4px; width: 100%; justify-content: flex-start; }
-  .mc .meta-stat { text-align: left; }
-
-  /* ── OUT OF SCOPE SECTION ── */
-  .out-of-scope-banner {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid #2a2a2a;
-    border-left: 3px solid #333;
-    padding: 14px 20px;
-    margin-bottom: 20px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: #444;
-  }
-  .out-of-scope-banner span { color: #555; }
-
-
-  /* ── 3DAR LOGO ── */
-  .logo-3dar {
-    position: absolute;
-    top: 56px;
-    right: 60px;
-    opacity: 0.85;
-    transition: opacity 0.15s;
-  }
-  .logo-3dar:hover { opacity: 1; }
-  .logo-3dar img { height: 36px; width: auto; display: block; }
-
-  /* ── FILTER BAR ── */
-  #filter-bar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: #0a0a0a;
-    border-bottom: 1px solid var(--border);
-    padding: 12px 60px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .filter-btn {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    padding: 7px 16px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--gray);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .filter-btn:hover { border-color: #444; color: var(--light); }
-  .filter-btn.active { background: var(--pink); border-color: var(--pink); color: #fff; }
-
-  /* ── GANTT ── */
-  .gantt-wrap { overflow-x: auto; }
-  .gantt-header, .gantt-weeks-row, .gantt-row, .gantt-phases-row, .gantt-group-header {
-    display: grid;
-    grid-template-columns: 0px 120px 1fr;
-    align-items: center;
-    min-width: 700px;
-  }
-  .gantt-group-header {
-    padding: 20px 0 8px;
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-top: 1px solid var(--border);
-    margin-top: 8px;
-  }
-  .gantt-months, .gantt-weeks, .gantt-bars, .gantt-phases {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-  }
-  .gantt-month {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--gray);
-    text-align: center;
-    padding: 8px 0 4px;
-    border-left: 1px solid var(--border);
-  }
-  .gantt-week {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 9px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #444;
-    text-align: center;
-    padding: 4px 0 8px;
-    border-left: 1px solid #1a1a1a;
-  }
-  .gantt-task-col {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray);
-    padding: 4px 12px 4px 0;
-    text-align: right;
-    white-space: nowrap;
-  }
-  .gantt-label-col {}
-  .gantt-row { border-bottom: 1px solid #111; }
-  .gantt-row-last { border-bottom: 1px solid var(--border); margin-bottom: 4px; }
-  .gantt-bar {
-    height: 20px;
-    border-radius: 2px;
-    margin: 5px 2px;
-    opacity: 0.85;
-  }
-  .p1-bar { background: var(--pink); }
-  .p2-bar { background: #7c3aed; }
-  .p3-bar { background: #10b981; }
-  .gantt-phase {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-align: center;
-    padding: 10px 0;
-    border-top: 2px solid var(--border);
-    color: var(--gray);
-  }
-  .ph1 { grid-column: 1 / 4; border-color: #333; }
-  .ph2 { grid-column: 4 / 7; border-color: #444; }
-  .ph3 { grid-column: 7 / 9; border-color: #555; }
-  .gantt-phases-row { margin-top: 16px; }
-  .gantt-date {
-    display: block;
-    font-size: 9px;
-    font-weight: 400;
-    letter-spacing: 0;
-    color: #444;
-    text-transform: none;
-    margin-top: 1px;
-  }
-  /* Dotted vertical week separators */
-  .gantt-bars {
-    position: relative;
-  }
-  .gantt-bars::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-      to right,
-      transparent,
-      transparent calc(12.5% - 1px),
-      rgba(255,255,255,0.06) calc(12.5% - 1px),
-      rgba(255,255,255,0.06) 12.5%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
-  .gantt-bar { position: relative; z-index: 1; }
-
-  /* ── THIS WEEK BANNER ── */
-  #this-week-banner {
-    padding: 20px 60px;
-    border-bottom: 1px solid var(--border);
-    display: none;
-  }
-  .week-banner-inner {
-    display: flex;
-    align-items: flex-start;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-  .week-banner-left {
-    min-width: 180px;
-  }
-  .week-banner-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--pink);
-    margin-bottom: 4px;
-  }
-  .week-banner-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 28px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: -1px;
-    color: var(--white);
-    line-height: 1;
-  }
-  .week-banner-dates {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    color: var(--gray);
-    margin-top: 4px;
-    text-transform: uppercase;
-  }
-  .week-banner-tasks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    flex: 1;
-  }
-  .week-task-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-  }
-  .week-task-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .week-task-text {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--light);
-  }
-  .week-task-sub {
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 1px;
-    color: var(--gray);
-    display: block;
-    margin-top: 1px;
-  }
-  .week-banner-pre {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--gray);
-    font-style: italic;
-  }
-
   #app { display: none; }
-
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     20%      { transform: translateX(-6px); }
@@ -978,6 +618,75 @@
     60%      { transform: translateX(-4px); }
     80%      { transform: translateX(4px); }
   }
+
+  /* ── 3DAR LOGO ── */
+  .logo-3dar { position: absolute; top: 56px; right: 60px; opacity: 0.85; transition: opacity 0.15s; }
+  .logo-3dar:hover { opacity: 1; }
+  .logo-3dar img { height: 36px; width: auto; display: block; }
+
+  /* ── PRIORITY & KIT METADATA ── */
+  .char-meta-row { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+  .priority-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 3px; padding: 3px 10px; text-transform: uppercase; }
+  .p1-badge { background: var(--pink); color: #fff; }
+  .p2-badge { background: #2a1a3e; color: #a78bfa; border: 1px solid #a78bfa; }
+  .p3-badge { background: #0d2a1a; color: #34d399; border: 1px solid #34d399; }
+  .kit-tag { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); border: 1px solid var(--border); padding: 3px 10px; }
+  .meta-stats { margin-left: auto; display: flex; gap: 16px; }
+  .meta-stat { text-align: right; }
+  .meta-stat-label { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: #444; display: block; }
+  .meta-stat-value { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 800; color: var(--pink); }
+  .mc .char-meta-row { margin-bottom: 10px; margin-top: 4px; }
+  .mc .meta-stats { margin-left: 0; margin-top: 4px; width: 100%; justify-content: flex-start; }
+  .mc .meta-stat { text-align: left; }
+
+  /* ── OUT OF SCOPE BANNER ── */
+  .out-of-scope-banner { background: rgba(255,255,255,0.02); border: 1px solid #2a2a2a; border-left: 3px solid #333; padding: 14px 20px; margin-bottom: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: #444; }
+  .out-of-scope-banner span { color: #555; }
+
+  /* ── FILTER BAR ── */
+  #filter-bar { position: sticky; top: 0; z-index: 100; background: #0a0a0a; border-bottom: 1px solid var(--border); padding: 12px 60px; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .filter-btn { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; padding: 7px 16px; border: 1px solid var(--border); background: transparent; color: var(--gray); cursor: pointer; transition: all 0.15s; }
+  .filter-btn:hover { border-color: #444; color: var(--light); }
+  .filter-btn.active { background: var(--pink); border-color: var(--pink); color: #fff; }
+
+  /* ── THIS WEEK BANNER ── */
+  #this-week-banner { padding: 20px 60px; border-bottom: 1px solid var(--border); display: none; }
+  .week-banner-inner { display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap; }
+  .week-banner-left { min-width: 180px; }
+  .week-banner-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--pink); margin-bottom: 4px; }
+  .week-banner-title { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 900; text-transform: uppercase; letter-spacing: -1px; color: var(--white); line-height: 1; }
+  .week-banner-dates { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gray); margin-top: 4px; text-transform: uppercase; }
+  .week-banner-tasks { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; flex: 1; }
+  .week-task-pill { display: flex; align-items: center; gap: 8px; padding: 8px 16px; border: 1px solid var(--border); background: var(--surface); }
+  .week-task-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .week-task-text { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--light); }
+  .week-task-sub { font-size: 10px; font-weight: 400; letter-spacing: 1px; color: var(--gray); display: block; margin-top: 1px; }
+  .week-banner-pre { font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); }
+
+  /* ── GANTT ── */
+  .gantt-wrap { overflow-x: auto; }
+  .gantt-header, .gantt-weeks-row, .gantt-row, .gantt-phases-row, .gantt-group-header { display: grid; grid-template-columns: 0px 160px 1fr; align-items: center; min-width: 700px; }
+  .gantt-group-header { padding: 20px 0 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gray); grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--border); margin-top: 8px; }
+  .gantt-months, .gantt-weeks, .gantt-bars, .gantt-phases { display: grid; grid-template-columns: repeat(8, 1fr); }
+  .gantt-month { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gray); text-align: center; padding: 8px 0 4px; border-left: 1px solid var(--border); }
+  .gantt-week { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #444; text-align: center; padding: 4px 0 8px; border-left: 1px solid #1a1a1a; }
+  .gantt-task-col { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); padding: 4px 12px 4px 0; text-align: right; white-space: nowrap; }
+  .gantt-label-col {}
+  .gantt-row { border-bottom: 1px solid #111; }
+  .gantt-row-last { border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+  .gantt-bar { height: 20px; margin: 5px 2px; opacity: 0.85; position: relative; z-index: 1; }
+  .p1-bar { background: var(--pink); }
+  .p2-bar { background: #7c3aed; }
+  .p3-bar { background: #10b981; }
+  .gantt-phase { font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; text-align: center; padding: 10px 0; border-top: 2px solid var(--border); color: var(--gray); }
+  .ph1 { grid-column: 1 / 4; border-color: #333; }
+  .ph2 { grid-column: 4 / 7; border-color: #444; }
+  .ph3 { grid-column: 7 / 9; border-color: #555; }
+  .gantt-phases-row { margin-top: 16px; }
+  .gantt-date { display: block; font-size: 9px; font-weight: 400; letter-spacing: 0; color: #444; text-transform: none; margin-top: 1px; }
+  .gantt-bars { position: relative; }
+  .gantt-bars::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(to right, transparent, transparent calc(12.5% - 1px), rgba(255,255,255,0.06) calc(12.5% - 1px), rgba(255,255,255,0.06) 12.5%); pointer-events: none; z-index: 0; }
+
 </style>
 </head>
 <body>
@@ -993,7 +702,6 @@
   <div class="pw-hint" id="pw-hint">&nbsp;</div>
 </div>
 
-<!-- MAIN APP (hidden until unlocked) -->
 <div id="app">
 <div class="toast" id="toast"></div>
 
@@ -1023,12 +731,12 @@
 
 <!-- FILTER BAR -->
 <div id="filter-bar">
-  <button class="filter-btn active" onclick="filterBy('all')">All</button>
-  <button class="filter-btn" onclick="filterBy('p1')">P1 — Lead</button>
-  <button class="filter-btn" onclick="filterBy('p2')">P2 — Core Cast</button>
-  <button class="filter-btn" onclick="filterBy('p3')">P3 — Spirits</button>
-  <button class="filter-btn" onclick="filterBy('out')">Out of Scope</button>
-  <button class="filter-btn" onclick="filterBy('schedule')" style="margin-left:auto; border-color: var(--pink); color: var(--pink);">Schedule</button>
+  <button class="filter-btn active" onclick="filterBy('all',this)">All</button>
+  <button class="filter-btn" onclick="filterBy('p1',this)">P1 — Lead</button>
+  <button class="filter-btn" onclick="filterBy('p2',this)">P2 — Core Cast</button>
+  <button class="filter-btn" onclick="filterBy('p3',this)">P3 — Spirits</button>
+  <button class="filter-btn" onclick="filterBy('out',this)">Out of Scope</button>
+  <button class="filter-btn" onclick="filterBy('schedule',this)" style="margin-left:auto; border-color: var(--pink); color: var(--pink);">Schedule</button>
 </div>
 
 <!-- THIS WEEK BANNER -->
@@ -1586,8 +1294,11 @@
   </div>
 
   <!-- SCHEDULE -->
-  <div data-section="schedule" style="display:none;">
-    <div class="sec-head">Production Schedule — 8 Weeks</div>
+  <div data-section="schedule" id="schedule-section">
+    <div class="sec-head" style="display:flex; align-items:center; justify-content:space-between;">
+      <span>Production Schedule — 8 Weeks</span>
+      <a href="https://lucilatr.github.io/tuning-in-breakdown/calendario-view.html" target="_blank" class="export-btn" style="font-size:11px; padding:8px 18px; text-decoration:none;">View Detail ↗</a>
+    </div>
 
     <div id="gantt-container">
       <!-- Month headers -->
@@ -1714,99 +1425,114 @@
 </footer>
 
 <script>
+  // ── INIT: hide schedule on load ──
+  window.addEventListener('load', () => {
+    const sched = document.getElementById('schedule-section');
+    if (sched) sched.style.display = 'none';
+
+    // If password was already entered before, skip the screen
+    if (localStorage.getItem('ti_auth') === 'ok') {
+      document.getElementById('pw-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadDB().then(() => {
+        renderAll();
+        startAutoRefresh();
+        renderThisWeekBanner();
+      });
+    }
+  });
+
   // ── THIS WEEK BANNER ──
-  function renderThisWeekBanner() {
+  async function renderThisWeekBanner() {
     const banner = document.getElementById('this-week-banner');
     if (!banner) return;
 
-    // Schedule definition — week start dates (Monday)
-    const weeks = [
-      { n: 1, start: new Date(2025, 3,  6), end: new Date(2025, 3, 11) }, // Apr 6-11 -- Note: using 2025 as placeholder, fix below
-    ];
-
-    // Build weeks dynamically from Apr 6 2026
     const weekDates = [];
-    const base = new Date(2026, 3, 6); // Apr 6 2026
+    const base = new Date(2026, 3, 6);
     for (let i = 0; i < 8; i++) {
       const s = new Date(base);
       s.setDate(base.getDate() + i * 7);
       const e = new Date(s);
-      e.setDate(s.getDate() + 4); // Friday
+      e.setDate(s.getDate() + 4);
       weekDates.push({ n: i + 1, start: s, end: e });
     }
 
     const today = new Date();
     today.setHours(0,0,0,0);
+    const fmt = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-    // Find current week
     let currentWeek = null;
     for (const w of weekDates) {
       if (today >= w.start && today <= w.end) { currentWeek = w; break; }
     }
 
-    const fmt = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-    // Tasks per week
-    const schedule = {
-      1: [{ label: 'P1 Design', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 Design', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }],
-      2: [{ label: 'P1 Design', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 Design', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }],
-      3: [{ label: 'P1 Design', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 Design', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P1 LoRA Files', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P1 Clips', sub: 'Zoe & Fuse', color: '#FF0066' }],
-      4: [{ label: 'P1 LoRA Files', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P1 Clips', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P2 LoRA Files', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P3 Design', sub: '8 Music Spirits', color: '#10b981' }],
-      5: [{ label: 'P1 LoRA Files', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P1 Clips', sub: 'Zoe & Fuse', color: '#FF0066' }, { label: 'P3 Design', sub: '8 Music Spirits', color: '#10b981' }],
-      6: [{ label: 'P3 Design', sub: '8 Music Spirits', color: '#10b981' }],
-      7: [{ label: 'P2 LoRA Files', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P2 Clips', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P3 LoRA Files', sub: '8 Music Spirits', color: '#10b981' }, { label: 'P3 Clips', sub: '8 Music Spirits', color: '#10b981' }],
-      8: [{ label: 'P2 LoRA Files', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P2 Clips', sub: 'Miles, Kay, Evie & Pip-Pop', color: '#7c3aed' }, { label: 'P3 LoRA Files', sub: '8 Music Spirits', color: '#10b981' }, { label: 'P3 Clips', sub: '8 Music Spirits', color: '#10b981' }],
-    };
-
     banner.style.display = 'block';
 
     if (today < weekDates[0].start) {
-      // Before production starts
-      banner.innerHTML = `<div class="week-banner-inner">
-        <div class="week-banner-left">
-          <div class="week-banner-eyebrow">Coming Up</div>
-          <div class="week-banner-title">Production Starts</div>
-          <div class="week-banner-dates">April 6, 2026</div>
-        </div>
-        <div class="week-banner-tasks"><span class="week-banner-pre">Get your references ready — kickoff in ${Math.ceil((weekDates[0].start - today) / 86400000)} days</span></div>
-      </div>`;
-    } else if (today > weekDates[7].end) {
-      // After production ends
-      banner.innerHTML = `<div class="week-banner-inner">
-        <div class="week-banner-left">
-          <div class="week-banner-eyebrow">Production</div>
-          <div class="week-banner-title">Completed</div>
-          <div class="week-banner-dates">8 weeks delivered</div>
-        </div>
-      </div>`;
-    } else if (currentWeek) {
-      const tasks = schedule[currentWeek.n] || [];
-      const pills = tasks.map(t => `
-        <div class="week-task-pill">
-          <div class="week-task-dot" style="background:${t.color};"></div>
-          <div>
-            <div class="week-task-text">${t.label}</div>
-            <span class="week-task-sub">${t.sub}</span>
-          </div>
-        </div>`).join('');
-      banner.innerHTML = `<div class="week-banner-inner">
-        <div class="week-banner-left">
-          <div class="week-banner-eyebrow">This Week</div>
-          <div class="week-banner-title">Week ${currentWeek.n}</div>
-          <div class="week-banner-dates">${fmt(currentWeek.start)} → ${fmt(currentWeek.end)}</div>
-        </div>
-        <div class="week-banner-tasks">${pills}</div>
-      </div>`;
-    } else {
-      // Between weeks (weekend)
-      banner.style.display = 'none';
+      banner.innerHTML = `<div class="week-banner-inner"><div class="week-banner-left"><div class="week-banner-eyebrow">Coming Up</div><div class="week-banner-title">Production Starts</div><div class="week-banner-dates">April 6, 2026</div></div><div class="week-banner-tasks"><span class="week-banner-pre">Get your references ready — kickoff in ${Math.ceil((weekDates[0].start - today) / 86400000)} days</span></div></div>`;
+      return;
     }
+    if (today > weekDates[7].end) {
+      banner.innerHTML = `<div class="week-banner-inner"><div class="week-banner-left"><div class="week-banner-eyebrow">Production</div><div class="week-banner-title">Completed</div><div class="week-banner-dates">8 weeks delivered</div></div></div>`;
+      return;
+    }
+    if (!currentWeek) { banner.style.display = 'none'; return; }
+
+    // Fallback schedule from image
+    const fallback = {
+      1: [{ label: 'Age Variations', sub: 'Zoe', color: '#FF0066' }, { label: 'Design', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'Design', sub: 'Miles', color: '#7c3aed' }],
+      2: [{ label: 'Age Variations', sub: 'Zoe', color: '#FF0066' }, { label: 'Design', sub: 'Fuse', color: '#FF0066' }, { label: 'Design', sub: 'Kay', color: '#7c3aed' }, { label: 'Design', sub: 'Evie', color: '#7c3aed' }, { label: 'Design', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'Design', sub: 'Miles', color: '#7c3aed' }],
+      3: [{ label: 'Wardrobe', sub: 'Zoe', color: '#FF0066' }, { label: 'Expression Sheet', sub: 'Fuse', color: '#FF0066' }, { label: 'Design', sub: 'Kay', color: '#7c3aed' }, { label: 'Design', sub: 'Evie', color: '#7c3aed' }, { label: 'Design', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'Design', sub: 'Miles', color: '#7c3aed' }],
+      4: [{ label: 'LoRA Files', sub: 'Zoe', color: '#FF0066' }, { label: 'Anim. Clips', sub: 'Zoe', color: '#FF0066' }, { label: 'LoRA Files', sub: 'Fuse', color: '#FF0066' }, { label: 'Anim. Clips', sub: 'Fuse', color: '#FF0066' }],
+      5: [{ label: 'LoRA Files', sub: 'Zoe', color: '#FF0066' }, { label: 'Anim. Clips', sub: 'Zoe', color: '#FF0066' }, { label: 'LoRA Files', sub: 'Fuse', color: '#FF0066' }, { label: 'Anim. Clips', sub: 'Fuse', color: '#FF0066' }],
+      6: [],
+      7: [{ label: 'LoRA Files', sub: 'Kay', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Evie', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Miles', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Kay', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Evie', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Miles', color: '#7c3aed' }],
+      8: [{ label: 'LoRA Files', sub: 'Kay', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Evie', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Miles', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Kay', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Evie', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Pip-Pop', color: '#7c3aed' }, { label: 'Anim. Clips', sub: 'Miles', color: '#7c3aed' }, { label: 'LoRA Files', sub: 'Swing', color: '#10b981' }],
+    };
+
+    let tasks = [];
+
+    // Try to read live from calendar JSONBin
+    try {
+      const CAL_BIN = '69cd69c3856a682189ee708c';
+      const res = await fetch(`https://api.jsonbin.io/v3/b/${CAL_BIN}/latest`, {
+        headers: { 'X-Master-Key': '$2a$10$G/S5QC8pq2vpHyiOEdxjp.rmJOR4deLMjyDvs1.Zq7W9dMQt9uqQq', 'X-Bin-Meta': 'false' }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const chars = data.chars || data.record?.chars || [];
+        // proc label map
+        const procLabel = {
+          'varedad': 'Age Variations', 'vestuario': 'Wardrobe', 'expresion': 'Expression Sheet',
+          'diseno': 'Design', 'design': 'Design', 'lora': 'LoRA Files',
+          'clips': 'Anim. Clips', 'clip': 'Anim. Clips'
+        };
+        chars.forEach(char => {
+          const charName = char.name || '';
+          const p = (char.p || 'P2').toUpperCase();
+          const color = p === 'P1' ? '#FF0066' : p === 'P3' ? '#10b981' : '#7c3aed';
+          (char.tasks || []).forEach(t => {
+            if (t.w === currentWeek.n) {
+              const label = procLabel[t.proc] || t.proc || 'Task';
+              tasks.push({ label, sub: charName, color });
+            }
+          });
+        });
+      }
+    } catch(e) { console.log('Calendar JSONBin read failed, using fallback', e); }
+
+    // Use fallback if live data empty
+    if (tasks.length === 0) tasks = fallback[currentWeek.n] || [];
+
+    const pills = tasks.map(t => `<div class="week-task-pill"><div class="week-task-dot" style="background:${t.color};"></div><div><div class="week-task-text">${t.label}</div><span class="week-task-sub">${t.sub}</span></div></div>`).join('');
+
+    banner.innerHTML = `<div class="week-banner-inner"><div class="week-banner-left"><div class="week-banner-eyebrow">This Week</div><div class="week-banner-title">Week ${currentWeek.n}</div><div class="week-banner-dates">${fmt(currentWeek.start)} → ${fmt(currentWeek.end)}</div></div><div class="week-banner-tasks">${pills}</div></div>`;
   }
 
   // ── FILTER ──
-  function filterBy(priority) {
-    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+  function filterBy(priority, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
     document.querySelectorAll('main > div[data-section]').forEach(section => {
       const sec = section.dataset.section;
       if (priority === 'schedule') {
@@ -1840,26 +1566,27 @@
 
   // ── PASSWORD ──
   function checkPw() {
-    const input = document.getElementById('pw-input');
-    const hint  = document.getElementById('pw-hint');
-    if (input.value === 'Headphones') {
+    const val = document.getElementById('pw-input').value;
+    const hint = document.getElementById('pw-hint');
+    if (val === 'Headphones') {
+      localStorage.setItem('ti_auth', 'ok');
       document.getElementById('pw-screen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
+      const app = document.getElementById('app');
+      app.style.display = 'block';
       loadDB().then(() => {
         renderAll();
         startAutoRefresh();
         renderThisWeekBanner();
       });
     } else {
-      hint.textContent = 'INCORRECT PASSWORD';
+      hint.textContent = 'Incorrect password';
       hint.classList.add('error');
-      input.classList.add('shake');
-      input.value = '';
+      document.getElementById('pw-input').style.animation = 'shake 0.4s ease';
       setTimeout(() => {
-        input.classList.remove('shake');
+        document.getElementById('pw-input').style.animation = '';
         hint.classList.remove('error');
         hint.innerHTML = '&nbsp;';
-      }, 1800);
+      }, 1000);
     }
   }
 
