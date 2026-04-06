@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tuning In — Schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #FF0066;
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --border: rgba(255,255,255,0.07);
+  --border-strong: rgba(255,255,255,0.15);
+  --text: #f0f0f0;
+  --text-dim: #888;
+  --text-dimmer: #444;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; font-size: 14px; min-height: 100vh; }
+
+.view-header {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.view-header h1 {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--text);
+}
+.view-header h1 span { color: var(--pink); }
+.sync-indicator { font-size: 11px; color: var(--text-dim); display: flex; align-items: center; gap: 6px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dimmer); border-radius: 50%; transition: background .3s; }
+.sync-dot.ok { background: #1D9E75; }
+.sync-dot.syncing { background: #BA7517; }
+.sync-dot.error { background: #D85A30; }
+
+.gantt-wrap { overflow: auto; padding-bottom: 32px; max-height: calc(100vh - 60px); position: relative; }
+table.gantt { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1020px; }
+.gantt th, .gantt td { border: 1px solid var(--border); }
+.gantt thead th {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--text-dimmer);
+  text-align: center; padding: 5px 3px; background: var(--surface); white-space: nowrap;
+  position: sticky; top: 0; z-index: 5;
+}
+.gantt thead tr:nth-child(1) th { top: 0; }
+.gantt thead tr:nth-child(2) th { top: 28px; }
+.gantt thead th.name-h { text-align: left; padding: 5px 10px; width: 132px; min-width: 132px; }
+.gantt thead th.wk { color: var(--text-dim); }
+.gantt thead th.day { font-size: 10px; color: #555; }
+.gantt thead th.day.we { color: #2a2a2a; }
+.gantt th.name-h { position: sticky; left: 0; z-index: 6; box-shadow: 2px 0 4px rgba(0,0,0,.4); }
+
+.pri-sep td {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px;
+}
+.char-row td { height: 32px; vertical-align: middle; }
+.name-cell {
+  padding: 0 10px; white-space: nowrap; min-width: 132px; width: 132px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 13px; font-weight: 600;
+  color: var(--text); background: var(--surface);
+  position: sticky; left: 0; z-index: 4; box-shadow: 2px 0 4px rgba(0,0,0,.4);
+}
+.name-cell-sub {
+  padding: 0 10px; min-width: 132px; width: 132px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+  color: transparent; background: var(--surface);
+  border-left-width: 3px; border-left-style: solid;
+  position: sticky; left: 0; z-index: 4; box-shadow: 2px 0 4px rgba(0,0,0,.4);
+}
+.day-cell { width: 26px; min-width: 26px; padding: 0; position: relative; vertical-align: middle; height: 32px; }
+.day-cell.we { background: rgba(255,255,255,.015); }
+
+.bar-wrap {
+  position: absolute; top: 3px; height: 26px; z-index: 2;
+  user-select: none; cursor: default;
+}
+.bar-inner {
+  width: 100%; height: 100%; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: .04em; pointer-events: none; white-space: nowrap;
+}
+
+.delivery-sep td {
+  font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; padding: 4px 10px;
+  background: #1a1a2e; color: #9999ff; border-color: #333366;
+}
+.delivery-row td { height: 32px; vertical-align: middle; border: 1px solid var(--border); }
+.delivery-cell { width: 26px; min-width: 26px; padding: 0; position: relative; height: 32px; }
+.delivery-cell.we { background: rgba(255,255,255,.015); }
+.delivery-bar {
+  position: absolute; top: 3px; height: 26px; left: 1px;
+  border-radius: 3px; display: flex; align-items: center; padding: 0 8px;
+  font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+  letter-spacing: .05em; z-index: 2; cursor: default;
+  background: #4444aa; color: #ccccff; border: 1px solid #6666cc;
+  white-space: nowrap; overflow: hidden;
+}
+.hidden-row { display: none; }
+</style>
+</head>
+<body>
+
+<div class="view-header">
+  <h1>Tuning In <span>—</span> Production Schedule</h1>
+  <div class="sync-indicator">
+    <div class="sync-dot" id="syncDot"></div>
+    <span id="syncLabel">Loading...</span>
+  </div>
+</div>
+
+<div class="gantt-wrap">
+  <table class="gantt" id="ganttTable">
+    <thead id="ganttHead"></thead>
+    <tbody id="ganttBody"></tbody>
+  </table>
+</div>
+
+<script>
+
+const JSONBIN_KEY = '$2a$10$G/S5QC8pq2vpHyiOEdxjp.rmJOR4deLMjyDvs1.Zq7W9dMQt9uqQq';
+const JSONBIN_BIN  = '69cd69c3856a682189ee708c';
+const WEEKS = 8;
+const START = new Date(2026, 3, 6);
+const DAY_LABELS = ['M','T','W','T','F','S','S'];
+const CELL_W = 26;
+
+const PROC = {
+  design_g:  { label:'Design',           color:'#7B5EA7', text:'#E8DEFF', stage:'design' },
+  pencil:    { label:'Pencil',           color:'#C4B8F0', text:'#1E0F5C', stage:'design' },
+  color1:    { label:'Color pass 1',     color:'#AFA9EC', text:'#1E0F5C', stage:'design' },
+  color2:    { label:'Color pass 2',     color:'#9B8FE8', text:'#EEEDFE', stage:'design' },
+  brush:     { label:'Style brush',      color:'#7B5EA7', text:'#E8DEFF', stage:'design' },
+  expr:      { label:'Expression sheet', color:'#634D9A', text:'#E8DEFF', stage:'design' },
+  varedad:   { label:'Age variations',   color:'#4A3480', text:'#D4C8FF', stage:'design' },
+  vestuario: { label:'Wardrobe',         color:'#321B66', text:'#C4B8F0', stage:'design' },
+  lora:      { label:'LoRA files',       color:'#FF0066', text:'#FFE0EF', stage:'lora'  },
+  clips:     { label:'Anim. clips',      color:'#3DAA6E', text:'#D4F7E5', stage:'anim'  },
+};
+
+const PCOLORS = {
+  P1:{ bg:'#3A3A3A', border:'#555555', text:'#C8C8C8', label:'Priority 1' },
+  P2:{ bg:'#252525', border:'#404040', text:'#909090', label:'Priority 2' },
+  P3:{ bg:'#181818', border:'#303030', text:'#606060', label:'Priority 3' },
+};
+
+const DEFAULT_CHARS = [
+  { name:'Zoe',             p:'P1', tasks:[{proc:'pencil',w:1,d0:0,d1:4},{proc:'color1',w:2,d0:0,d1:4},{proc:'color2',w:3,d0:0,d1:4},{proc:'brush',w:4,d0:0,d1:4},{proc:'expr',w:5,d0:0,d1:4},{proc:'vestuario',w:6,d0:0,d1:4},{proc:'lora',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Fuse',            p:'P1', tasks:[{proc:'pencil',w:1,d0:0,d1:4},{proc:'color1',w:2,d0:0,d1:4},{proc:'color2',w:3,d0:0,d1:4},{proc:'brush',w:4,d0:0,d1:4},{proc:'expr',w:5,d0:0,d1:4},{proc:'vestuario',w:6,d0:0,d1:4},{proc:'lora',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Kay',             p:'P2', tasks:[{proc:'pencil',w:2,d0:0,d1:4},{proc:'color1',w:3,d0:0,d1:4},{proc:'color2',w:4,d0:0,d1:4},{proc:'brush',w:5,d0:0,d1:4},{proc:'expr',w:6,d0:0,d1:4},{proc:'varedad',w:7,d0:0,d1:4},{proc:'lora',w:8,d0:0,d1:4}]},
+  { name:'Evie',            p:'P2', tasks:[{proc:'pencil',w:3,d0:0,d1:4},{proc:'color1',w:4,d0:0,d1:4},{proc:'color2',w:5,d0:0,d1:4},{proc:'brush',w:6,d0:0,d1:4},{proc:'expr',w:7,d0:0,d1:4},{proc:'vestuario',w:8,d0:0,d1:4}]},
+  { name:'Pip-Pop',         p:'P2', tasks:[{proc:'pencil',w:3,d0:0,d1:4},{proc:'color1',w:4,d0:0,d1:4},{proc:'color2',w:5,d0:0,d1:4},{proc:'brush',w:6,d0:0,d1:4},{proc:'expr',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Miles',           p:'P2', tasks:[{proc:'pencil',w:3,d0:0,d1:4},{proc:'color1',w:4,d0:0,d1:4},{proc:'color2',w:5,d0:0,d1:4},{proc:'brush',w:6,d0:0,d1:4},{proc:'lora',w:7,d0:0,d1:4},{proc:'clips',w:8,d0:0,d1:4}]},
+  { name:'Harmony',         p:'P3', tasks:[{proc:'pencil',w:4,d0:0,d1:4},{proc:'color1',w:5,d0:0,d1:4},{proc:'color2',w:6,d0:0,d1:4},{proc:'brush',w:7,d0:0,d1:4},{proc:'expr',w:8,d0:0,d1:4}]},
+  { name:'Swing',           p:'P3', tasks:[{proc:'pencil',w:4,d0:0,d1:4},{proc:'color1',w:5,d0:0,d1:4},{proc:'color2',w:6,d0:0,d1:4},{proc:'brush',w:7,d0:0,d1:4},{proc:'lora',w:8,d0:0,d1:4}]},
+  { name:'Dj Sparkle',      p:'P3', tasks:[{proc:'pencil',w:5,d0:0,d1:4},{proc:'color1',w:6,d0:0,d1:4},{proc:'color2',w:7,d0:0,d1:4},{proc:'brush',w:8,d0:0,d1:4}]},
+  { name:'Mc Flow',         p:'P3', tasks:[{proc:'pencil',w:5,d0:0,d1:4},{proc:'color1',w:6,d0:0,d1:4},{proc:'color2',w:7,d0:0,d1:4},{proc:'brush',w:8,d0:0,d1:4}]},
+  { name:'Twang',           p:'P3', tasks:[{proc:'pencil',w:6,d0:0,d1:4},{proc:'color1',w:7,d0:0,d1:4},{proc:'color2',w:8,d0:0,d1:4}]},
+  { name:'Teller',          p:'P3', tasks:[{proc:'pencil',w:6,d0:0,d1:4},{proc:'color1',w:7,d0:0,d1:4},{proc:'color2',w:8,d0:0,d1:4}]},
+  { name:'Fonk',            p:'P3', tasks:[{proc:'pencil',w:7,d0:0,d1:4},{proc:'color1',w:8,d0:0,d1:4}]},
+  { name:'Mama Hallelujah', p:'P3', tasks:[{proc:'pencil',w:7,d0:0,d1:4},{proc:'color1',w:8,d0:0,d1:4}]},
+];
+
+let chars = JSON.parse(JSON.stringify(DEFAULT_CHARS));
+let deliveries = [];
+
+function getDate(weekIdx, dayIdx) { const d = new Date(START); d.setDate(d.getDate() + weekIdx*7 + dayIdx); return d; }
+function isWE(d) { return d.getDay()===0||d.getDay()===6; }
+function wdToAbs(w,d) { return (w-1)*7+d; }
+function absToWD(abs) { return {w:Math.floor(abs/7)+1,d:abs%7}; }
+
+function setSyncStatus(state, label) {
+  document.getElementById('syncDot').className = 'sync-dot ' + state;
+  document.getElementById('syncLabel').textContent = label;
+}
+
+async function loadData() {
+  setSyncStatus('syncing', 'Loading...');
+  try {
+    const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}/latest`, {
+      headers: { 'X-Master-Key': JSONBIN_KEY }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    const decoded = json.record;
+    if (decoded.chars && decoded.chars.length > 0) chars = decoded.chars;
+    else chars = JSON.parse(JSON.stringify(DEFAULT_CHARS));
+    if (decoded.deliveries) deliveries = decoded.deliveries;
+    setSyncStatus('ok', 'Live · ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}));
+    renderGantt();
+  } catch(e) {
+    setSyncStatus('error', 'Error');
+    renderGantt();
+  }
+}
+
+function placeBarReadOnly(tr, ci, ti, task, cellOffset) {
+  const startAbs = wdToAbs(task.w, task.d0);
+  const spanDays = task.d1 - task.d0 + 1;
+  const offset = (cellOffset !== undefined) ? cellOffset : 1;
+  const anchorCell = tr.cells[startAbs + offset];
+  if (!anchorCell) return;
+  const p = PROC[task.proc];
+  if (!p) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'bar-wrap';
+  wrap.style.cssText = `left:1px;width:${spanDays * CELL_W - 2}px`;
+  const inner = document.createElement('div');
+  inner.className = 'bar-inner';
+  inner.style.background = p.color;
+  inner.style.color = p.text;
+  inner.textContent = p.label;
+  wrap.appendChild(inner);
+  anchorCell.style.position = 'relative';
+  anchorCell.appendChild(wrap);
+}
+
+function renderGantt() {
+  const head = document.getElementById('ganttHead');
+  const body = document.getElementById('ganttBody');
+  head.innerHTML = ''; body.innerHTML = '';
+
+  const r1 = head.insertRow();
+  const nTh = document.createElement('th');
+  nTh.rowSpan = 2; nTh.className = 'name-h'; nTh.textContent = 'Character';
+  r1.appendChild(nTh);
+  for (let w = 0; w < WEEKS; w++) {
+    const wS = new Date(START); wS.setDate(wS.getDate() + w*7);
+    const wE = new Date(wS); wE.setDate(wE.getDate() + 4);
+    const fmt = d => (d.getMonth()+1) + '/' + d.getDate();
+    const th = document.createElement('th');
+    th.colSpan = 7; th.className = 'wk';
+    th.textContent = `W${w+1}  ${fmt(wS)}–${fmt(wE)}`;
+    r1.appendChild(th);
+  }
+  const r2 = head.insertRow();
+  for (let w = 0; w < WEEKS; w++) {
+    for (let d = 0; d < 7; d++) {
+      const th = document.createElement('th');
+      th.className = 'day' + (d>=5?' we':'');
+      th.textContent = DAY_LABELS[d];
+      r2.appendChild(th);
+    }
+  }
+
+  let lastP = null;
+  chars.forEach((char, ci) => {
+    if (char.p !== lastP) {
+      lastP = char.p;
+      const pc = PCOLORS[char.p];
+      const sr = body.insertRow(); sr.className = 'pri-sep';
+      const td = sr.insertCell(); td.colSpan = 1 + WEEKS*7;
+      td.style.cssText = `background:${pc.bg};border-color:${pc.border};color:${pc.text}`;
+      td.textContent = pc.label;
+    }
+
+    const tasksByWeek = {};
+    char.tasks.forEach((task, ti) => {
+      if (!tasksByWeek[task.w]) tasksByWeek[task.w] = [];
+      tasksByWeek[task.w].push(ti);
+    });
+    const needsSubRow = Object.values(tasksByWeek).some(arr => arr.length > 1);
+
+    const tr = body.insertRow(); tr.className = 'char-row';
+    const nc = tr.insertCell(); nc.className = 'name-cell'; nc.textContent = char.name;
+    for (let abs = 0; abs < WEEKS*7; abs++) {
+      const {w,d} = absToWD(abs);
+      const td = tr.insertCell();
+      td.className = 'day-cell' + (isWE(getDate(w-1,d))?' we':'');
+    }
+    char.tasks.forEach((task, ti) => {
+      if (tasksByWeek[task.w][0] === ti) placeBarReadOnly(tr, ci, ti, task, 1);
+    });
+
+    if (needsSubRow) {
+      const tr2 = body.insertRow(); tr2.className = 'char-row';
+      const nc2 = tr2.insertCell(); nc2.className = 'name-cell-sub';
+      nc2.style.borderLeftColor = PCOLORS[char.p].border.replace('.3)','.8)');
+      for (let abs = 0; abs < WEEKS*7; abs++) {
+        const {w,d} = absToWD(abs);
+        const td = tr2.insertCell();
+        td.className = 'day-cell' + (isWE(getDate(w-1,d))?' we':'');
+      }
+      char.tasks.forEach((task, ti) => {
+        if (tasksByWeek[task.w][1] === ti) placeBarReadOnly(tr2, ci, ti, task, 1);
+      });
+    }
+  });
+
+  // Deliveries
+  const delSepRow = body.insertRow(); delSepRow.className = 'delivery-sep';
+  const delSepTd = delSepRow.insertCell(); delSepTd.colSpan = 1 + WEEKS*7;
+  delSepTd.textContent = 'Deliveries';
+
+  const delDataRow = body.insertRow(); delDataRow.className = 'delivery-row';
+  const delNameTd = delDataRow.insertCell(); delNameTd.className = 'name-cell';
+  for (let abs = 0; abs < WEEKS*7; abs++) {
+    const {w,d} = absToWD(abs);
+    const date = getDate(w-1,d);
+    const td = delDataRow.insertCell();
+    td.className = 'delivery-cell' + (isWE(date)?' we':'');
+    deliveries.forEach(del => {
+      if (!del.d0 && del.d0 !== 0) del.d0 = 0;
+      if (!del.d1 && del.d1 !== 0) del.d1 = 4;
+      if (del.week === w && d === del.d0) {
+        td.style.position = 'relative';
+        const bar = document.createElement('div');
+        bar.className = 'delivery-bar';
+        bar.style.width = ((del.d1 - del.d0 + 1) * CELL_W - 2) + 'px';
+        bar.textContent = del.label;
+        td.appendChild(bar);
+      }
+    });
+  }
+}
+
+loadData();
+// Auto-refresh every 60 seconds
+setInterval(loadData, 60000);
+</script>
+</body>
+</html>
