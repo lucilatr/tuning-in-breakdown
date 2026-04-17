@@ -687,6 +687,21 @@
   .gantt-bars { position: relative; }
   .gantt-bars::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(to right, transparent, transparent calc(12.5% - 1px), rgba(255,255,255,0.06) calc(12.5% - 1px), rgba(255,255,255,0.06) 12.5%); pointer-events: none; z-index: 0; }
 
+
+  /* ── ARTIST BADGES ── */
+  .artist-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 800; letter-spacing: 3px;
+    padding: 3px 10px; text-transform: uppercase;
+    border: 1px solid;
+  }
+  .artist-fede { color: #60a5fa; border-color: #60a5fa; background: rgba(96,165,250,0.1); }
+  .artist-fer  { color: #f59e0b; border-color: #f59e0b; background: rgba(245,158,11,0.1); }
+  .fede-btn { color: #60a5fa !important; border-color: #60a5fa !important; }
+  .fede-btn.active { background: #60a5fa !important; color: #000 !important; }
+  .fer-btn  { color: #f59e0b !important; border-color: #f59e0b !important; }
+  .fer-btn.active  { background: #f59e0b !important; color: #000 !important; }
+
   /* ── CHATBOT ── */
   #chat-bubble {
     position: fixed; bottom: 28px; right: 28px; z-index: 9000;
@@ -824,6 +839,9 @@
   <button class="filter-btn" onclick="filterBy('p2',this)">P2 — Core Cast</button>
   <button class="filter-btn" onclick="filterBy('p3',this)">P3 — Spirits</button>
   <button class="filter-btn" onclick="filterBy('out',this)">Out of Scope</button>
+  <div style="width:1px;background:var(--border);margin:0 4px;"></div>
+  <button class="filter-btn fede-btn" onclick="filterBy('fede',this)">Fede</button>
+  <button class="filter-btn fer-btn" onclick="filterBy('fer',this)">Fer</button>
   <button class="filter-btn" onclick="filterBy('schedule',this)" style="margin-left:auto; border-color: var(--pink); color: var(--pink);">Schedule</button>
 </div>
 
@@ -878,7 +896,7 @@
       <div class="char-logline"><strong>14 years old</strong> — Daughter of Miles and Kay. Emerging artist and composer. Alias: Zowie Stardust.</div>
       <div class="char-meta-row">
         <span class="priority-badge p1-badge">P1</span>
-        <span class="kit-tag">Full Kit + Variant</span>
+        <span class="kit-tag">Full Kit + Variant</span><span class="artist-badge artist-fede">FEDE</span>
         <div class="meta-stats">
           <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">34</span></div>
           <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3–5</span></div>
@@ -934,7 +952,7 @@
       <div class="char-logline"><em>The Screamin' Demon</em> — Metal music spirit of Metal Mountain. Zoe's guitar duel opponent.</div>
       <div class="char-meta-row">
         <span class="priority-badge p1-badge">P1</span>
-        <span class="kit-tag">Full Kit + Variant</span>
+        <span class="kit-tag">Full Kit + Variant</span><span class="artist-badge artist-fede">FEDE</span>
         <div class="meta-stats">
           <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">34</span></div>
           <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3–5</span></div>
@@ -980,7 +998,7 @@
       <div class="char-logline"><strong>20s</strong> at the start — Zoe's father, Kay's husband. Passes away before the story's present.</div>
       <div class="char-meta-row">
         <span class="priority-badge p2-badge">P2</span>
-        <span class="kit-tag">Full Kit + 4 Variants</span>
+        <span class="kit-tag">Full Kit + 4 Variants</span><span class="artist-badge artist-fede">FEDE</span>
         <div class="meta-stats">
           <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">55</span></div>
           <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
@@ -1034,7 +1052,7 @@
       <div class="char-logline"><strong>20s</strong> at the start, adult in the present — Zoe's mother, Miles's widow.</div>
       <div class="char-meta-row">
         <span class="priority-badge p2-badge">P2</span>
-        <span class="kit-tag">Full Kit + 4 Variants</span>
+        <span class="kit-tag">Full Kit + 4 Variants</span><span class="artist-badge artist-fede">FEDE</span>
         <div class="meta-stats">
           <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">55</span></div>
           <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
@@ -1084,7 +1102,7 @@
       <div class="char-logline"><strong>14 years old</strong> — Zoe's best friend since childhood. Drummer. Alias: Evie-E.</div>
       <div class="char-meta-row">
         <span class="priority-badge p2-badge">P2</span>
-        <span class="kit-tag">Full Kit + 2 Variants</span>
+        <span class="kit-tag">Full Kit + 2 Variants</span><span class="artist-badge artist-fer">FER</span>
         <div class="meta-stats">
           <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">41</span></div>
           <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
@@ -1126,7 +1144,7 @@
       <div class="char-logline"><em>Sir Pipalonious-Pop-Bop-Boomzarella the Third, Prince of Pop</em> — Music spirit and Miles's old friend.</div>
       <div class="char-meta-row">
         <span class="priority-badge p2-badge">P2</span>
-        <span class="kit-tag">Full Kit</span>
+        <span class="kit-tag">Full Kit</span><span class="artist-badge artist-fer">FER</span>
         <div class="meta-stats">
           <div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">27</span></div>
           <div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">3</span></div>
@@ -1168,7 +1186,7 @@
       <div class="mc">
         <div class="mn pink">Harmony</div>
         <div class="mr">Elder of Music · Keeper of the Chords</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fede">FEDE</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md"><em>Plump, glowing, grandma-esque</em> with giant round glasses and a shawl of shimmering musical notes. Wise, warm, gives fierce hugs. Knows Zoe's destiny before she does. Delivers the key truth: <em>The Heart lives inside Zoe.</em></div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-harmony">0 images</div></div>
@@ -1183,7 +1201,7 @@
       <div class="mc">
         <div class="mn">Swing</div>
         <div class="mr">Jazz Spirit · The B-Side</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fede">FEDE</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md"><em>Tall, slender, smooth</em> with a golden saxophone, wide-brimmed hat, and long coat. Veteran jazzman cadence. Knew Miles "a long time." Leads his own backing band.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-swing">0 images</div></div>
@@ -1198,7 +1216,7 @@
       <div class="mc">
         <div class="mn pink">DJ Sparkle</div>
         <div class="mr">Queen of Dance · Glitter Ball Arena</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fer">FER</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md">Glittering bodysuit, <em>platform heels, headphones kicked off one ear,</em> oversized glitter shades. Megawatt smile. Commands dual glowing turntables. Pip's absolute idol.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-dj-sparkle">0 images</div></div>
@@ -1213,7 +1231,7 @@
       <div class="mc">
         <div class="mn">MC Flow</div>
         <div class="mr">Hip-Hop Spirit · The Void</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fede">FEDE</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md">Baggy clothes, <em>gold chain,</em> pure hype energy. Hosts the rap battle between Zoe and Shadow Zoe inside the Void of Silence.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-mc-flow">0 images</div></div>
@@ -1228,7 +1246,7 @@
       <div class="mc">
         <div class="mn">Twang</div>
         <div class="mr">Country Spirit · The Broken String</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fer">FER</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md"><em>Lanky, slow-moving,</em> tobacco-spitting. Strums steel guitar idly. Keeps jars of unfinished song lyrics alongside Teller.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-twang">0 images</div></div>
@@ -1243,7 +1261,7 @@
       <div class="mc">
         <div class="mn">Teller</div>
         <div class="mr">Folk Spirit · The Broken String</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fer">FER</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md"><em>Overalls,</em> slow-blinking and slow-drawling. Plays banjo. Thick Southern drawl. Keeps thousands of mason jars packed with unfinished lyrics.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-teller">0 images</div></div>
@@ -1258,7 +1276,7 @@
       <div class="mc">
         <div class="mn">Fonk</div>
         <div class="mr">Funk Spirit · The Funk Den</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fede">FEDE</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md"><em>À la Bootsy Collins</em> with mustache and psychedelic shades. Shameless grooves. Appears during the genre montage.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-fonk">0 images</div></div>
@@ -1273,7 +1291,7 @@
       <div class="mc">
         <div class="mn">Mama Hallelujah</div>
         <div class="mr">Soul / Gospel Spirit</div>
-        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
+        <div class="char-meta-row"><span class="priority-badge p3-badge">P3</span><span class="kit-tag">Light Kit</span><span class="artist-badge artist-fer">FER</span><div class="meta-stats"><div class="meta-stat"><span class="meta-stat-label">Images</span><span class="meta-stat-value">11</span></div><div class="meta-stat"><span class="meta-stat-label">Clips</span><span class="meta-stat-value">—</span></div></div></div>
         <div class="md">Gospel spirit who <em>literally lifts the roof with her voice.</em> At the finale she belts so hard she blows out the stained glass. Enormous, maternal, powerful presence.</div>
         <div class="image-section">
           <div class="image-section-head"><div class="image-section-label">CONCEPT IMAGES</div><div class="img-count" id="count-mama-hallelujah">0 images</div></div>
@@ -1621,6 +1639,26 @@
   function filterBy(priority, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
+
+    // For artist filters, show/hide individual cards
+    if (priority === 'fede' || priority === 'fer') {
+      // Show all sections except schedule
+      document.querySelectorAll('main > div[data-section]').forEach(section => {
+        section.style.display = section.dataset.section === 'schedule' ? 'none' : '';
+      });
+      // Hide/show individual char cards based on artist
+      document.querySelectorAll('.char-card, .mc').forEach(card => {
+        const charId = card.querySelector('[id^="thumbs-"]')?.id?.replace('thumbs-','') ||
+                       card.querySelector('[id^="drop-"]')?.id?.replace('drop-','') || '';
+        const artist = (ARTIST[charId] || '').toLowerCase();
+        card.style.display = (artist === priority) ? '' : 'none';
+      });
+      return;
+    }
+
+    // Reset individual card visibility for non-artist filters
+    document.querySelectorAll('.char-card, .mc').forEach(card => card.style.display = '');
+
     document.querySelectorAll('main > div[data-section]').forEach(section => {
       const sec = section.dataset.section;
       if (priority === 'schedule') {
@@ -1634,6 +1672,15 @@
       }
     });
   }
+
+
+  // ── ARTIST ASSIGNMENTS ──
+  const ARTIST = {
+    'zoe': 'FEDE', 'miles': 'FEDE', 'fuse': 'FEDE', 'kay': 'FEDE',
+    'harmony': 'FEDE', 'swing': 'FEDE', 'mc-flow': 'FEDE', 'fonk': 'FEDE',
+    'pip-pop': 'FER', 'evie': 'FER', 'dj-sparkle': 'FER',
+    'twang': 'FER', 'teller': 'FER', 'mama-hallelujah': 'FER'
+  };
 
   // ── CONFIG ──
   const CLOUD_NAME    = 'duvgxho7s';
