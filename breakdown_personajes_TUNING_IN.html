@@ -1724,26 +1724,7 @@
     if (!grid) return;
 
     const images = db[charId] || [];
-
-    // Verify each image still exists in Cloudinary
-    const validImages = [];
-    for (const publicId of images) {
-      const checkUrl = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/w_10/${publicId}`;
-      try {
-        const res = await fetch(checkUrl, { method: 'HEAD' });
-        if (res.ok) {
-          validImages.push(publicId);
-        }
-      } catch(e) {
-        // skip
-      }
-    }
-
-    // If some images were deleted, update JSONBin
-    if (validImages.length !== images.length) {
-      db[charId] = validImages;
-      await saveDB();
-    }
+    const validImages = images; // Trust JSONBin data without re-checking Cloudinary
 
     count.textContent = validImages.length === 1 ? '1 image' : validImages.length + ' images';
     grid.innerHTML = '';
