@@ -508,23 +508,21 @@ function renderGantt() {
       td.textContent = pc.label;
     }
 
-    // Determine which weeks have >1 task (need sub-row)
-    const weeksWithMultiple = new Set();
+    // Group tasks by week
     const tasksByWeek = {};
     char.tasks.forEach((task, ti) => {
       if (!tasksByWeek[task.w]) tasksByWeek[task.w] = [];
       tasksByWeek[task.w].push(ti);
-      if (tasksByWeek[task.w].length > 1) weeksWithMultiple.add(task.w);
     });
-    const needsSubRow = Object.values(tasksByWeek).some(arr => arr.length > 1);
 
-    // Main row
+    // Single row per character — stack multiple tasks vertically inside same cell
     const tr = body.insertRow(); tr.className = 'char-row'; tr.dataset.prow = char.p; tr.dataset.ci = ci;
     if (!activeFilters.has(char.p)) tr.classList.add('hidden-row');
 
-    // Name cell: always single row
     const nc = tr.insertCell(); nc.className = 'name-cell'; nc.textContent = char.name;
 
+    // Build cells
+    const cellMap = {};
     for (let abs = 0; abs < WEEKS*7; abs++) {
       const td = tr.insertCell();
       const {w, d} = absToWD(abs);
@@ -534,40 +532,88 @@ function renderGantt() {
       td.addEventListener('dragover', e => { e.preventDefault(); td.classList.add('drop-target'); });
       td.addEventListener('dragleave', () => td.classList.remove('drop-target'));
       td.addEventListener('drop', e => handleDrop(e, ci, abs, false));
+      cellMap[abs] = td;
     }
-    // Place first task per week in main row
-    // If needsSubRow but this week only has 1 task, stretch bar to span both rows (height * 2)
+
+    // Place all tasks — if two tasks in same week, stack vertically
     char.tasks.forEach((task, ti) => {
       const tasksInWeek = tasksByWeek[task.w];
-      if (tasksInWeek[0] === ti) {
-        placeBar(tr, ci, ti, task, false, 1);
-      }
-    });
+      const posInWeek = tasksInWeek.indexOf(ti); // 0 = top, 1 = bottom
+      const startAbs = wdToAbs(task.w, task.d0);
+      const anchorCell = tr.cells[startAbs + 1];
+      if (!anchorCell) return;
+      const p = PROC[task.proc];
+      if (!p) return;
+      const spanDays = task.d1 - task.d0 + 1;
+      const wrap = document.createElement('div');
+      wrap.className = 'bar-wrap';
+      wrap.draggable = true;
+      // Stack: first task top half, second task bottom half
+      const hasTwo = tasksInWeek.length > 1;
+      const barH = hasTwo ? 12 : 26;
+      const barTop = hasTwo ? (posInWeek === 0 ? 2 : 16) : 3;
+      wrap.style.cssText = `left:1px;width:${spanDays * CELL_W - 2}px;height:${barH}px;top:${barTop}px`;
+      const inner = document.createElement('div');
+      inner.className = 'bar-inner';
+      inner.style.cssText = `background:${p.color};color:${p.text};font-size:${hasTwo?8:10}px`;
+      inner.textContent = p.label;
+      wrap.appendChild(inner);
 
-    // Sub-row (only if needed)
-    if (needsSubRow) {
-      const tr2 = body.insertRow(); tr2.className = 'char-row'; tr2.dataset.prow = char.p;
-      if (!activeFilters.has(char.p)) tr2.classList.add('hidden-row');
-      // Empty name cell for sub-row
-      const nc2 = tr2.insertCell(); nc2.className = 'name-cell-sub';
-      nc2.style.borderLeftColor = PCOLORS[char.p].border.replace('.3)', '.8)');
-
-      for (let abs = 0; abs < WEEKS*7; abs++) {
-        const td = tr2.insertCell();
-        const {w, d} = absToWD(abs);
-        const date = getDate(w-1, d);
-        td.className = 'day-cell' + (isWE(date) ? ' we' : '');
-        td.dataset.abs = abs;
-        td.addEventListener('dragover', e => { e.preventDefault(); td.classList.add('drop-target'); });
-        td.addEventListener('dragleave', () => td.classList.remove('drop-target'));
-        td.addEventListener('drop', e => handleDrop(e, ci, abs, true));
-      }
-      // Place second task per week in sub-row
-      char.tasks.forEach((task, ti) => {
-        const tasksInWeek = tasksByWeek[task.w];
-        if (tasksInWeek[1] === ti) placeBar(tr2, ci, ti, task, false, 1);
+      // Resize right
+      const handle = document.createElement('div');
+      handle.className = 'resize-handle';
+      wrap.appendChild(handle);
+      // Resize left
+      const handleL = document.createElement('div');
+      handleL.className = 'resize-handle-left';
+      wrap.appendChild(handleL);
+      // Delete btn
+      const del = document.createElement('div');
+      del.className = 'bar-delete';
+      del.textContent = '×';
+      del.addEventListener('click', e => {
+        e.stopPropagation();
+        chars[ci].tasks.splice(ti, 1);
+        showToast(`${chars[ci].name}: ${p.label} removed`);
+        renderGantt();
       });
-    }
+      wrap.appendChild(del);
+
+      wrap.addEventListener('dragstart', e => {
+        if (e.target === handle || e.target === handleL) { e.preventDefault(); return; }
+        e.dataTransfer.setData('text/plain', JSON.stringify({ci, ti}));
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => wrap.classList.add('dragging'), 0);
+      });
+      wrap.addEventListener('dragend', () => {
+        wrap.classList.remove('dragging');
+        document.querySelectorAll('.drop-target').forEach(el => el.classList.remove('drop-target'));
+      });
+
+      handle.addEventListener('mousedown', e => {
+        e.preventDefault(); e.stopPropagation();
+        const startX = e.clientX; const origD1 = task.d1;
+        const onMove = ev => {
+          const newD1 = Math.max(task.d0, Math.min(4, origD1 + Math.round((ev.clientX - startX) / CELL_W)));
+          if (newD1 !== task.d1) { task.d1 = newD1; wrap.style.width = ((newD1 - task.d0 + 1) * CELL_W - 2) + 'px'; }
+        };
+        const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); renderGantt(); };
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+      });
+      handleL.addEventListener('mousedown', e => {
+        e.preventDefault(); e.stopPropagation();
+        const startX = e.clientX; const origD0 = task.d0;
+        const onMove = ev => {
+          const newD0 = Math.max(0, Math.min(task.d1, origD0 + Math.round((ev.clientX - startX) / CELL_W)));
+          if (newD0 !== task.d0) { task.d0 = newD0; wrap.style.left = (newD0 - origD0) * CELL_W + 'px'; wrap.style.width = ((task.d1 - task.d0 + 1) * CELL_W - 2) + 'px'; }
+        };
+        const onUp = () => { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); renderGantt(); };
+        document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onUp);
+      });
+
+      anchorCell.style.position = 'relative';
+      anchorCell.appendChild(wrap);
+    });
   });
 
   // Deliveries section
