@@ -702,6 +702,147 @@
   .fer-btn  { color: #f59e0b !important; border-color: #f59e0b !important; }
   .fer-btn.active  { background: #f59e0b !important; color: #000 !important; }
 
+
+  /* ── TRACKER ── */
+  #tracker-section { padding: 0 60px 60px; }
+  .tracker-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .tracker-table th {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase; color: var(--gray);
+    padding: 8px 12px; border-bottom: 1px solid var(--border);
+    background: var(--surface); text-align: center;
+  }
+  .tracker-table th.t-name { text-align: left; width: 160px; }
+  .tracker-table th.t-p { width: 40px; }
+  .tracker-table td { padding: 0; border-bottom: 1px solid #111; vertical-align: middle; height: 40px; }
+  .tracker-table td.t-name {
+    padding: 0 12px; font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--white); background: var(--surface); border-right: 1px solid var(--border);
+  }
+  .tracker-table td.t-p {
+    text-align: center; font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    color: var(--gray); background: var(--surface); border-right: 1px solid var(--border);
+  }
+  .tracker-table td.t-task { text-align: center; padding: 6px 8px; border-right: 1px solid #111; }
+  .tracker-sep td {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 10px; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase; padding: 5px 12px;
+    color: var(--gray); background: #111; border-bottom: 1px solid var(--border);
+  }
+  .tracker-art { font-size: 10px; font-weight: 400; color: #555; margin-left: 6px; letter-spacing: 0; text-transform: none; }
+  /* status cell wrapper */
+  .t-cell-wrap {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+  }
+  .t-status-btn {
+    display: flex; align-items: center; gap: 5px; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; padding: 4px 8px;
+    cursor: pointer; width: 90%; border: 1px solid #252525;
+    background: transparent; color: #444; transition: border-color 0.15s;
+  }
+  .t-status-btn:hover { border-color: #444; }
+  .t-status-btn.t-none     { background: transparent; color: #444; border-color: #222; }
+  .t-status-btn.t-wip      { background: #2a1500; color: #f59e0b; border-color: #854F0B; }
+  .t-status-btn.t-waiting  { background: #1a1a2e; color: #818cf8; border-color: #4f46e5; }
+  .t-status-btn.t-review   { background: #2a0000; color: #f87171; border-color: #dc2626; }
+  .t-status-btn.t-approved { background: #0d2a1a; color: #34d399; border-color: #10b981; }
+  .t-arrow { font-size: 9px; opacity: 0.6; }
+  /* dropdown */
+  .t-dropdown {
+    position: absolute; top: calc(100% + 2px); left: 50%; transform: translateX(-50%);
+    background: #161616; border: 1px solid #333; z-index: 500;
+    min-width: 130px; display: none; flex-direction: column;
+  }
+  .t-dropdown.open { display: flex; }
+  .t-opt {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase; padding: 8px 12px;
+    cursor: pointer; border: none; background: transparent; text-align: left;
+    transition: background 0.1s;
+  }
+  .t-opt:hover { background: #252525; }
+  .t-opt.opt-none     { color: #555; }
+  .t-opt.opt-wip      { color: #f59e0b; }
+  .t-opt.opt-waiting  { color: #818cf8; }
+  .t-opt.opt-review   { color: #f87171; }
+  .t-opt.opt-approved { color: #34d399; }
+  .tracker-legend { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tracker-leg { display: flex; align-items: center; gap: 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+  .tracker-leg-sq { width: 12px; height: 12px; }
+
+
+  /* ── FEEDBACK PANEL ── */
+  .t-feedback-panel {
+    position: fixed; top: 0; right: -380px; width: 360px; height: 100vh;
+    background: #0e0e0e; border-left: 1px solid #252525;
+    z-index: 8000; transition: right 0.25s ease;
+    display: flex; flex-direction: column;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.6);
+  }
+  .t-feedback-panel.open { right: 0; }
+  .t-fb-header {
+    padding: 20px; border-bottom: 1px solid #252525;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    background: #111;
+  }
+  .t-fb-title {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 13px;
+    font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--white);
+  }
+  .t-fb-sub {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--pink);
+    margin-top: 3px;
+  }
+  .t-fb-close {
+    background: none; border: none; cursor: pointer;
+    color: #555; font-size: 18px; line-height: 1; transition: color 0.15s;
+    padding: 0; margin-left: 12px; flex-shrink: 0;
+  }
+  .t-fb-close:hover { color: var(--white); }
+  .t-fb-body { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+  .t-fb-label {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+    font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gray); margin-bottom: 6px; display: block;
+  }
+  .t-fb-textarea {
+    width: 100%; background: #161616; border: 1px solid #252525;
+    color: var(--white); font-family: 'Barlow', sans-serif; font-size: 13px;
+    padding: 10px 12px; resize: vertical; min-height: 120px; outline: none;
+    transition: border-color 0.15s; line-height: 1.6;
+  }
+  .t-fb-textarea:focus { border-color: var(--pink); }
+  .t-fb-save {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 11px;
+    font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+    background: var(--pink); border: none; color: white;
+    padding: 10px 20px; cursor: pointer; transition: opacity 0.15s;
+    align-self: flex-start;
+  }
+  .t-fb-save:hover { opacity: 0.85; }
+  .t-fb-saved {
+    font-family: 'Barlow Condensed', sans-serif; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase; color: #10b981;
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .t-fb-indicator {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--pink); display: inline-block;
+    margin-left: 4px; vertical-align: middle; opacity: 0;
+  }
+  .t-fb-indicator.has-feedback { opacity: 1; }
+  .t-fb-overlay {
+    position: fixed; inset: 0; z-index: 7999;
+    display: none;
+  }
+  .t-fb-overlay.open { display: block; }
+
   /* ── CHATBOT ── */
   #chat-bubble {
     position: fixed; bottom: 28px; right: 28px; z-index: 9000;
@@ -842,7 +983,8 @@
   <div style="width:1px;background:var(--border);margin:0 4px;"></div>
   <button class="filter-btn fede-btn" onclick="filterBy('fede',this)">Fede</button>
   <button class="filter-btn fer-btn" onclick="filterBy('fer',this)">Fer</button>
-  <button class="filter-btn" onclick="filterBy('schedule',this)" style="margin-left:auto; border-color: var(--pink); color: var(--pink);">Schedule</button>
+  <button class="filter-btn" onclick="filterBy('tracker',this)" style="margin-left:auto; border-color: var(--pink); color: var(--pink);">Tracker</button>
+  <button class="filter-btn" onclick="filterBy('schedule',this)" style="border-color: var(--pink); color: var(--pink);">Schedule</button>
 </div>
 
 <!-- THIS WEEK BANNER -->
@@ -1523,6 +1665,998 @@
     </div>
   </div>
 
+
+  <!-- TRACKER -->
+  <div data-section="tracker" id="tracker-section" style="display:none;">
+    <div class="sec-head" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <span>Production Tracker</span>
+    </div>
+    <div class="tracker-legend">
+      <div class="tracker-leg"><div class="tracker-leg-sq t-todo" style="display:inline-block;"></div>To do</div>
+      <div class="tracker-leg"><div class="tracker-leg-sq t-wip" style="display:inline-block;"></div>In progress</div>
+      <div class="tracker-leg"><div class="tracker-leg-sq t-done" style="display:inline-block;"></div>Done</div>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="tracker-table">
+      <thead><tr>
+        <th class="t-name">Character</th>
+        <th class="t-p">P</th>
+        <th>Pencil</th><th>Color</th><th>Color Style</th><th>Animation</th>
+      </tr></thead>
+      <tbody><tr class="tracker-sep"><td colspan="6">Priority 1 — Lead Characters</td></tr>
+<tr>
+  <td class="t-name">Zoe<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P1</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'zoe','pencil')" data-char="zoe" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-zoe-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'zoe','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'zoe','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'zoe','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'zoe','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'zoe','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('zoe','pencil','Zoe','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'zoe','color')" data-char="zoe" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-zoe-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'zoe','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'zoe','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'zoe','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'zoe','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'zoe','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('zoe','color','Zoe','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'zoe','color-style')" data-char="zoe" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-zoe-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'zoe','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'zoe','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'zoe','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'zoe','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'zoe','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('zoe','color-style','Zoe','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'zoe','animation')" data-char="zoe" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-zoe-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'zoe','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'zoe','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'zoe','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'zoe','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'zoe','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('zoe','animation','Zoe','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Fuse<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P1</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fuse','pencil')" data-char="fuse" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fuse-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fuse','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fuse','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fuse','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fuse','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fuse','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fuse','pencil','Fuse','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fuse','color')" data-char="fuse" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fuse-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fuse','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fuse','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fuse','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fuse','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fuse','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fuse','color','Fuse','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fuse','color-style')" data-char="fuse" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fuse-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fuse','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fuse','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fuse','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fuse','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fuse','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fuse','color-style','Fuse','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fuse','animation')" data-char="fuse" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fuse-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fuse','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fuse','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fuse','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fuse','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fuse','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fuse','animation','Fuse','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr class="tracker-sep"><td colspan="6">Priority 2 — Core Cast</td></tr>
+<tr>
+  <td class="t-name">Miles<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P2</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'miles','pencil')" data-char="miles" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-miles-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'miles','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'miles','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'miles','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'miles','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'miles','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('miles','pencil','Miles','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'miles','color')" data-char="miles" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-miles-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'miles','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'miles','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'miles','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'miles','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'miles','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('miles','color','Miles','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'miles','color-style')" data-char="miles" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-miles-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'miles','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'miles','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'miles','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'miles','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'miles','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('miles','color-style','Miles','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'miles','animation')" data-char="miles" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-miles-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'miles','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'miles','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'miles','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'miles','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'miles','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('miles','animation','Miles','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Kay<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P2</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'kay','pencil')" data-char="kay" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-kay-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'kay','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'kay','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'kay','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'kay','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'kay','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('kay','pencil','Kay','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'kay','color')" data-char="kay" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-kay-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'kay','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'kay','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'kay','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'kay','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'kay','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('kay','color','Kay','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'kay','color-style')" data-char="kay" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-kay-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'kay','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'kay','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'kay','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'kay','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'kay','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('kay','color-style','Kay','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'kay','animation')" data-char="kay" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-kay-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'kay','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'kay','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'kay','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'kay','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'kay','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('kay','animation','Kay','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Evie<span class="tracker-art">Fer</span></td>
+  <td class="t-p">P2</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'evie','pencil')" data-char="evie" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-evie-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'evie','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'evie','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'evie','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'evie','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'evie','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('evie','pencil','Evie','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'evie','color')" data-char="evie" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-evie-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'evie','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'evie','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'evie','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'evie','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'evie','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('evie','color','Evie','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'evie','color-style')" data-char="evie" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-evie-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'evie','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'evie','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'evie','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'evie','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'evie','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('evie','color-style','Evie','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'evie','animation')" data-char="evie" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-evie-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'evie','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'evie','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'evie','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'evie','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'evie','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('evie','animation','Evie','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Pip-Pop<span class="tracker-art">Fer</span></td>
+  <td class="t-p">P2</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'pip-pop','pencil')" data-char="pip-pop" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-pip-pop-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'pip-pop','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'pip-pop','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'pip-pop','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'pip-pop','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'pip-pop','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('pip-pop','pencil','Pip-Pop','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'pip-pop','color')" data-char="pip-pop" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-pip-pop-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'pip-pop','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'pip-pop','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'pip-pop','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'pip-pop','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'pip-pop','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('pip-pop','color','Pip-Pop','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'pip-pop','color-style')" data-char="pip-pop" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-pip-pop-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'pip-pop','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'pip-pop','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'pip-pop','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'pip-pop','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'pip-pop','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('pip-pop','color-style','Pip-Pop','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'pip-pop','animation')" data-char="pip-pop" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-pip-pop-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'pip-pop','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'pip-pop','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'pip-pop','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'pip-pop','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'pip-pop','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('pip-pop','animation','Pip-Pop','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr class="tracker-sep"><td colspan="6">Priority 3 — Music Spirits</td></tr>
+<tr>
+  <td class="t-name">Harmony<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'harmony','pencil')" data-char="harmony" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-harmony-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'harmony','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'harmony','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'harmony','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'harmony','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'harmony','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('harmony','pencil','Harmony','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'harmony','color')" data-char="harmony" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-harmony-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'harmony','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'harmony','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'harmony','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'harmony','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'harmony','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('harmony','color','Harmony','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'harmony','color-style')" data-char="harmony" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-harmony-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'harmony','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'harmony','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'harmony','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'harmony','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'harmony','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('harmony','color-style','Harmony','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'harmony','animation')" data-char="harmony" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-harmony-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'harmony','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'harmony','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'harmony','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'harmony','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'harmony','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('harmony','animation','Harmony','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Swing<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'swing','pencil')" data-char="swing" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-swing-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'swing','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'swing','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'swing','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'swing','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'swing','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('swing','pencil','Swing','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'swing','color')" data-char="swing" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-swing-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'swing','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'swing','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'swing','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'swing','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'swing','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('swing','color','Swing','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'swing','color-style')" data-char="swing" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-swing-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'swing','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'swing','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'swing','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'swing','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'swing','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('swing','color-style','Swing','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'swing','animation')" data-char="swing" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-swing-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'swing','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'swing','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'swing','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'swing','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'swing','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('swing','animation','Swing','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">MC Flow<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mc-flow','pencil')" data-char="mc-flow" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mc-flow-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mc-flow','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mc-flow','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mc-flow','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mc-flow','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mc-flow','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mc-flow','pencil','MC Flow','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mc-flow','color')" data-char="mc-flow" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mc-flow-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mc-flow','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mc-flow','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mc-flow','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mc-flow','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mc-flow','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mc-flow','color','MC Flow','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mc-flow','color-style')" data-char="mc-flow" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mc-flow-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mc-flow','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mc-flow','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mc-flow','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mc-flow','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mc-flow','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mc-flow','color-style','MC Flow','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mc-flow','animation')" data-char="mc-flow" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mc-flow-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mc-flow','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mc-flow','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mc-flow','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mc-flow','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mc-flow','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mc-flow','animation','MC Flow','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Fonk<span class="tracker-art">Fede</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fonk','pencil')" data-char="fonk" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fonk-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fonk','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fonk','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fonk','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fonk','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fonk','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fonk','pencil','Fonk','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fonk','color')" data-char="fonk" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fonk-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fonk','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fonk','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fonk','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fonk','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fonk','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fonk','color','Fonk','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fonk','color-style')" data-char="fonk" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fonk-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fonk','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fonk','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fonk','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fonk','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fonk','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fonk','color-style','Fonk','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'fonk','animation')" data-char="fonk" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-fonk-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'fonk','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'fonk','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'fonk','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'fonk','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'fonk','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('fonk','animation','Fonk','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">DJ Sparkle<span class="tracker-art">Fer</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'dj-sparkle','pencil')" data-char="dj-sparkle" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-dj-sparkle-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'dj-sparkle','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'dj-sparkle','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'dj-sparkle','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'dj-sparkle','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'dj-sparkle','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('dj-sparkle','pencil','DJ Sparkle','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'dj-sparkle','color')" data-char="dj-sparkle" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-dj-sparkle-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'dj-sparkle','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'dj-sparkle','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'dj-sparkle','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'dj-sparkle','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'dj-sparkle','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('dj-sparkle','color','DJ Sparkle','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'dj-sparkle','color-style')" data-char="dj-sparkle" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-dj-sparkle-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'dj-sparkle','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'dj-sparkle','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'dj-sparkle','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'dj-sparkle','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'dj-sparkle','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('dj-sparkle','color-style','DJ Sparkle','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'dj-sparkle','animation')" data-char="dj-sparkle" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-dj-sparkle-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'dj-sparkle','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'dj-sparkle','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'dj-sparkle','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'dj-sparkle','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'dj-sparkle','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('dj-sparkle','animation','DJ Sparkle','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Twang<span class="tracker-art">Fer</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'twang','pencil')" data-char="twang" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-twang-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'twang','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'twang','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'twang','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'twang','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'twang','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('twang','pencil','Twang','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'twang','color')" data-char="twang" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-twang-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'twang','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'twang','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'twang','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'twang','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'twang','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('twang','color','Twang','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'twang','color-style')" data-char="twang" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-twang-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'twang','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'twang','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'twang','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'twang','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'twang','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('twang','color-style','Twang','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'twang','animation')" data-char="twang" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-twang-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'twang','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'twang','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'twang','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'twang','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'twang','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('twang','animation','Twang','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Teller<span class="tracker-art">Fer</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'teller','pencil')" data-char="teller" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-teller-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'teller','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'teller','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'teller','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'teller','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'teller','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('teller','pencil','Teller','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'teller','color')" data-char="teller" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-teller-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'teller','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'teller','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'teller','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'teller','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'teller','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('teller','color','Teller','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'teller','color-style')" data-char="teller" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-teller-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'teller','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'teller','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'teller','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'teller','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'teller','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('teller','color-style','Teller','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'teller','animation')" data-char="teller" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-teller-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'teller','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'teller','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'teller','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'teller','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'teller','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('teller','animation','Teller','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+<tr>
+  <td class="t-name">Mama Hallelujah<span class="tracker-art">Fer</span></td>
+  <td class="t-p">P3</td>
+  <td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mama-hallelujah','pencil')" data-char="mama-hallelujah" data-col="pencil">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mama-hallelujah-pencil"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mama-hallelujah','pencil','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mama-hallelujah','pencil','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mama-hallelujah','pencil','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mama-hallelujah','pencil','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mama-hallelujah','pencil','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mama-hallelujah','pencil','Mama Hallelujah','Pencil')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mama-hallelujah','color')" data-char="mama-hallelujah" data-col="color">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mama-hallelujah-color"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mama-hallelujah','color','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mama-hallelujah','color','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mama-hallelujah','color','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mama-hallelujah','color','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mama-hallelujah','color','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mama-hallelujah','color','Mama Hallelujah','Color')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mama-hallelujah','color-style')" data-char="mama-hallelujah" data-col="color-style">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mama-hallelujah-color-style"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mama-hallelujah','color-style','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mama-hallelujah','color-style','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mama-hallelujah','color-style','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mama-hallelujah','color-style','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mama-hallelujah','color-style','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mama-hallelujah','color-style','Mama Hallelujah','Color Style')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+<td class="t-task">
+  <div class="t-cell-wrap">
+    <button class="t-status-btn t-none" onclick="openDropdown(event,this,'mama-hallelujah','animation')" data-char="mama-hallelujah" data-col="animation">
+      <span class="t-label">—</span>
+      <span class="t-arrow">▼</span><span class="t-fb-indicator" id="fbi-mama-hallelujah-animation"></span>
+    </button>
+    <div class="t-dropdown">
+      <button class="t-opt opt-none"     onclick="setStatus(this,'mama-hallelujah','animation','none')">— No status</button>
+      <button class="t-opt opt-wip"      onclick="setStatus(this,'mama-hallelujah','animation','wip')">In progress</button>
+      <button class="t-opt opt-waiting"  onclick="setStatus(this,'mama-hallelujah','animation','waiting')">Waiting feedback</button>
+      <button class="t-opt opt-review"   onclick="setStatus(this,'mama-hallelujah','animation','review')">Review</button>
+      <button class="t-opt opt-approved" onclick="setStatus(this,'mama-hallelujah','animation','approved')">App. client</button>
+      <button class="t-opt" style="color:#FF0066;border-top:1px solid #222;margin-top:2px;" onclick="openFeedback('mama-hallelujah','animation','Mama Hallelujah','Animation')">Feedback ↗</button>
+    </div>
+  </div>
+</td>
+
+</tr>
+</tbody>
+    </table>
+    </div>
+  </div>
+
 </main>
 
 <footer>
@@ -1542,6 +2676,8 @@
       document.getElementById('app').style.display = 'block';
       loadDB().then(() => {
         renderAll();
+        loadTracker();
+        loadFeedbackIndicators();
         startAutoRefresh();
         renderThisWeekBanner();
       });
@@ -1635,6 +2771,118 @@
     banner.innerHTML = `<div class="week-banner-inner"><div class="week-banner-left"><div class="week-banner-eyebrow">This Week</div><div class="week-banner-title">Week ${currentWeek.n}</div><div class="week-banner-dates">${fmt(currentWeek.start)} → ${fmt(currentWeek.end)}</div></div><div class="week-banner-tasks">${pills}</div></div>`;
   }
 
+
+  // ── TRACKER ──
+  const STATUS_LABELS = { none: '—', wip: 'In progress', waiting: 'Waiting feedback', review: 'Review', approved: 'App. client' };
+
+  function openDropdown(e, btn, charId, colId) {
+    e.stopPropagation();
+    // Close any open dropdowns
+    document.querySelectorAll('.t-dropdown.open').forEach(d => d.classList.remove('open'));
+    const dd = btn.nextElementSibling;
+    dd.classList.toggle('open');
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.t-dropdown.open').forEach(d => d.classList.remove('open'));
+  });
+
+  function setStatus(optEl, charId, colId, status) {
+    const wrap = optEl.closest('.t-cell-wrap');
+    const btn = wrap.querySelector('.t-status-btn');
+    const label = btn.querySelector('.t-label');
+    // Update button
+    btn.className = 't-status-btn t-' + status;
+    label.textContent = STATUS_LABELS[status];
+    btn.dataset.char = charId;
+    btn.dataset.col = colId;
+    // Close dropdown
+    wrap.querySelector('.t-dropdown').classList.remove('open');
+    saveTracker();
+  }
+
+  function saveTracker() {
+    const data = {};
+    document.querySelectorAll('.t-status-btn').forEach(btn => {
+      const char = btn.dataset.char;
+      const col = btn.dataset.col;
+      if (!char || !col) return;
+      const status = btn.className.replace('t-status-btn t-', '').trim();
+      if (!data[char]) data[char] = {};
+      data[char][col] = status;
+    });
+    db.__tracker = data;
+    saveDB();
+  }
+
+  function loadTracker() {
+    const data = db.__tracker || {};
+    document.querySelectorAll('.t-status-btn').forEach(btn => {
+      const char = btn.dataset.char;
+      const col = btn.dataset.col;
+      if (!char || !col) return;
+      const status = (data[char] && data[char][col]) || 'none';
+      btn.className = 't-status-btn t-' + status;
+      btn.querySelector('.t-label').textContent = STATUS_LABELS[status];
+    });
+  }
+
+
+
+  // ── FEEDBACK PANEL ──
+  let fbCurrentChar = null;
+  let fbCurrentCol = null;
+
+  function openFeedback(charId, colId, charName, colName) {
+    fbCurrentChar = charId;
+    fbCurrentCol = colId;
+    document.getElementById('fbTitle').textContent = charName;
+    document.getElementById('fbSub').textContent = colName;
+    const feedback = (db.__feedback && db.__feedback[charId] && db.__feedback[charId][colId]) || '';
+    document.getElementById('fbText').value = feedback;
+    document.getElementById('fbSaved').style.opacity = '0';
+    document.getElementById('fbPanel').classList.add('open');
+    document.getElementById('fbOverlay').classList.add('open');
+    setTimeout(() => document.getElementById('fbText').focus(), 300);
+  }
+
+  function closeFeedback() {
+    document.getElementById('fbPanel').classList.remove('open');
+    document.getElementById('fbOverlay').classList.remove('open');
+  }
+
+  function saveFeedback() {
+    if (!fbCurrentChar || !fbCurrentCol) return;
+    if (!db.__feedback) db.__feedback = {};
+    if (!db.__feedback[fbCurrentChar]) db.__feedback[fbCurrentChar] = {};
+    db.__feedback[fbCurrentChar][fbCurrentCol] = document.getElementById('fbText').value;
+    saveDB();
+    // Update indicator
+    updateFeedbackIndicator(fbCurrentChar, fbCurrentCol);
+    // Show saved
+    const saved = document.getElementById('fbSaved');
+    saved.style.opacity = '1';
+    setTimeout(() => saved.style.opacity = '0', 2000);
+  }
+
+  function updateFeedbackIndicator(charId, colId) {
+    const ind = document.getElementById('fbi-' + charId + '-' + colId);
+    if (!ind) return;
+    const hasFeedback = db.__feedback && db.__feedback[charId] && db.__feedback[charId][colId];
+    ind.classList.toggle('has-feedback', !!hasFeedback);
+  }
+
+  function loadFeedbackIndicators() {
+    if (!db.__feedback) return;
+    Object.keys(db.__feedback).forEach(charId => {
+      Object.keys(db.__feedback[charId]).forEach(colId => {
+        updateFeedbackIndicator(charId, colId);
+      });
+    });
+  }
+
+
   // ── FILTER ──
   function filterBy(priority, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -1663,8 +2911,10 @@
       const sec = section.dataset.section;
       if (priority === 'schedule') {
         section.style.display = sec === 'schedule' ? '' : 'none';
+      } else if (priority === 'tracker') {
+        section.style.display = sec === 'tracker' ? '' : 'none';
       } else if (priority === 'all') {
-        section.style.display = sec === 'schedule' ? 'none' : '';
+        section.style.display = (sec === 'schedule' || sec === 'tracker') ? 'none' : '';
       } else if (['p1','p2','p3'].includes(priority)) {
         section.style.display = (sec === priority || sec === 'ages') ? '' : 'none';
       } else if (priority === 'out') {
@@ -1710,6 +2960,8 @@
       app.style.display = 'block';
       loadDB().then(() => {
         renderAll();
+        loadTracker();
+        loadFeedbackIndicators();
         startAutoRefresh();
         renderThisWeekBanner();
       });
@@ -2739,6 +3991,29 @@ ${SCRIPT_CONTEXT}`;
     return div;
   }
 </script>
+
+
+<!-- FEEDBACK PANEL -->
+<div class="t-fb-overlay" id="fbOverlay" onclick="closeFeedback()"></div>
+<div class="t-feedback-panel" id="fbPanel">
+  <div class="t-fb-header">
+    <div>
+      <div class="t-fb-title" id="fbTitle">Feedback</div>
+      <div class="t-fb-sub" id="fbSub"></div>
+    </div>
+    <button class="t-fb-close" onclick="closeFeedback()">✕</button>
+  </div>
+  <div class="t-fb-body">
+    <div>
+      <span class="t-fb-label">Client feedback</span>
+      <textarea class="t-fb-textarea" id="fbText" placeholder="Paste or write client feedback here..."></textarea>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="t-fb-save" onclick="saveFeedback()">Save</button>
+      <span class="t-fb-saved" id="fbSaved">Saved ✓</span>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
