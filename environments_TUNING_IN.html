@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TUNING IN — Environments</title>
+<title>HEADPHONES — Environments</title>
 <style>
   :root{
     --bg:#0a0a12;--bg2:#12121f;--panel:#171727;--panel2:#1e1e33;--line:#2b2b45;
@@ -21,9 +21,6 @@
       radial-gradient(900px 380px at 85% 0%,rgba(160,107,255,.20),transparent 60%),
       radial-gradient(700px 300px at 50% 120%,rgba(63,208,201,.15),transparent 60%),
       linear-gradient(180deg,#0c0c17,#0a0a12);border-bottom:1px solid var(--line)}
-  .hero .eq{position:absolute;inset:auto 0 0 0;height:60px;display:flex;gap:4px;justify-content:center;align-items:flex-end;opacity:.35;pointer-events:none}
-  .hero .eq span{width:6px;background:linear-gradient(var(--pop),var(--rail));border-radius:3px 3px 0 0;animation:eq 1.4s ease-in-out infinite}
-  @keyframes eq{0%,100%{height:8px}50%{height:48px}}
   .kicker{letter-spacing:.32em;font-size:12px;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
   h1{font-size:clamp(38px,8vw,78px);letter-spacing:.04em;font-weight:800;line-height:1;
      background:linear-gradient(90deg,#fff,#ffd6ec 35%,#c8b6ff 70%,#a9f0ea);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -95,7 +92,7 @@
 
 <header class="hero">
   <div class="kicker" data-i18n="kicker"></div>
-  <h1>TUNING&nbsp;IN</h1>
+  <h1>HEADPHONES</h1>
   <div class="subtitle" data-i18n="subtitle"></div>
   <div class="meta-line" data-i18n="metaline"></div>
   <div class="stats">
@@ -104,7 +101,6 @@
     <div class="stat"><b>9</b><small data-i18n="s_regions"></small></div>
     <div class="stat"><b id="st-done">0</b><small data-i18n="s_done"></small></div>
   </div>
-  <div class="eq" id="eq"></div>
 </header>
 
 <div class="controls">
@@ -149,7 +145,7 @@ const UI={
     fs_all:"Estado: todos",fs_done:"✔ Hechos",fs_pending:"◷ Pendientes",
     badge_done:"Concept hecho · Etapa",badge_pending:"Concept pendiente",
     elems:"Elementos:",empty:"Sin resultados. Probá otra búsqueda.",
-    footer:"Generado a partir del guión TUNING IN (100 pp.) · Microsite de referencia interna · 3dar"},
+    footer:"Generado a partir del guión HEADPHONES (100 pp.) · Microsite de referencia interna · 3dar"},
   en:{kicker:"Environment Breakdown · Concept Art",
     subtitle:"Screenplay by Robert Rugan · 3dar",
     metaline:"Location reference for concept development · Real World ↔ World of Music",
@@ -160,7 +156,7 @@ const UI={
     fs_all:"Status: all",fs_done:"✔ Done",fs_pending:"◷ Pending",
     badge_done:"Concept done · Stage",badge_pending:"Concept pending",
     elems:"Elements:",empty:"No results. Try another search.",
-    footer:"Generated from the TUNING IN screenplay (100 pp.) · Internal reference microsite · 3dar"}
+    footer:"Generated from the HEADPHONES screenplay (100 pp.) · Internal reference microsite · 3dar"}
 };
 
 const REGIONS={
@@ -368,9 +364,6 @@ const ENV=[
 ];
 
 let LANG=localStorage.getItem('ti_lang')||'es';
-
-const eq=document.getElementById('eq');
-for(let i=0;i<40;i++){const s=document.createElement('span');s.style.animationDelay=(i*0.06)+'s';s.style.animationDuration=(1+(i%5)*0.15)+'s';eq.appendChild(s);}
 
 const main=document.getElementById('main');
 const legend=document.getElementById('legend');
