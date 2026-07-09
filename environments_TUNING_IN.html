@@ -49,6 +49,9 @@
   .chip[data-f="all"].active{background:#fff}
   .chip[data-f="real"].active{background:var(--real)}
   .chip[data-f="music"].active{background:var(--rail)}
+  .chip[data-s="all"].active{background:#fff}
+  .chip[data-s="done"].active{background:#4ade80}
+  .chip[data-s="pending"].active{background:#94a3b8}
 
   .langtoggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
   .langtoggle button{background:none;border:none;color:var(--muted);padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
@@ -65,8 +68,12 @@
   .card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:.18s}
   .card:hover{transform:translateY(-3px);border-color:#3d3d63;box-shadow:0 12px 34px rgba(0,0,0,.45)}
   .card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--accent,#666)}
+  .card.is-done::before{width:6px;background:#4ade80}
   .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
   .card h3{font-size:18px;line-height:1.25}
+  .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;margin-bottom:10px;letter-spacing:.02em}
+  .badge.done{background:rgba(74,222,128,.15);color:#7ff0a8;border:1px solid rgba(74,222,128,.35)}
+  .badge.pending{background:rgba(148,163,184,.12);color:#aab4c4;border:1px solid rgba(148,163,184,.28)}
   .star{color:var(--conservatory);font-size:14px}
   .tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
   .tag{font-size:11px;padding:3px 9px;border-radius:6px;background:var(--panel2);color:var(--muted);border:1px solid var(--line);letter-spacing:.03em}
@@ -95,6 +102,7 @@
     <div class="stat"><b id="st-total">0</b><small data-i18n="s_env"></small></div>
     <div class="stat"><b>2</b><small data-i18n="s_worlds"></small></div>
     <div class="stat"><b>9</b><small data-i18n="s_regions"></small></div>
+    <div class="stat"><b id="st-done">0</b><small data-i18n="s_done"></small></div>
   </div>
   <a class="nav-link" href="breakdown_personajes_TUNING_IN.html" data-i18n="navchars"></a>
   <div class="eq" id="eq"></div>
@@ -110,6 +118,11 @@
       <div class="chip active" data-f="all"></div>
       <div class="chip" data-f="real"></div>
       <div class="chip" data-f="music"></div>
+    </div>
+    <div class="chips" id="status">
+      <div class="chip active" data-s="all"></div>
+      <div class="chip" data-s="done"></div>
+      <div class="chip" data-s="pending"></div>
     </div>
     <div class="langtoggle" id="lang">
       <button data-l="es">ES</button>
@@ -130,19 +143,23 @@ const UI={
   es:{kicker:"Desglose de Environments · Concept Art",
     subtitle:"Guión de Robert Rugan · 3dar",
     metaline:"Referencia de locaciones para conceptualización · Mundo Real ↔ Mundo de la Música",
-    s_env:"Environments",s_worlds:"Mundos",s_regions:"Regiones",
+    s_env:"Environments",s_worlds:"Mundos",s_regions:"Regiones",s_done:"Concepts hechos",
     navchars:"→ Ver breakdown de personajes",
     searchph:"Buscar environment o elemento (ej. piano, lava, neón)...",
     f_all:"Todos",f_real:"🌍 Mundo Real",f_music:"🎵 Mundo de la Música",
+    fs_all:"Estado: todos",fs_done:"✔ Hechos",fs_pending:"◷ Pendientes",
+    badge_done:"Concept hecho · Etapa",badge_pending:"Concept pendiente",
     elems:"Elementos:",empty:"Sin resultados. Probá otra búsqueda.",
     footer:"Generado a partir del guión TUNING IN (100 pp.) · Microsite de referencia interna · 3dar"},
   en:{kicker:"Environment Breakdown · Concept Art",
     subtitle:"Screenplay by Robert Rugan · 3dar",
     metaline:"Location reference for concept development · Real World ↔ World of Music",
-    s_env:"Environments",s_worlds:"Worlds",s_regions:"Regions",
+    s_env:"Environments",s_worlds:"Worlds",s_regions:"Regions",s_done:"Concepts done",
     navchars:"→ View character breakdown",
     searchph:"Search environment or element (e.g. piano, lava, neon)...",
     f_all:"All",f_real:"🌍 Real World",f_music:"🎵 World of Music",
+    fs_all:"Status: all",fs_done:"✔ Done",fs_pending:"◷ Pending",
+    badge_done:"Concept done · Stage",badge_pending:"Concept pending",
     elems:"Elements:",empty:"No results. Try another search.",
     footer:"Generated from the TUNING IN screenplay (100 pp.) · Internal reference microsite · 3dar"}
 };
@@ -287,7 +304,7 @@ const ENV=[
    des:"Ascensor que se hunde por un pozo infinito hacia Metal Mountain.",den:"Elevator plunging down an endless shaft toward Metal Mountain.",
    ees:"Capas de tierra (suelo, caliza, granito, esquisto, vidrio volcánico) sincronizadas con un bombo primal.",
    een:"Layers of earth (soil, limestone, granite, shale, volcanic glass) synced to a primal bass drum."},
-  {r:"metal",intext:"EXT",tes:"¿Día? ¿Noche?",ten:"Day? Night?",nes:"Metal Mountain",nen:"Metal Mountain",
+  {r:"metal",stage:1,intext:"EXT",tes:"¿Día? ¿Noche?",ten:"Day? Night?",nes:"Metal Mountain",nen:"Metal Mountain",
    des:"Hellscape lava-lit; reino de Fuse ('The Screamin' Demon').",den:"Lava-lit hellscape; realm of Fuse ('The Screamin' Demon').",
    ees:"Roca volcánica negra, acero fundido, amplis destrozados, andamios oxidados, spires tipo cuernos, stacks de parlantes humeantes en volcán, pirotecnia, relámpagos power-chord.",
    een:"Black volcanic rock, molten steel, shattered amps, rusted scaffolding, devil-horn spires, smoking speaker stacks in a volcano, pyrotechnics, power-chord lightning."},
@@ -328,7 +345,7 @@ const ENV=[
   {r:"conservatory",intext:"INT",tes:"—",ten:"—",nes:"The Echo Chamber",nen:"The Echo Chamber",
    des:"Vacío reverberante enorme, tono ominoso.",den:"Vast reverberating void, ominous tone.",
    ees:"Coro de chamber music spirits en spotlight, fuga disonante.",een:"Choir of chamber-music spirits in spotlight, dissonant fugue."},
-  {r:"conservatory",intext:"INT",tes:"Día",ten:"Day",nes:"Harmonic Hall",nen:"Harmonic Hall",
+  {r:"conservatory",stage:2,intext:"INT",tes:"Día",ten:"Day",nes:"Harmonic Hall",nen:"Harmonic Hall",
    des:"Rotonda con el mapa holográfico del Mundo de la Música.",den:"Rotunda with the holographic map of the World of Music.",
    ees:"Techos catedralicios con frescos musicales, mapa flotante y vivo con landmarks.",een:"Cathedral-high ceilings with musical frescoes, floating living map with landmarks."},
   {r:"conservatory",intext:"INT",tes:"—",ten:"—",nes:"Internal Mechanics / Jukebox Interior",nen:"Internal Mechanics / Jukebox Interior",
@@ -366,6 +383,8 @@ function applyUI(){
   document.getElementById('search').placeholder=t.searchph;
   const chips=document.querySelectorAll('#chips .chip');
   chips[0].textContent=t.f_all;chips[1].textContent=t.f_real;chips[2].textContent=t.f_music;
+  const sc=document.querySelectorAll('#status .chip');
+  sc[0].textContent=t.fs_all;sc[1].textContent=t.fs_done;sc[2].textContent=t.fs_pending;
   document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('active',b.dataset.l===LANG));
   legend.innerHTML='';
   Object.values(REGIONS).forEach(r=>{
@@ -379,11 +398,14 @@ function render(){
   main.innerHTML='';
   const q=document.getElementById('search').value.trim().toLowerCase();
   const f=document.querySelector('#chips .chip.active').dataset.f;
+  const s=document.querySelector('#status .chip.active').dataset.s;
   const t=UI[LANG];
   let shown=0;
   Object.entries(REGIONS).forEach(([key,reg])=>{
     if(f!=='all'&&reg.world!==f)return;
     let items=ENV.filter(e=>e.r===key);
+    if(s==='done')items=items.filter(e=>e.stage);
+    else if(s==='pending')items=items.filter(e=>!e.stage);
     if(q)items=items.filter(e=>((LANG==='es'?e.nes+e.des+e.ees:e.nen+e.den+e.een)).toLowerCase().includes(q));
     if(!items.length)return;
     shown+=items.length;
@@ -393,8 +415,12 @@ function render(){
       <div class="region-sub">${LANG==='es'?reg.subes:reg.suben}</div><div class="grid"></div>`;
     const grid=sec.querySelector('.grid');
     items.forEach(e=>{
-      const c=document.createElement('div');c.className='card';c.style.setProperty('--accent',reg.color);
+      const c=document.createElement('div');c.className='card'+(e.stage?' is-done':'');c.style.setProperty('--accent',reg.color);
+      const badge=e.stage
+        ?`<div class="badge done">✔ ${t.badge_done} ${e.stage}</div>`
+        :`<div class="badge pending">◷ ${t.badge_pending}</div>`;
       c.innerHTML=`<div class="card-top"><h3>${LANG==='es'?e.nes:e.nen}</h3>${e.star?'<span class="star" title="Prioridad de diseño">★</span>':''}</div>
+        ${badge}
         <div class="tags"><span class="tag intext">${e.intext}</span><span class="tag">${LANG==='es'?e.tes:e.ten}</span></div>
         <p>${LANG==='es'?e.des:e.den}</p>
         <div class="elems"><b>${t.elems}</b> ${LANG==='es'?e.ees:e.een}</div>`;
@@ -406,10 +432,16 @@ function render(){
 }
 
 document.getElementById('st-total').textContent=ENV.length;
+document.getElementById('st-done').textContent=ENV.filter(e=>e.stage).length+'/'+ENV.length;
 document.getElementById('search').addEventListener('input',render);
 document.getElementById('chips').addEventListener('click',e=>{
   if(!e.target.classList.contains('chip'))return;
   document.querySelectorAll('#chips .chip').forEach(c=>c.classList.remove('active'));
+  e.target.classList.add('active');render();
+});
+document.getElementById('status').addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  document.querySelectorAll('#status .chip').forEach(c=>c.classList.remove('active'));
   e.target.classList.add('active');render();
 });
 document.getElementById('lang').addEventListener('click',e=>{
