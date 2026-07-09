@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUNING IN — Environments</title>
+<style>
+  :root{
+    --bg:#0a0a12;--bg2:#12121f;--panel:#171727;--panel2:#1e1e33;--line:#2b2b45;
+    --txt:#ececf5;--muted:#9a9ab5;
+    --pop:#ff4fa3;--jazz:#f5a623;--metal:#e8482e;--nature:#3fd0c9;--rail:#a06bff;
+    --conservatory:#f2d675;--silence:#6b6b8a;--real:#6ea8ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  .hero{position:relative;padding:70px 24px 54px;text-align:center;overflow:hidden;
+    background:radial-gradient(900px 380px at 15% -10%,rgba(255,79,163,.22),transparent 60%),
+      radial-gradient(900px 380px at 85% 0%,rgba(160,107,255,.20),transparent 60%),
+      radial-gradient(700px 300px at 50% 120%,rgba(63,208,201,.15),transparent 60%),
+      linear-gradient(180deg,#0c0c17,#0a0a12);border-bottom:1px solid var(--line)}
+  .hero .eq{position:absolute;inset:auto 0 0 0;height:60px;display:flex;gap:4px;justify-content:center;align-items:flex-end;opacity:.35;pointer-events:none}
+  .hero .eq span{width:6px;background:linear-gradient(var(--pop),var(--rail));border-radius:3px 3px 0 0;animation:eq 1.4s ease-in-out infinite}
+  @keyframes eq{0%,100%{height:8px}50%{height:48px}}
+  .kicker{letter-spacing:.32em;font-size:12px;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+  h1{font-size:clamp(38px,8vw,78px);letter-spacing:.04em;font-weight:800;line-height:1;
+     background:linear-gradient(90deg,#fff,#ffd6ec 35%,#c8b6ff 70%,#a9f0ea);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .subtitle{margin-top:16px;color:var(--muted);font-size:16px}
+  .meta-line{margin-top:10px;color:var(--muted);font-size:13px}
+  .stats{margin-top:26px;display:flex;gap:26px;justify-content:center;flex-wrap:wrap}
+  .stat{min-width:96px}
+  .stat b{display:block;font-size:28px;font-weight:800}
+  .stat small{color:var(--muted);text-transform:uppercase;letter-spacing:.12em;font-size:11px}
+  .nav-link{display:inline-block;margin-top:22px;font-size:13px;color:var(--muted);text-decoration:none;border:1px solid var(--line);padding:8px 14px;border-radius:999px;transition:.15s}
+  .nav-link:hover{color:var(--txt);border-color:#3a3a5c}
+
+  .controls{position:sticky;top:0;z-index:20;background:rgba(10,10,18,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px 20px}
+  .controls-inner{max-width:1200px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;padding:11px 14px 11px 40px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--txt);font-size:14px;outline:none}
+  .search input:focus{border-color:var(--rail)}
+  .search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.5}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--muted);font-size:13px;cursor:pointer;transition:.15s;white-space:nowrap;user-select:none}
+  .chip:hover{color:var(--txt);border-color:#3a3a5c}
+  .chip.active{color:#0a0a12;font-weight:700;border-color:transparent}
+  .chip[data-f="all"].active{background:#fff}
+  .chip[data-f="real"].active{background:var(--real)}
+  .chip[data-f="music"].active{background:var(--rail)}
+
+  .langtoggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--panel)}
+  .langtoggle button{background:none;border:none;color:var(--muted);padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s}
+  .langtoggle button.active{background:var(--rail);color:#0a0a12}
+
+  main{max-width:1200px;margin:0 auto;padding:40px 20px 80px}
+  .region{margin-bottom:52px;scroll-margin-top:80px}
+  .region-head{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+  .region-dot{width:14px;height:14px;border-radius:4px;flex:none}
+  .region h2{font-size:24px;letter-spacing:.01em}
+  .region .region-sub{color:var(--muted);font-size:14px;margin:2px 0 22px 28px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+
+  .card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:20px;position:relative;overflow:hidden;transition:.18s}
+  .card:hover{transform:translateY(-3px);border-color:#3d3d63;box-shadow:0 12px 34px rgba(0,0,0,.45)}
+  .card::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--accent,#666)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+  .card h3{font-size:18px;line-height:1.25}
+  .star{color:var(--conservatory);font-size:14px}
+  .tags{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 12px}
+  .tag{font-size:11px;padding:3px 9px;border-radius:6px;background:var(--panel2);color:var(--muted);border:1px solid var(--line);letter-spacing:.03em}
+  .tag.intext{color:var(--txt)}
+  .card p{font-size:14px;color:#c7c7dc}
+  .card .elems{margin-top:12px;font-size:13px;color:var(--muted)}
+  .card .elems b{color:var(--txt);font-weight:600}
+
+  .empty{text-align:center;color:var(--muted);padding:60px 0;font-size:15px}
+  footer{border-top:1px solid var(--line);padding:30px 20px;text-align:center;color:var(--muted);font-size:13px}
+  .legend{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+  .legend span{display:inline-flex;align-items:center;gap:7px;font-size:12px}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  @media(max-width:600px){.hero{padding:48px 18px 40px}.stats{gap:18px}main{padding:28px 14px 60px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="kicker" data-i18n="kicker"></div>
+  <h1>TUNING&nbsp;IN</h1>
+  <div class="subtitle" data-i18n="subtitle"></div>
+  <div class="meta-line" data-i18n="metaline"></div>
+  <div class="stats">
+    <div class="stat"><b id="st-total">0</b><small data-i18n="s_env"></small></div>
+    <div class="stat"><b>2</b><small data-i18n="s_worlds"></small></div>
+    <div class="stat"><b>9</b><small data-i18n="s_regions"></small></div>
+  </div>
+  <a class="nav-link" href="breakdown_personajes_TUNING_IN.html" data-i18n="navchars"></a>
+  <div class="eq" id="eq"></div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="search" type="text">
+    </div>
+    <div class="chips" id="chips">
+      <div class="chip active" data-f="all"></div>
+      <div class="chip" data-f="real"></div>
+      <div class="chip" data-f="music"></div>
+    </div>
+    <div class="langtoggle" id="lang">
+      <button data-l="es">ES</button>
+      <button data-l="en">EN</button>
+    </div>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<footer>
+  <div class="legend" id="legend"></div>
+  <span data-i18n="footer"></span>
+</footer>
+
+<script>
+const UI={
+  es:{kicker:"Desglose de Environments · Concept Art",
+    subtitle:"Guión de Robert Rugan · 3dar",
+    metaline:"Referencia de locaciones para conceptualización · Mundo Real ↔ Mundo de la Música",
+    s_env:"Environments",s_worlds:"Mundos",s_regions:"Regiones",
+    navchars:"→ Ver breakdown de personajes",
+    searchph:"Buscar environment o elemento (ej. piano, lava, neón)...",
+    f_all:"Todos",f_real:"🌍 Mundo Real",f_music:"🎵 Mundo de la Música",
+    elems:"Elementos:",empty:"Sin resultados. Probá otra búsqueda.",
+    footer:"Generado a partir del guión TUNING IN (100 pp.) · Microsite de referencia interna · 3dar"},
+  en:{kicker:"Environment Breakdown · Concept Art",
+    subtitle:"Screenplay by Robert Rugan · 3dar",
+    metaline:"Location reference for concept development · Real World ↔ World of Music",
+    s_env:"Environments",s_worlds:"Worlds",s_regions:"Regions",
+    navchars:"→ View character breakdown",
+    searchph:"Search environment or element (e.g. piano, lava, neon)...",
+    f_all:"All",f_real:"🌍 Real World",f_music:"🎵 World of Music",
+    elems:"Elements:",empty:"No results. Try another search.",
+    footer:"Generated from the TUNING IN screenplay (100 pp.) · Internal reference microsite · 3dar"}
+};
+
+const REGIONS={
+  real_home:{es:"La Casa",en:"The House",world:"real",subes:"Locación central y ancla emocional",suben:"Central location & emotional anchor",color:"var(--real)"},
+  real_hospital:{es:"Hospital",en:"Hospital",world:"real",subes:"Nacimiento de Zoe",suben:"Zoe's birth",color:"var(--real)"},
+  real_city:{es:"Escuela & Ciudad",en:"School & Town",world:"real",subes:"Vida cotidiana de Zoe adolescente",suben:"Teen Zoe's daily life",color:"var(--real)"},
+  pop:{es:"Región Pop — Poppopolis",en:"Pop Region — Poppopolis",world:"music",subes:"Metrópolis neón sugar-rush",suben:"Neon sugar-rush metropolis",color:"var(--pop)"},
+  nature:{es:"Maravillas Naturales del Sonido",en:"Natural Wonders of Sound",world:"music",subes:"Tránsito aéreo entre regiones",suben:"Aerial transit between regions",color:"var(--nature)"},
+  jazz:{es:"Región Jazz — The Jazz Quarter",en:"Jazz Region — The Jazz Quarter",world:"music",subes:"Barrio nocturno que se reorganiza solo",suben:"Nocturnal quarter that rearranges itself",color:"var(--jazz)"},
+  metal:{es:"Región Metal — Metal Mountain",en:"Metal Region — Metal Mountain",world:"music",subes:"Hellscape de lava y relámpagos",suben:"Lava & lightning hellscape",color:"var(--metal)"},
+  rail:{es:"The Sonic Railway — Music Medley",en:"The Sonic Railway — Music Medley",world:"music",subes:"Tren musical: un stop por género",suben:"Musical train: one stop per genre",color:"var(--rail)"},
+  conservatory:{es:"The Conservatory of Sound",en:"The Conservatory of Sound",world:"music",subes:"Centro del Mundo de la Música",suben:"Center of the World of Music",color:"var(--conservatory)"},
+  silence:{es:"The Silence (Antagonista)",en:"The Silence (Antagonist)",world:"music",subes:"Environment / FX transversal",suben:"Cross-cutting environment / FX",color:"var(--silence)"},
+};
+
+const ENV=[
+  {r:"real_home",star:1,intext:"INT",tes:"Día / Noche",ten:"Day / Night",
+   nes:"Attic Studio (Ático / Estudio)",nen:"Attic Studio",
+   des:"Locación hub de la película y ancla emocional. Punto de partida del vlog de Zoe y portal al Mundo de la Música. Aparece en ambos actos y en el clímax.",
+   den:"The film's hub location and emotional anchor. Launch point of Zoe's vlog and portal to the World of Music. Appears in both acts and the climax.",
+   ees:"Luces de Navidad tipo estrellas, gran ventana circular, instrumentos del papá (guitarras, amps, teclado, grabador multitrack), crates de vinilos, cajas de storage, laptop con stickers, MIDI, sampler, silla vieja, auriculares.",
+   een:"Star-like Christmas lights, large circular window, dad's instruments (guitars, amps, keyboard, multitrack recorder), crates of vinyl, storage boxes, sticker-covered laptop, MIDI, sampler, old chair, headphones."},
+  {r:"real_home",intext:"INT",tes:"Día / Noche",ten:"Day / Night",nes:"Living Room (Living)",nen:"Living Room",
+   des:"Escenario de la clase de piano, la fiesta de cumpleaños, la recepción del funeral y el clímax mamá-hija.",
+   den:"Setting for the piano lesson, the birthday party, the funeral reception and the mother-daughter climax.",
+   ees:"Piano vertical (upright), alfombra, cámara/teléfonos, regalos, banco del piano.",
+   een:"Upright piano, rug, camera/phones, gifts, piano bench."},
+  {r:"real_home",intext:"INT",tes:"Noche / Día",ten:"Night / Day",nes:"Kitchen (Cocina)",nen:"Kitchen",
+   des:"Escenas de duelo y desayunos repetidos que marcan el paso del tiempo.",
+   den:"Grief scenes and repeated breakfasts that mark the passage of time.",
+   ees:"Mesa, heladera, notebook de letras, post-it en la heladera, cereal, tacho con pedal.",
+   een:"Table, fridge, lyric notebook, fridge post-it, cereal, pedal trash can."},
+  {r:"real_home",intext:"INT",tes:"Día",ten:"Day",nes:"Bedroom (Dormitorio de los padres)",nen:"Bedroom (Parents')",
+   des:"Miles enfermo en cama; luego Kay guardando su ropa.",
+   den:"Miles sick in bed; later Kay packing away his clothes.",
+   ees:"Cortinas cerradas, luz tenue, cama, closet, caja de cartón.",
+   een:"Drawn curtains, dim light, bed, closet, cardboard box."},
+  {r:"real_home",intext:"INT",tes:"Mañana",ten:"Morning",nes:"Zoe's Bedroom (Cuarto de Zoe)",nen:"Zoe's Bedroom",
+   des:"Atmósfera de vacío y aislamiento tras la muerte del papá.",
+   den:"Atmosphere of emptiness and isolation after her dad's death.",
+   ees:"Cama con mantas, silencio, sin sonidos matutinos.",
+   een:"Blanket-covered bed, silence, no morning sounds."},
+  {r:"real_home",intext:"INT",tes:"Varios",ten:"Various",nes:"Foyer / Escaleras / Hallway / Comedor",nen:"Foyer / Stairs / Hallway / Dining Room",
+   des:"Recorridos internos de la casa que conectan las escenas.",
+   den:"Internal pathways of the house connecting the scenes.",
+   ees:"Entrada, escalera principal, pasillo, escalera al ático, comedor.",
+   een:"Entryway, main staircase, hallway, attic stairs, dining room."},
+  {r:"real_home",intext:"EXT",tes:"Día",ten:"Day",nes:"Driveway (Cochera)",nen:"Driveway",
+   des:"Salida de pánico al hospital cuando nace Zoe.",
+   den:"Panicked departure to the hospital when Zoe is born.",
+   ees:"Auto, maleta olvidada en el cordón.",een:"Car, suitcase forgotten on the curb."},
+  {r:"real_home",intext:"EXT",tes:"Día",ten:"Day",nes:"Backyard (Patio trasero)",nen:"Backyard",
+   des:"Zoe toddler bailando mientras Miles toca la guitarra.",
+   den:"Toddler Zoe dancing while Miles plays guitar.",
+   ees:"Jardín, guitarra.",een:"Yard, guitar."},
+  {r:"real_hospital",intext:"INT",tes:"—",ten:"—",nes:"Hospital Waiting Room",nen:"Hospital Waiting Room",
+   des:"Miles esperando, nervioso.",den:"Miles pacing, nervous.",
+   ees:"Sala de espera, enfermera.",een:"Waiting room, nurse."},
+  {r:"real_hospital",intext:"INT",tes:"Noche",ten:"Night",nes:"Hospital Nursery",nen:"Hospital Nursery",
+   des:"Miles sostiene por primera vez a la recién nacida Zoe.",
+   den:"Miles holds newborn Zoe for the first time.",
+   ees:"Cunas, scrubs, recién nacida.",een:"Cribs, scrubs, newborn."},
+  {r:"real_city",intext:"EXT",tes:"Mañana",ten:"Morning",nes:"Elementary School",nen:"Elementary School",
+   des:"Primer día de Zoe niña.",den:"Little Zoe's first day.",
+   ees:"Mar de padres y chicos, caos, entrada de la escuela.",een:"Sea of parents and kids, chaos, school entrance."},
+  {r:"real_city",intext:"INT",tes:"Día",ten:"Day",nes:"Middle School Music Room",nen:"Middle School Music Room",
+   des:"Miles enseñando; Zoe y Evie preteen.",den:"Miles teaching; preteen Zoe and Evie.",
+   ees:"Batería (drum kit), instrumentos.",een:"Drum kit, instruments."},
+  {r:"real_city",intext:"INT",tes:"Día",ten:"Day",nes:"School Bus [en movimiento]",nen:"School Bus [moving]",
+   des:"Zoe aislada mientras el mundo pasa.",den:"Zoe isolated as the world drifts by.",
+   ees:"Chicos con auriculares, ventana.",een:"Kids with earbuds, window."},
+  {r:"real_city",intext:"INT",tes:"Día",ten:"Day",nes:"School Hallway (Pasillo / lockers)",nen:"School Hallway (lockers)",
+   des:"Encuentros con Evie y con The Sirens.",den:"Run-ins with Evie and The Sirens.",
+   ees:"Lockers, multitud.",een:"Lockers, crowd."},
+  {r:"real_city",intext:"INT",tes:"Día",ten:"Day",nes:"School Cafeteria",nen:"School Cafeteria",
+   des:"Bullying de The Sirens; Zoe y Evie.",den:"The Sirens' bullying; Zoe and Evie.",
+   ees:"Fila de comida, bandejas, mesas.",een:"Lunch line, trays, tables."},
+  {r:"real_city",intext:"EXT",tes:"Tarde",ten:"Afternoon",nes:"Neighborhood Street",nen:"Neighborhood Street",
+   des:"Zoe caminando sola a casa, sonido amortiguado por el duelo.",
+   den:"Zoe walking home alone, sound muffled by grief.",
+   ees:"Veredas, aspersor, hojas.",een:"Sidewalks, sprinkler, leaves."},
+  {r:"real_city",intext:"INT",tes:"—",ten:"—",nes:"A Garage (Garaje de The Sirens)",nen:"A Garage (The Sirens')",
+   des:"La banda rival; usado en el clímax de la competencia.",
+   den:"The rival band; used in the competition climax.",
+   ees:"Garaje, instrumentos de banda.",een:"Garage, band gear."},
+  {r:"pop",intext:"EXT",tes:"Día",ten:"Day",nes:"Poppopolis — Main Street",nen:"Poppopolis — Main Street",
+   des:"Metrópolis rainbow 'sugar-rush' tipo Times Square a máxima saturación. Spirits y humanos mezclados.",
+   den:"Rainbow 'sugar-rush' metropolis like Times Square at max saturation. Spirits and humans mixed.",
+   ees:"Rascacielos con forma de boomboxes y micrófonos gigantes, veredas neón, billboards de emojis animados.",
+   een:"Skyscrapers shaped like boomboxes and giant microphones, neon sidewalks, animated emoji billboards."},
+  {r:"pop",intext:"EXT",tes:"Día",ten:"Day",nes:"Singing Flower Shop",nen:"Singing Flower Shop",
+   des:"Local de Mr. Keyes.",den:"Mr. Keyes's shop.",
+   ees:"Ramos de flores que cantan en armonía (Morning Singers).",een:"Bouquets that sing in harmony (Morning Singers)."},
+  {r:"pop",intext:"EXT",tes:"Día",ten:"Day",nes:"Apartment Building (fachada ecualizador)",nen:"Apartment Building (equalizer façade)",
+   des:"Edificio funky de camino al depto de Pip.",den:"Funky building on the way to Pip's place.",
+   ees:"Fachada que pulsa como un ecualizador gigante.",een:"Façade pulsing like a giant equalizer."},
+  {r:"pop",intext:"INT",tes:"Día",ten:"Day",nes:"Pip's Apartment (Depto de Pip)",nen:"Pip's Apartment",
+   des:"'Disaster zone' pop / bachelor pad de Pip.",den:"Pop 'disaster zone' / Pip's bachelor pad.",
+   ees:"Notas musicales flotando como polvo, acordes colgados de sillas, cajas de comida con jingles, gabinete de latas de sopa etiquetadas como acordes, closet que explota en notas.",
+   een:"Musical notes drifting like dust, chords draped over chairs, takeout boxes with jingles, cabinet of soup cans labeled as chords, closet that explodes with notes."},
+  {r:"pop",intext:"EXT / INT",tes:"Noche",ten:"Night",nes:"The Glitter Ball Arena",nen:"The Glitter Ball Arena",
+   des:"Bola de disco gigante suspendida sobre un abismo; la fiesta es adentro de la bola (DJ Sparkle).",
+   den:"Giant disco ball suspended over an abyss; the party is inside the ball (DJ Sparkle).",
+   ees:"Estadio esférico de luz, glowsticks, láseres, drone-show, escenario circular, plataforma de DJ, turntables tornado de luz, piso de baldosas espejadas con trampas.",
+   een:"Spherical stadium of light, glowsticks, lasers, drone-show, circular stage, DJ platform, tornado-of-light turntables, mirrored tile floor with trapdoors."},
+  {r:"pop",intext:"INT",tes:"—",ten:"—",nes:"The Vortex (El Vórtice)",nen:"The Vortex",
+   des:"Túnel/remolino bajo las trampillas; también se usa para 'volar' tuneando la música.",
+   den:"Tunnel/whirlpool beneath the trapdoors; also used to 'fly' by tuning into the music.",
+   ees:"Remolino de luz y sonido, cintas de color.",een:"Whirlpool of light and sound, ribbons of color."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"Cielo + Nubes de Clave",nen:"Sky + Clef Clouds",
+   des:"Tránsito aéreo volando entre regiones.",den:"Aerial transit flying between regions.",
+   ees:"Nubes esponjosas con forma de claves musicales.",een:"Fluffy clouds shaped like clef notes."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"The Woodwind Woods",nen:"The Woodwind Woods",
+   des:"Bosque hecho de instrumentos.",den:"Forest made of instruments.",
+   ees:"Árboles-instrumento que se tocan solos con el viento.",een:"Instrument-trees that play themselves in the wind."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"Mount Crescendo",nen:"Mount Crescendo",
+   des:"Montaña donde la música sube cuanto más alto se trepa.",den:"Mountain where the music builds the higher you climb.",
+   ees:"Ladera ascendente.",een:"Ascending slope."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"Echo Canyon",nen:"Echo Canyon",
+   des:"Cañón que devuelve cada letra en armonía en capas.",den:"Canyon that sings back every lyric in layered harmony.",
+   ees:"Paredes de piedra que cantan de vuelta.",een:"Stone walls that sing back."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"Siren Sea",nen:"Siren Sea",
+   des:"Mar de acordes.",den:"Sea of chords.",
+   ees:"Olas que rompen en progresiones y estallan en niebla de notas.",een:"Waves crashing in chord progressions, bursting into mist of notes."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"Ascending Falls",nen:"Ascending Falls",
+   des:"Cascada que fluye en escala ascendente; auto-tunea si volás a través.",den:"Waterfall flowing in an ascending scale; auto-tunes you if you fly through.",
+   ees:"Cascada shimmer en escala.",een:"Shimmering waterfall in scale."},
+  {r:"nature",intext:"EXT",tes:"Día",ten:"Day",nes:"Musical Mountains",nen:"Musical Mountains",
+   des:"Cordillera de tránsito entre regiones.",den:"Mountain range for transit between regions.",
+   ees:"Picos musicales.",een:"Musical peaks."},
+  {r:"jazz",intext:"EXT",tes:"Noche (siempre)",ten:"Night (always)",nes:"The Jazz Quarter (Barrio del Jazz)",nen:"The Jazz Quarter",
+   des:"Laberinto que se reorganiza solo, cambiando tempo y forma. Fácil perderse.",
+   den:"Maze that rearranges itself, changing tempo and shape. Easy to get lost.",
+   ees:"Edificios con forma de instrumentos: chimeneas-trompeta, escalinatas-piano, puertas-contrabajo. Notas subiendo de alcantarillas, faroles que se mecen, baldosas que se iluminan, callejones sin salida, puentes que se despliegan, catwalks, balcones de hierro forjado.",
+   een:"Instrument-shaped buildings: trumpet chimneys, piano stoops, bass-fiddle doorways. Notes rising from manholes, swaying lampposts, lighting sidewalk tiles, dead ends, unfurling bridges, catwalks, wrought-iron balconies."},
+  {r:"jazz",intext:"INT",tes:"Noche",ten:"Night",nes:"The B-Side Jazz Club",nen:"The B-Side Jazz Club",
+   des:"Club de Swing y su banda.",den:"Swing's club and his band.",
+   ees:"Escenario, banda (keys, upright bass, drums), ambiente de club.",een:"Stage, band (keys, upright bass, drums), club atmosphere."},
+  {r:"metal",intext:"INT",tes:"—",ten:"—",nes:"Elevator Shaft (Ascensor musical)",nen:"Elevator Shaft (musical)",
+   des:"Ascensor que se hunde por un pozo infinito hacia Metal Mountain.",den:"Elevator plunging down an endless shaft toward Metal Mountain.",
+   ees:"Capas de tierra (suelo, caliza, granito, esquisto, vidrio volcánico) sincronizadas con un bombo primal.",
+   een:"Layers of earth (soil, limestone, granite, shale, volcanic glass) synced to a primal bass drum."},
+  {r:"metal",intext:"EXT",tes:"¿Día? ¿Noche?",ten:"Day? Night?",nes:"Metal Mountain",nen:"Metal Mountain",
+   des:"Hellscape lava-lit; reino de Fuse ('The Screamin' Demon').",den:"Lava-lit hellscape; realm of Fuse ('The Screamin' Demon').",
+   ees:"Roca volcánica negra, acero fundido, amplis destrozados, andamios oxidados, spires tipo cuernos, stacks de parlantes humeantes en volcán, pirotecnia, relámpagos power-chord.",
+   een:"Black volcanic rock, molten steel, shattered amps, rusted scaffolding, devil-horn spires, smoking speaker stacks in a volcano, pyrotechnics, power-chord lightning."},
+  {r:"metal",intext:"EXT",tes:"Día",ten:"Day",nes:"The Riff Rift",nen:"The Riff Rift",
+   des:"Cañón desde donde se eleva el Lead Zeppelin.",den:"Canyon from which the Lead Zeppelin rises.",
+   ees:"Cañón con humo/vapor; zeppelin negro cromado con rayo insignia y góndola de control de vidrio.",
+   een:"Canyon with smoke/steam; chrome-banded black zeppelin with lightning-bolt insignia and glass control gondola."},
+  {r:"rail",intext:"—",tes:"—",ten:"—",nes:"The Sonic Railway",nen:"The Sonic Railway",
+   des:"Tren musical que viaja de estación a estación; cada needle-drop = un género.",den:"Musical train traveling station to station; each needle-drop = a genre.",
+   ees:"Tren-instrumento, andenes.",een:"Instrument-train, platforms."},
+  {r:"rail",intext:"INT",tes:"—",ten:"—",nes:"Funk Den",nen:"Funk Den",
+   des:"Jam psicodélico con FONK.",den:"Psychedelic jam with FONK.",
+   ees:"Espejos, luces psicodélicas, mustache spirit.",een:"Mirrors, psychedelic lights, mustachioed spirit."},
+  {r:"rail",intext:"INT",tes:"—",ten:"—",nes:"Church of Soul",nen:"Church of Soul",
+   des:"Revival gospel con Mama Hallelujah.",den:"Gospel revival with Mama Hallelujah.",
+   ees:"Coro, vitrales, rafters.",een:"Choir, stained glass, rafters."},
+  {r:"rail",intext:"INT",tes:"—",ten:"—",nes:"Doo-Wop Diner",nen:"Doo-Wop Diner",
+   des:"Balada con The Croonettes.",den:"Ballad with The Croonettes.",
+   ees:"Diner años 50, jukebox, booths.",een:"50s diner, jukebox, booths."},
+  {r:"rail",intext:"EXT",tes:"Noche",ten:"Night",nes:"Delta Bluesline",nen:"Delta Bluesline",
+   des:"Andén a medianoche con el bluesman Blue.",den:"Midnight platform with bluesman Blue.",
+   ees:"Plataforma de tren, armónica, neblina.",een:"Train platform, harmonica, mist."},
+  {r:"rail",intext:"INT",tes:"—",ten:"—",nes:"Garage Hang (Grunge)",nen:"Garage Hang (Grunge)",
+   des:"Sesión grunge con Riff y Raff.",den:"Grunge session with Riff and Raff.",
+   ees:"Garaje flanel, batería, amps.",een:"Flannel garage, drums, amps."},
+  {r:"rail",intext:"EXT / INT",tes:"Noche",ten:"Night",nes:"'The Broken String' (Bar de ruta)",nen:"'The Broken String' (Roadside Bar)",
+   des:"Bar de ruta country/folk con Twang y Teller.",den:"Country/folk roadside bar with Twang and Teller.",
+   ees:"Cartel neón torcido, tumbleweed, luz tenue, perro sabueso, tablones alabeados, steel guitar, banjo.",
+   een:"Crooked neon sign, tumbleweed, dim light, hound dog, warped floorboards, steel guitar, banjo."},
+  {r:"rail",intext:"INT",tes:"—",ten:"—",nes:"The Pantry (Despensa)",nen:"The Pantry",
+   des:"Caverna detrás de la cocina del bar: archivo de canciones inconclusas.",den:"Cavern behind the bar's kitchen: archive of unfinished songs.",
+   ees:"Estanterías de piso a techo con miles de mason jars etiquetados (letras), bombilla desnuda, escalera destartalada.",
+   een:"Floor-to-ceiling shelves with thousands of labeled mason jars (lyrics), bare bulb, rickety ladder."},
+  {r:"conservatory",star:1,intext:"EXT / INT",tes:"Día",ten:"Day",nes:"Conservatory of Sound",nen:"Conservatory of Sound",
+   des:"Jukebox del tamaño de un rascacielos, en el centro del Mundo de la Música.",den:"Skyscraper-sized jukebox at the center of the World of Music.",
+   ees:"Cromo, vidrio, tubos de neón vibrando. Interior: hall de marfil pulido, arcos de neón, muros con discos de platino/oro/plata.",
+   een:"Chrome, glass, buzzing neon tubes. Interior: polished ivory hall, neon arches, walls of platinum/gold/silver records."},
+  {r:"conservatory",intext:"INT",tes:"—",ten:"—",nes:"The Echo Chamber",nen:"The Echo Chamber",
+   des:"Vacío reverberante enorme, tono ominoso.",den:"Vast reverberating void, ominous tone.",
+   ees:"Coro de chamber music spirits en spotlight, fuga disonante.",een:"Choir of chamber-music spirits in spotlight, dissonant fugue."},
+  {r:"conservatory",intext:"INT",tes:"Día",ten:"Day",nes:"Harmonic Hall",nen:"Harmonic Hall",
+   des:"Rotonda con el mapa holográfico del Mundo de la Música.",den:"Rotunda with the holographic map of the World of Music.",
+   ees:"Techos catedralicios con frescos musicales, mapa flotante y vivo con landmarks.",een:"Cathedral-high ceilings with musical frescoes, floating living map with landmarks."},
+  {r:"conservatory",intext:"INT",tes:"—",ten:"—",nes:"Internal Mechanics / Jukebox Interior",nen:"Internal Mechanics / Jukebox Interior",
+   des:"'Vientre de la bestia' dentro del jukebox.",den:"'Belly of the beast' inside the jukebox.",
+   ees:"Mezcla de sala de máquinas, catedral y silo de misiles; tubos de vacío gigantes glowing/humming.",
+   een:"Part engine room, cathedral and missile silo; giant glowing/humming vacuum tubes."},
+  {r:"conservatory",intext:"INT",tes:"—",ten:"—",nes:"The Vault / Inner Vault (La Bóveda)",nen:"The Vault / Inner Vault",
+   des:"Cámara acorazada a prueba de sonido; refugio contra The Silence.",den:"Soundproof vault; refuge against The Silence.",
+   ees:"Columnas, puerta pesada con cerradura, insonorizada.",een:"Columns, heavy locking door, soundproofed."},
+  {r:"conservatory",intext:"INT",tes:"—",ten:"—",nes:"The Void (El Vacío)",nen:"The Void",
+   des:"Batalla de rap con MC Flow y Shadow Zoe.",den:"Rap battle with MC Flow and Shadow Zoe.",
+   ees:"Negrura total, spotlight que aísla a Zoe, siluetas hazy, turntable, la versión oscura de Zoe.",
+   een:"Total blackness, spotlight isolating Zoe, hazy silhouettes, turntable, Zoe's dark version."},
+  {r:"silence",intext:"FX",tes:"—",ten:"—",nes:"Tendrils of Silence",nen:"Tendrils of Silence",
+   des:"Manifestación física del antagonista; se cuela por grietas, vents y bajo puertas.",den:"Physical manifestation of the antagonist; creeps through cracks, vents and under doors.",
+   ees:"Zarcillos negros de estática silenciosa, sin luz ni sonido, bordes que tiemblan de distorsión.",
+   een:"Black tendrils of silent static, lightless and soundless, edges shivering with distortion."},
+  {r:"silence",intext:"FX",tes:"—",ten:"—",nes:"Silent Storm Clouds",nen:"Silent Storm Clouds",
+   des:"Rodean y envuelven el Conservatory en el clímax.",den:"Surround and envelop the Conservatory in the climax.",
+   ees:"Nubes de estática, rayos negros (negative space), rumble subsónico silencioso.",een:"Clouds of static, black lightning (negative space), silent subsonic rumble."},
+];
+
+let LANG=localStorage.getItem('ti_lang')||'es';
+
+const eq=document.getElementById('eq');
+for(let i=0;i<40;i++){const s=document.createElement('span');s.style.animationDelay=(i*0.06)+'s';s.style.animationDuration=(1+(i%5)*0.15)+'s';eq.appendChild(s);}
+
+const main=document.getElementById('main');
+const legend=document.getElementById('legend');
+
+function applyUI(){
+  const t=UI[LANG];
+  document.documentElement.lang=LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t[el.dataset.i18n]);
+  document.getElementById('search').placeholder=t.searchph;
+  const chips=document.querySelectorAll('#chips .chip');
+  chips[0].textContent=t.f_all;chips[1].textContent=t.f_real;chips[2].textContent=t.f_music;
+  document.querySelectorAll('#lang button').forEach(b=>b.classList.toggle('active',b.dataset.l===LANG));
+  legend.innerHTML='';
+  Object.values(REGIONS).forEach(r=>{
+    const s=document.createElement('span');
+    s.innerHTML=`<i style="background:${r.color}"></i>${r[LANG].split(' — ')[0]}`;
+    legend.appendChild(s);
+  });
+}
+
+function render(){
+  main.innerHTML='';
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const f=document.querySelector('#chips .chip.active').dataset.f;
+  const t=UI[LANG];
+  let shown=0;
+  Object.entries(REGIONS).forEach(([key,reg])=>{
+    if(f!=='all'&&reg.world!==f)return;
+    let items=ENV.filter(e=>e.r===key);
+    if(q)items=items.filter(e=>((LANG==='es'?e.nes+e.des+e.ees:e.nen+e.den+e.een)).toLowerCase().includes(q));
+    if(!items.length)return;
+    shown+=items.length;
+    const sec=document.createElement('section');
+    sec.className='region';
+    sec.innerHTML=`<div class="region-head"><span class="region-dot" style="background:${reg.color}"></span><h2>${reg[LANG]}</h2></div>
+      <div class="region-sub">${LANG==='es'?reg.subes:reg.suben}</div><div class="grid"></div>`;
+    const grid=sec.querySelector('.grid');
+    items.forEach(e=>{
+      const c=document.createElement('div');c.className='card';c.style.setProperty('--accent',reg.color);
+      c.innerHTML=`<div class="card-top"><h3>${LANG==='es'?e.nes:e.nen}</h3>${e.star?'<span class="star" title="Prioridad de diseño">★</span>':''}</div>
+        <div class="tags"><span class="tag intext">${e.intext}</span><span class="tag">${LANG==='es'?e.tes:e.ten}</span></div>
+        <p>${LANG==='es'?e.des:e.den}</p>
+        <div class="elems"><b>${t.elems}</b> ${LANG==='es'?e.ees:e.een}</div>`;
+      grid.appendChild(c);
+    });
+    main.appendChild(sec);
+  });
+  if(!shown)main.innerHTML=`<div class="empty">${t.empty}</div>`;
+}
+
+document.getElementById('st-total').textContent=ENV.length;
+document.getElementById('search').addEventListener('input',render);
+document.getElementById('chips').addEventListener('click',e=>{
+  if(!e.target.classList.contains('chip'))return;
+  document.querySelectorAll('#chips .chip').forEach(c=>c.classList.remove('active'));
+  e.target.classList.add('active');render();
+});
+document.getElementById('lang').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  LANG=e.target.dataset.l;localStorage.setItem('ti_lang',LANG);
+  applyUI();render();
+});
+applyUI();render();
+</script>
+</body>
+</html>
